@@ -6,6 +6,15 @@ from selenium.webdriver.chrome.options import Options
 from pdlearn import user_agent
 import os
 
+class title_of_login:
+    def __call__(self, driver):
+        """ 用来结合webDriverWait判断出现的title """
+        is_title1 = bool(EC.title_is(u'我的学习')(driver))
+        is_title2 = bool(EC.title_is(u'系统维护中')(driver))
+        if is_title1 or is_title2:
+            return True
+        else:
+            return False
 
 class Mydriver:
 
@@ -79,7 +88,8 @@ class Mydriver:
             self.driver.execute_script('arguments[0].remove()', remover)
             self.driver.execute_script('window.scrollTo(document.body.scrollWidth/2 - 200 , 0)')
         try:
-            WebDriverWait(self.driver, 270).until(EC.title_is(u"我的学习"))
+            #WebDriverWait(self.driver, 270).until(EC.title_is(u"我的学习"))
+            WebDriverWait(self.driver, 270).until(title_of_login())
             cookies = self.get_cookies()
             return cookies
         except:
