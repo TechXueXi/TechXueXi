@@ -1,3 +1,44 @@
+## headless version for docker
+###  修改内容
+* 使用headless driver（运行在无图形化的docker或服务器上）
+* 使用单线程学 xi 
+* 调整部分input等不适应后台运行的方法
+* 少量指定版本driver兼容性处理
+* 必须使用钉钉机器人（以便于后台运行登录）
+* 增加完成学 xi 后钉钉机器人消息通知
+
+### 20210616更新内容
+* 解决钉钉二维码图片不显示的问题，补充输出二维码图片识别url。
+    * based on https://github.com/TechXueXi/TechXueXi/issues/108 (thanks to mudapi)
+* 加入登录自动超时重试（重试2次）
+* 加入超时退出（针对部分答题问题导致程序挂起）
+* 去除docker容器配置文件，简化使用（现在只需要一条命令即可）
+
+
+![](https://raw.githubusercontent.com/wx5223/TechXueXi/headless-single-docker/img_folder/dingding2.jpg)
+
+提前准备
+* 打开钉钉-建群或讨论组，踢掉好友（仅保留自己）
+* 创建自定义机器人
+* 获取token(Webhook地址中token)与secret(加签)
+
+
+使用方法：
+```
+# 步骤1 创建并运行容器（首次运行，仅运行一次，除非删除容器）
+docker run -d --name xuexi wx5223/xuexi:v20210616_headless python pandalearning.py 替换为自己的token 替换为自己的secret
+
+# 启动容器（每天运行）
+docker start xuexi
+```
+问题排查：
+```
+# 日志查看（仅用于排查问题）
+docker logs xuexi
+# 删除容器（可以重新执行步骤1 创建容器）
+docker rm xuexi
+```
+---
 **[在线聊天室地址及说明](https://github.com/TechXueXi/TechXueXi/issues/14)**
 
 **支持每日答题，支持每周答题，支持专项答题**
@@ -15,7 +56,7 @@
 
 许多IT人员本终日埋头写代码，确实有需求，与其各人重复修改编写浪费生产力不如团队合作维护，因此我们还是希望继续维护此生态。
 
-**如果你的github账户包括个人信息，请重新申请一个github账号专门提交这个项目有关的代码，绑定境外邮箱，不要用国区苹果账号的邮箱**。若您有意愿加入本组织，持续对本项目进行维护，请发送主题“申请科技强 guo 组织成员”的邮件至tobctobc@protonmail.com，请将您的github用户名添加到邮件正文中，便于发送邀请。谢谢。
+若您有意愿加入本组织，持续对本项目进行维护，请发送主题“申请科技强 guo 组织成员”的邮件至tobctobc@protonmail.com，请将您的github用户名添加到邮件正文中，便于发送邀请。谢谢。
 
 本项目维护计划、路线图参见 https://github.com/TechXueXi/TechXueXi/projects/1
 
@@ -231,16 +272,6 @@ win平台可能提示`无法定位程序输入点ucrtbase.terminate于动态链�
 安装 python 3
 
 ### win源码使用说明
-
-Win10安装Python教程：
-
-1.打开Microsoft Store
-
-2.搜索Python
-
-3.安装，教程结束
-
-然后
 
 1. 下载 ChromeDriver，chrome 并配置好
 

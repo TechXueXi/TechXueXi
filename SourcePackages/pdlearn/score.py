@@ -1,7 +1,6 @@
 import requests
 from requests.cookies import RequestsCookieJar
 import json
-from pdlearn import color
 from pdlearn.const import const
 
 
@@ -11,30 +10,36 @@ from pdlearn.const import const
 # https://pc-api.xuexi.cn/open/api/score/today/query
 
 
-def handle_score_color(score, full_score):
-    if int(score) < int(full_score):
-        return color.red(str(score))+" / "+str(full_score)
-    else:
-        return str(score)+" / "+str(full_score)
-
-
 def show_score(cookies):
     userId, total, scores = get_score(cookies)
     print("当前学 xi 总积分：" + str(total) + "\t" + "今日得分：" + str(scores["today"]))
-    print("阅读文章:", handle_score_color(scores["article_num"], const.article_num_all), ",",
-        "观看视频:", handle_score_color(scores["video_num"], const.video_num_all), ",",
-        "文章时长:", handle_score_color(scores["article_time"], const.article_time_all), ",",
-        "视频时长:", handle_score_color(scores["video_time"], const.video_time_all), ",",
-        "\n每日登陆:", handle_score_color(scores["login"], const.login_all), ",",
-        "每日答题:", handle_score_color(scores["daily"], const.daily_all), ",",
-        "每周答题:", handle_score_color(scores["weekly"], const.weekly_all), ",",
-        "专项答题:", handle_score_color(scores["zhuanxiang"], const.zhuanxiang_all))
+    print("阅读文章:", scores["article_num"], "/", const.article_num_all, ",",
+        "观看视频:", scores["video_num"], "/", const.video_num_all, ",",
+        "文章时长:", scores["article_time"], "/", const.article_time_all, ",",
+        "视频时长:", scores["video_time"], "/", const.video_time_all, ",",
+        "\n每日登陆:", scores["login"], "/", const.login_all, ",",
+        "每日答题:", scores["daily"], "/", const.daily_all, ",",
+        "每周答题:", scores["weekly"], "/", const.weekly_all, ",",
+        "专项答题:", scores["zhuanxiang"], "/", const.zhuanxiang_all)
     return total, scores
+
+
+def get_score_output(cookies):
+    userId, total, scores = get_score(cookies)
+    output = "当前学 xi 总积分：" + str(total) + "\t" + "今日得分：" + str(scores["today"])
+    output += "\n阅读文章:" + str(scores["article_num"]) + "/" + str(const.article_num_all) + \
+              "\n观看视频:" + str(scores["video_num"]) + "/" + str(const.video_num_all) + \
+              "\n文章时长:" + str(scores["article_time"]) + "/" + str(const.article_time_all) + \
+              "\n视频时长:" + str(scores["video_time"]) + "/" + str(const.video_time_all) + \
+              "\n每日登陆:" + str(scores["login"]) + "/" + str(const.login_all) + \
+              "\n每日答题:" + str(scores["daily"]) + "/" + str(const.daily_all) + \
+              "\n每周答题:" + str(scores["weekly"]) + "/" + str(const.weekly_all) + \
+              "\n专项答题:" + str(scores["zhuanxiang"]) + "/" + str(const.zhuanxiang_all)
+    return output
 
 
 def get_score(cookies):
     try:
-        requests.adapters.DEFAULT_RETRIES = 5
         jar = RequestsCookieJar()
         for cookie in cookies:
             jar.set(cookie['name'], cookie['value'])
@@ -65,7 +70,7 @@ def get_score(cookies):
         scores["daily"]        = score_list[5] # 2每日答题
         scores["weekly"]       = score_list[6] # 3每周答题
         scores["zhuanxiang"]   = score_list[7] # 4专项答题
-        
+
         scores["today"]        = today         # 8今日得分
         return userId ,total, scores
     except:

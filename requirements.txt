@@ -3,3 +3,5 @@ lxml==4.6.3
 colorama==0.4.1
 beautifulsoup4==4.9.3
 selenium==3.141.0
+pyzbar==0.1.8
+pillow==8.2.0

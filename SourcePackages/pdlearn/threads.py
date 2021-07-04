@@ -22,7 +22,7 @@ threads = []
 #         func()
 #     print(color.green("工作线程清理完毕. Bye."))
 #     sys.exit()
- 
+
 # signal.signal(signal.SIGINT,signal_handler)
 
 class MyThread(Thread):
@@ -41,3 +41,20 @@ class MyThread(Thread):
             threadLock.release()
         else:
             self.func(*self.args)
+
+
+# single main thread without multithread
+class MyMainThread(object):
+    def __init__(self, name, func, *args, lock=False):
+        self.name = name
+        self.func = func
+        self.args = args
+        self.lock = lock
+
+    def start(self):
+        print("开启： " + self.name)
+        self.func(*self.args)
+
+    def join(self):
+        print("结束：" + self.name)
+

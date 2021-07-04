@@ -36,7 +36,8 @@ class title_of_login:
 
 class Mydriver:
 
-    def __init__(self, noimg=True, nohead=True):
+    def __init__(self, noimg=True, nohead=True, ddhandler=None):
+        self.ddhandler = ddhandler
         try:
             self.options = Options()
             if os.path.exists("./chrome/chrome.exe"):  # win
@@ -70,9 +71,6 @@ class Mydriver:
             elif os.path.exists("./chromedriver"):  # linux
                 self.driver = self.webdriver.Chrome(executable_path="./chromedriver",
                                                     chrome_options=self.options)
-            elif os.path.exists("/usr/bin/chromedriver"):  # linux用户安装
-                self.driver = self.webdriver.Chrome(executable_path="/usr/bin/chromedriver",
-                                                    chrome_options=self.options)
             elif os.path.exists("/usr/lib64/chromium-browser/chromedriver"):  # linux 包安装chromedriver
                 self.driver = self.webdriver.Chrome(executable_path="/usr/lib64/chromium-browser/chromedriver",
                                                     chrome_options=self.options)
@@ -80,19 +78,14 @@ class Mydriver:
                 self.driver = self.webdriver.Chrome(executable_path="/usr/local/bin/chromedriver",
                                                     chrome_options=self.options)
             else:
-                self.driver = self.webdriver.Chrome(chrome_options=self.options)
+                self.driver = self.webdriver.Chrome(executable_path="./chrome/chromedriver.exe",chrome_options=self.options)
         except:
             print("=" * 60)
-            print("Mydriver初始化失败。您可以检查下：")
-            print("1. 是否存在./chrome/chromedriver.exe 或 PATH 中是否存在 chromedriver.exe")
-            print("2. 浏览器地址栏输入 chrome://version 看到的chrome版本 和 运行 chromedriver.exe 显示的版本整数部分是否相同")
-            print("针对上述问题，请在 http://npm.taobao.org/mirrors/chromedriver 下载对应版本程序并放在合适的位置")
-            print("3. 如不是以上问题，请提issue，附上报错信息和您的环境信息")
+            print("Mydriver初始化失败")
             print("=" * 60)
-            input("按回车键继续......")
             raise
 
-    def get_cookie_from_network(self):
+    def get_cookie_from_network(self, retry=0):
         print("正在打开二维码登陆界面,请稍后")
         self.driver.get("https://pc.xuexi.cn/points/login.html")
         try:
@@ -119,11 +112,11 @@ class Mydriver:
             self.driver.execute_script('window.scrollTo(document.body.scrollWidth/2 - 200 , 0)')
 
 
-        try: 
+        try:
             # 取出iframe中二维码，并发往钉钉
-            if cfg["addition"]["SendLoginQRcode"] == "1":
+            if 1:  # cfg["addition"]["SendLoginQRcode"] == "1":
                 print("二维码将发往钉钉机器人...\n" + "=" * 60)
-                self.toDingDing()
+                self.get_dingding_handler().ddimgsend(self.getQRcode(), retry=retry)
         except KeyError as e:
             print("未检测到SendLoginQRcode配置，请手动扫描二维码登陆...")
 
@@ -132,24 +125,28 @@ class Mydriver:
             # WebDriverWait(self.driver, 270).until(EC.title_is(u"我的学 xi "))
             WebDriverWait(self.driver, 270).until(title_of_login())
             cookies = self.get_cookies()
-            
+
             user.save_cookies(cookies)
-            
+
             return cookies
         except Exception as e:
-            self.quit()
-            print("扫描二维码超时... 错误信息：" + str(e))
-            if str(e).find("check_hostname") > -1 and str(e).find("server_hostname") > -1:
-                print("针对“check_hostname requires server_hostname”问题：")
-                print("您的网络连接存在问题，请检查您与xuexi.cn的网络连接并关闭“某些”软件")
-            input("按回车键退出程序. ")
-            exit()
+            if retry > 1:
+                self.quit()
+                # input("扫描二维码超时... 按回车键退出程序. 错误信息：" + str(e))
+                self.dingding_text_send("扫描二维码/登录超时，程序结束")
+                exit()
+            else:
+                return self.get_cookie_from_network(retry=retry+1)
 
-    def toDingDing(self):
-        token = cfg["addition"]["token"]
-        secret = cfg["addition"]["secret"]
-        ddhandler = DingDingHandler(token, secret)
-        ddhandler.ddmsgsend(self.getQRcode())
+    def get_dingding_handler(self):
+        if self.ddhandler is None:
+            token = cfg["addition"]["token"]
+            secret = cfg["addition"]["secret"]
+            self.ddhandler = DingDingHandler(token, secret)
+        return self.ddhandler
+
+    def dingding_text_send(self, msg):
+        self.get_dingding_handler().ddtextsend(msg)
 
     def getQRcode(self):
         try:
@@ -186,6 +183,9 @@ class Mydriver:
                 if cookie['domain'] == '.xuexi.cn':
                     self.driver.get("https://www.xuexi.cn/")
                 # print(f'current cookie: {cookie}')
+                # for expiry error (maybe old version compatibility)
+                if 'expiry' in cookie:
+                    cookie['expiry'] = int(cookie['expiry'])
                 self.driver.add_cookie(cookie)
         except exceptions.InvalidCookieDomainException as e:
             print(e.__str__)
@@ -243,7 +243,6 @@ class Mydriver:
         tip_div = self.driver.find_element_by_css_selector(".ant-popover .line-feed")
         tip_full_text = tip_div.get_attribute('innerHTML')
         html = tip_full_text
-        html = re.sub('</font[a-zA-Z]*?><font+.*?>', '', html)  # 连续的两个font合并为一个font
         soup1 = BeautifulSoup(html, 'lxml')
         content = soup1.find_all('font')  # tips.get_attribute("name") ,attrs={'color'}
         answer: List[str] = []
