@@ -1,0 +1,131 @@
+def init_main_ini():
+    ini_text = '''; main.ini
+; 请勿随意更改此配置文件！除非你知道要做什么
+
+; 基本设置
+[base]
+
+; 是否是新用户？（此配置项暂未应用至代码。）
+; 0表示：否；1表示：是
+;NewUser = 1
+
+; 所有模式，用户请勿修改此配置项。
+ModeText=    -------------------------
+    1 文章+视频
+    2 文章+视频+每日答题
+      （可以根据当日已得做题积分，决定是否做题）
+    3 文章+视频+每日答题+每周答题+专项答题
+      （可以根据当日已得做题积分，及是否有可得分套题，决定是否做题）
+
+; 请对照上方模式,选择默认模式。此配置项也可以填写 0,如果此配置项为 0 ，则每次询问模式。
+; ModeType=3
+; 默认自动运行3，方便每天自动定时启动
+
+; 是否先完成答题任务之后再完成文章视频?（此配置项暂未应用至代码。）
+; 由于文章视频比较稳定,但答题还在测试阶段，可能会出现各种问题，建议你在答题阶段值守在电脑旁边，先答题，之后再完成文章视频。
+; 0表示：否；1表示：是
+;AnswerFirst=1
+
+; 是否同时做文章和视频任务？（是否多线程？）（此配置项暂未应用至代码。）
+; 同时做文章和视频任务可以节省时间，但会增加被查的风险。虽然现在此风险可以忽略不计。
+; 0表示：否；1表示：是
+;multithreading=1
+
+; 找死的多线程方法。同时做题文章视频。（此配置项暂未应用至代码。）
+; 这个需要开启上面的多线程之后才生效。请注意封号风险。
+; 0表示：否；1表示：是
+;KillYourself=0
+
+; 完成之后是否关机？（此配置项暂未应用至代码。）
+; 0表示：否；1表示：是
+;ShutdownComputer=0
+
+; 没有找到答案的选择题是否提交随机答案。（此配置项暂未应用至代码。）
+; 0表示：否；1表示：是
+;SubmitRandomAnswers=1
+
+; 是否保存日志文件（此配置项暂未应用至代码。）
+; 0表示：否；1表示：是
+;SaveLogs=0
+
+; 自动注销 （此配置项暂未应用至代码。）
+;keep_alive = 1
+
+; 附加功能。
+[addition]
+; 是否通过邮件微信或其他方式发送登录二维码？此功能暂不支持。（此配置项暂未应用至代码。）
+;SendLoginQRcode=1
+
+; 是否通过钉钉自定义机器人发送登录二维码？
+; 钉钉机器人接入方式请参考 https://developers.dingtalk.com/document/app/custom-robot-access/title-72m-8ag-pqw
+; SendLoginQRcode=1
+; token= XXXXXXXX
+; secret= SSSSSSS
+
+; 参数设置。
+[parameter]
+;   挑战答题题数上下限（此配置项暂未应用至代码。）
+;challenge_count_min = 10
+;challenge_count_max = 15
+
+;   挑战答题提交延时上下限（此配置项暂未应用至代码。）
+;challenge_delay_min = 2
+;challenge_delay_max = 6
+
+;   每日答题题间延时上下限（此配置项暂未应用至代码。）
+;daily_delay_min = 3
+;daily_delay_max = 5
+
+;   每日答题组间延时上下限（此配置项暂未应用至代码。）
+;daily_group_delay_min = 5
+;daily_group_delay_max = 10
+
+; 每日答题单组题数（此配置项暂未应用至代码。）
+;daily_count_each_group = 10
+
+;   试听学习观看视频数量上下限（此配置项暂未应用至代码。）
+;video_count_min = 12
+;video_count_max = 15
+
+;   试听学习每则视频观看时间上下限（此配置项暂未应用至代码。）
+; video_delay_min = 25
+; video_delay_max = 30
+
+;   收听广播栏目（此配置项暂未应用至代码。）
+;radio_chanel = 音乐之声
+
+; 广播开关（此配置项暂未应用至代码。）
+; -default 根据视听学习时长情况自主选择
+; -enable  开启
+; -disable 关闭
+;radio_switch = default
+
+;   新闻学习栏目（此配置项暂未应用至代码。）
+;article_volumn_title = 订阅
+
+;   新闻学习数量上下限（此配置项暂未应用至代码。）
+;article_count_min = 12
+;article_count_max = 15
+
+;   新闻学习阅读组间时延上下限（此配置项暂未应用至代码。）
+;article_delay_min = 3
+;article_delay_max = 5
+
+;   收藏分享数量（此配置项暂未应用至代码。）
+;star_share_comments_count = 2
+
+
+
+; 执行每周答题、专项答题的日子（此配置项暂未应用至代码。）
+; ------------------------------------------------
+; 字符串形式：1~7表示周一至周日 0表示跳过
+;workdays = 0
+
+; 显示设置。
+[display]
+; 显示banner (true/false)
+banner = true
+'''
+    with open("./config/main.ini","w", encoding="utf8") as f:
+        f.write(ini_text)
+
