@@ -83,11 +83,11 @@ ModeText=    -------------------------
 ; 每日答题单组题数（此配置项暂未应用至代码。）
 ;daily_count_each_group = 10
 
-;   试听学习观看视频数量上下限（此配置项暂未应用至代码。）
+;   试听学 xi 观看视频数量上下限（此配置项暂未应用至代码。）
 ;video_count_min = 12
 ;video_count_max = 15
 
-;   试听学习每则视频观看时间上下限（此配置项暂未应用至代码。）
+;   试听学 xi 每则视频观看时间上下限（此配置项暂未应用至代码。）
 ; video_delay_min = 25
 ; video_delay_max = 30
 
@@ -95,19 +95,19 @@ ModeText=    -------------------------
 ;radio_chanel = 音乐之声
 
 ; 广播开关（此配置项暂未应用至代码。）
-; -default 根据视听学习时长情况自主选择
+; -default 根据视听学 xi 时长情况自主选择
 ; -enable  开启
 ; -disable 关闭
 ;radio_switch = default
 
-;   新闻学习栏目（此配置项暂未应用至代码。）
+;   新闻学 xi 栏目（此配置项暂未应用至代码。）
 ;article_volumn_title = 订阅
 
-;   新闻学习数量上下限（此配置项暂未应用至代码。）
+;   新闻学 xi 数量上下限（此配置项暂未应用至代码。）
 ;article_count_min = 12
 ;article_count_max = 15
 
-;   新闻学习阅读组间时延上下限（此配置项暂未应用至代码。）
+;   新闻学 xi 阅读组间时延上下限（此配置项暂未应用至代码。）
 ;article_delay_min = 3
 ;article_delay_max = 5
 

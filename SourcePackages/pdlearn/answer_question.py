@@ -332,7 +332,7 @@ def answer_question(quiz_type, cookies, scores, score_all, quiz_xpath, category_
                     time.sleep(1)
             total, scores = show_score(cookies)
             if scores[quiz_type] >= score_all:
-                print("检测到"+quiz_zh_CN[quiz_type]+"答题分数已满,退出学习")
+                print("检测到"+quiz_zh_CN[quiz_type]+"答题分数已满,退出学 xi ")
             else:
                 print("！！！！！没拿到满分，请收集日志反馈错误题目！！！！！")
                 input("完成后（或懒得弄）请在此按回车...")

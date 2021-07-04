@@ -5,7 +5,7 @@ def user_flag(dd_status, uname):
     if False and dd_status:
         cookies = dingding.dd_login_status(uname, has_dd=True)
     else:
-        # if (input("是否保存钉钉帐户密码，保存后可后免登陆学习(Y/N) ")) not in ["y", "Y"]:
+        # if (input("是否保存钉钉帐户密码，保存后可后免登陆学 xi (Y/N) ")) not in ["y", "Y"]:
         if True:
             cookies = user.get_cookie(uname)
             if not cookies:

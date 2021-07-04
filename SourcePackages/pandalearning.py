@@ -44,10 +44,10 @@ if __name__ == '__main__':
     start_time = time.time()
     if(cfg['display']['banner'] != "false"): # banner文本直接硬编码，不要放在ini中
         print("=" * 60 + \
-        '\n    科技强国官方网站：https://techxuexi.js.org' + \
+        '\n    科技强 guo 官方网站：https://techxuexi.js.org' + \
         '\n    Github地址：https://github.com/TechXueXi' + \
         '\n使用本项目，必须接受以下内容，否则请立即退出：' + \
-        '\n    - TechXueXi 仅额外提供给“爱党爱国”且“工作学业繁重”的人' + \
+        '\n    - TechXueXi 仅额外提供给“爱党爱 guo ”且“工作学业繁重”的人' + \
         '\n    - 项目开源协议 LGPL-3.0' + \
         '\n    - 不得利用本项目盈利' + \
         '\n另外，我们建议你参与一个维护劳动法的项目：' + \
@@ -85,8 +85,8 @@ if __name__ == '__main__':
     nohead, lock, stime = get_argv()
 
     if TechXueXi_mode in ["1", "2", "3"]:
-        article_thread = threads.MyThread("文章学习", article, uid, cookies, article_index, scores, lock=lock)
-        video_thread = threads.MyThread("视频学习", video, uid, cookies, video_index, scores, lock=lock)
+        article_thread = threads.MyThread("文章学 xi ", article, uid, cookies, article_index, scores, lock=lock)
+        video_thread = threads.MyThread("视频学 xi ", video, uid, cookies, video_index, scores, lock=lock)
         article_thread.start()
         video_thread.start()
         article_thread.join()

@@ -5,10 +5,10 @@ import sys
 
 def get_dd():
     while True:
-        dname = input('请输入正确的学习强国帐号(钉钉手机号)：')
+        dname = input('请输入正确的学 xi 强 guo 帐号(钉钉手机号)：')
         ret = re.match(r"^1[3-9]\d{9}$", dname)
         if ret:
-            pwd = input("请输入学习强国密码：")
+            pwd = input("请输入学 xi 强 guo 密码：")
             break
     return dname, pwd
 

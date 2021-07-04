@@ -31,12 +31,12 @@ def article(userId, cookies, article_pointer, scores):
                         for j in range(readarticle_time):
                             if random.random() > 0.5:
                                 driver_article.go_js('window.scrollTo(0, document.body.scrollHeight/120*{})'.format(j))
-                            print("\r文章数量学习中，文章剩余{}篇,本篇剩余时间{}秒".format(article_pointer + article_remain - i, readarticle_time - j), end="")
+                            print("\r文章数量学 xi 中，文章剩余{}篇,本篇剩余时间{}秒".format(article_pointer + article_remain - i, readarticle_time - j), end="")
                             time.sleep(1)
                         driver_article.go_js('window.scrollTo(0, document.body.scrollHeight)')
                         total, scores = show_score(cookies)
                         if scores["article_num"] >= const.article_num_all:
-                            print("检测到文章数量分数已满,退出学习")
+                            print("检测到文章数量分数已满,退出学 xi ")
                             break
                     article_pointer += article_remain
                 else:
@@ -52,26 +52,26 @@ def article(userId, cookies, article_pointer, scores):
                         if random.random() > 0.5:
                             driver_article.go_js(
                                 'window.scrollTo(0, document.body.scrollHeight/{}*{})'.format(remaining, i))
-                        print("\r文章时长学习中，文章总时长剩余{}秒".format(remaining - i), end="")
+                        print("\r文章时长学 xi 中，文章总时长剩余{}秒".format(remaining - i), end="")
                         time.sleep(1)
                         if i % (60) == 0 and i != remaining:
                             total, scores = show_score(cookies)
                             if scores["article_time"] >= const.article_time_all:
-                                print("检测到文章时长分数已满,退出学习")
+                                print("检测到文章时长分数已满,退出学 xi ")
                                 break
                     driver_article.go_js('window.scrollTo(0, document.body.scrollHeight)')
                     total, scores = show_score(cookies)
                 else:
                     break
             if try_count < 10:
-                print("文章学习完成")
+                print("文章学 xi 完成")
             else:
-                print("文章学习出现异常，请检查 user/article_video_index.json 文件记录")
+                print("文章学 xi 出现异常，请检查 user/article_video_index.json 文件记录")
             driver_article.quit()
         else:
             print("文章之前学完了")
     except Exception as e:
-        print(color.red("文章学习检测到异常："+str(e)))
+        print(color.red("文章学 xi 检测到异常："+str(e)))
 
 
 def video(userId, cookies, video_pointer, scores):
@@ -96,12 +96,12 @@ def video(userId, cookies, video_pointer, scores):
                         for j in range(watchvideo_time):
                             if random.random() > 0.5:
                                 driver_video.go_js('window.scrollTo(0, document.body.scrollHeight/180*{})'.format(j))
-                            print("\r视频数量学习中，视频剩余{}个,本次剩余时间{}秒".format(video_pointer + v_num - i, watchvideo_time - j), end="")
+                            print("\r视频数量学 xi 中，视频剩余{}个,本次剩余时间{}秒".format(video_pointer + v_num - i, watchvideo_time - j), end="")
                             time.sleep(1)
                         driver_video.go_js('window.scrollTo(0, document.body.scrollHeight)')
                         total, scores = show_score(cookies)
                         if scores["video_num"] >= const.video_num_all:
-                            print("检测到视频数量分数已满,退出学习")
+                            print("检测到视频数量分数已满,退出学 xi ")
                             break
                     video_pointer += v_num
                 else:
@@ -117,23 +117,23 @@ def video(userId, cookies, video_pointer, scores):
                         if random.random() > 0.5:
                             driver_video.go_js(
                                 'window.scrollTo(0, document.body.scrollHeight/{}*{})'.format(remaining, i))
-                        print("\r视频时长学习中，视频总时长剩余{}秒".format(remaining - i), end="")
+                        print("\r视频时长学 xi 中，视频总时长剩余{}秒".format(remaining - i), end="")
                         time.sleep(1)
                         if i % (60) == 0 and i != remaining:
                             total, scores = show_score(cookies)
                             if scores["video_time"] >= const.video_time_all:
-                                print("检测到视频时长分数已满,退出学习")
+                                print("检测到视频时长分数已满,退出学 xi ")
                                 break
                     driver_video.go_js('window.scrollTo(0, document.body.scrollHeight)')
                     total, scores = show_score(cookies)
                 else:
                     break
             if try_count < 10:
-                print("视频学习完成")
+                print("视频学 xi 完成")
             else:
-                print("视频学习出现异常，请检查 user/article_video_index.json 文件记录")
+                print("视频学 xi 出现异常，请检查 user/article_video_index.json 文件记录")
             driver_video.quit()
         else:
             print("视频之前学完了")
     except Exception as e:
-        print(color.red("视频学习检测到异常："+str(e)))
+        print(color.red("视频学 xi 检测到异常："+str(e)))

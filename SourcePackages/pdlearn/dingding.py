@@ -32,8 +32,8 @@ class DingDingHandler:
         data = {
             "msgtype": "link",
             "link": {
-                "text": "学习强国",
-                "title": "学习吧少年",
+                "text": "学 xi 强 guo ",
+                "title": "学 xi 吧少年",
                 "messageUrl": msgurl,
             },
         }

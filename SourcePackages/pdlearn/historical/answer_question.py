@@ -150,7 +150,7 @@ def daily(cookies, scores):
 
                 total, scores = show_score(cookies)
                 if scores["daily"] >= const.daily_all:
-                    print("检测到每日答题分数已满,退出学习")
+                    print("检测到每日答题分数已满,退出学 xi ")
         try:
             driver_daily.quit()
         except Exception as e:
@@ -332,7 +332,7 @@ def weekly(cookies, scores):
 
             total, scores = show_score(cookies)
             if scores["weekly"] >= const.weekly_all:
-                print("检测到每周答题分数已满,退出学习")
+                print("检测到每周答题分数已满,退出学 xi ")
                 driver_weekly.quit()
         try:
             driver_weekly.quit()
@@ -474,7 +474,7 @@ def zhuanxiang(cookies, scores):
 
             total, scores = show_score(cookies)
             if scores["zhuanxiang"] >= const.zhuanxiang_all:
-                print("检测到专项答题分数已满,退出学习")
+                print("检测到专项答题分数已满,退出学 xi ")
                 driver_zhuanxiang.quit()
         try:
             driver_zhuanxiang.quit()

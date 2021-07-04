@@ -27,7 +27,7 @@ def check_uname(uname):
         __check_status = True
     return __check_status
 
-#文章学习计数
+#文章学 xi 计数
 def get_a_log(uname):
     __a_log = 0
     if os.path.exists("./user/{}/a_log".format(uname)):

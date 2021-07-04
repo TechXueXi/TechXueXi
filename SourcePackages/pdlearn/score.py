@@ -20,7 +20,7 @@ def handle_score_color(score, full_score):
 
 def show_score(cookies):
     userId, total, scores = get_score(cookies)
-    print("当前学习总积分：" + str(total) + "\t" + "今日得分：" + str(scores["today"]))
+    print("当前学 xi 总积分：" + str(total) + "\t" + "今日得分：" + str(scores["today"]))
     print("阅读文章:", handle_score_color(scores["article_num"], const.article_num_all), ",",
         "观看视频:", handle_score_color(scores["video_num"], const.video_num_all), ",",
         "文章时长:", handle_score_color(scores["article_time"], const.article_time_all), ",",
@@ -55,13 +55,13 @@ def get_score(cookies):
             for j in range(len(rule_list)):
                 if i["ruleId"] == rule_list[j]:
                     score_list[j] = int(i["currentScore"])
-        # 阅读文章，视听学习，登录，文章时长，视听学习时长，每日答题，每周答题，专项答题
+        # 阅读文章，视听学 xi ，登录，文章时长，视听学 xi 时长，每日答题，每周答题，专项答题
         scores = {}
         scores["article_num"]  = score_list[0] # 0阅读文章
-        scores["video_num"]    = score_list[1] # 1视听学习
+        scores["video_num"]    = score_list[1] # 1视听学 xi
         scores["login"]        = score_list[2] # 7登录
         scores["article_time"] = score_list[3] # 6文章时长
-        scores["video_time"]   = score_list[4] # 5视听学习时长
+        scores["video_time"]   = score_list[4] # 5视听学 xi 时长
         scores["daily"]        = score_list[5] # 2每日答题
         scores["weekly"]       = score_list[6] # 3每周答题
         scores["zhuanxiang"]   = score_list[7] # 4专项答题

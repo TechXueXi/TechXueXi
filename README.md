@@ -11,11 +11,11 @@
 
 ![](https://raw.githubusercontent.com/TechXueXi/TechXueXi/master/img_folder/kjqg.png)
 
-本仓库现由“科技强国”组织进行维护，这是全网较好的成熟产品，但已停止，我们于心不忍。
+本仓库现由“科技强 guo ”组织进行维护，这是全网较好的成熟产品，但已停止，我们于心不忍。
 
 许多IT人员本终日埋头写代码，确实有需求，与其各人重复修改编写浪费生产力不如团队合作维护，因此我们还是希望继续维护此生态。
 
-若您有意愿加入本组织，持续对本项目进行维护，请发送主题“申请科技强国组织成员”的邮件至tobctobc@protonmail.com，请将您的github用户名添加到邮件正文中，便于发送邀请。谢谢。
+若您有意愿加入本组织，持续对本项目进行维护，请发送主题“申请科技强 guo 组织成员”的邮件至tobctobc@protonmail.com，请将您的github用户名添加到邮件正文中，便于发送邀请。谢谢。
 
 本项目维护计划、路线图参见 https://github.com/TechXueXi/TechXueXi/projects/1
 
@@ -23,17 +23,17 @@
 
 ### [👨‍👨‍👦‍👦   直接参与贡献](https://github.com/TechXueXi/TechXueXi/blob/master/CONTRIBUTING.md)(内附提交方法)
 
-如您开发了其他“科技强国”项目，也可以加入本组织，相互交流，共同维护生态。
+如您开发了其他“科技强 guo ”项目，也可以加入本组织，相互交流，共同维护生态。
 
 
 
 # TechXueXi
 
-TechXueXi 是一款使用python语言编写的学习工具。可达 47 分/天
+TechXueXi 是一款使用python语言编写的学 xi 工具。可达 47 分/天
 
 
 
-![学习情景](https://github.com/TechXueXi/TechXueXi/blob/master/img_folder/peoplelearning.jpg?raw=true)
+![学 xi 情景](https://github.com/TechXueXi/TechXueXi/blob/master/img_folder/peoplelearning.jpg?raw=true)
 [![Badge](https://img.shields.io/badge/link-996.icu-%23FF4D5B.svg?style=flat-square)](https://996.icu/#/zh_CN)
  [![GitHub stars](https://img.shields.io/github/stars/TechXueXi/TechXueXi.svg?style=social)](https://github.com/TechXueXi/TechXueXi/stargazers)     [![GitHub forks](https://img.shields.io/github/forks/TechXueXi/TechXueXi.svg?style=social)](https://github.com/TechXueXi/TechXueXi/network/members)  `请点击页面顶部靠右star与fork`
 
@@ -49,7 +49,7 @@ TechXueXi 是一款使用python语言编写的学习工具。可达 47 分/天
 [TOC]
 
 ## 📃免责声明
-TechXueXi为python学习交流的开源非营利项目，仅作为程序员之间相互学习交流之用，使用需严格遵守开源许可协议。严禁用于商业用途，禁止使用TechXueXi进行任何盈利活动。对一切非法使用所产生的后果，我们概不负责。
+TechXueXi为python学 xi 交流的开源非营利项目，仅作为程序员之间相互学 xi 交流之用，使用需严格遵守开源许可协议。严禁用于商业用途，禁止使用TechXueXi进行任何盈利活动。对一切非法使用所产生的后果，我们概不负责。
 
 ![](https://raw.githubusercontent.com/TechXueXi/TechXueXi/master/img_folder/qsjwczlhql.jpg)
 
@@ -67,17 +67,17 @@ TechXueXi为python学习交流的开源非营利项目，仅作为程序员之�
 
 `不支持xp`
 
-###### 全程后台静默学习： 也可开启前台学习展示
+###### 全程后台静默学 xi ： 也可开启前台学 xi 展示
 
-###### 自动核对学习分数： 根据每日分数学满为止
+###### 自动核对学 xi 分数： 根据每日分数学满为止
 
 ###### ~~支持保存账户信息： 可以保存帐户信息每日免去重复登陆~~
 
-###### 默认多线程学习：  可关闭，建议开启，每日学满只需20分钟
+###### 默认多线程学 xi ：  可关闭，建议开启，每日学满只需20分钟
 
-###### ~~可设置自动关机：  每天下班用办公室电脑学习后自动关机~~
+###### ~~可设置自动关机：  每天下班用办公室电脑学 xi 后自动关机~~
 
-###### 增强防检测：随机浏览器请求头及自然学习行为模拟
+###### 增强防检测：随机浏览器请求头及自然学 xi 行为模拟
 
 
 
@@ -99,7 +99,7 @@ TechXueXi为python学习交流的开源非营利项目，仅作为程序员之�
 
 ​	~~根据提示选择是否保存钉钉账号密码，保存后下次使用将不需要输入。~~
 
-​	`登陆之后自动学习`
+​	`登陆之后自动学 xi `
 
 ​	注意`mac需要在终端中打开`
 
@@ -115,19 +115,19 @@ TechXueXi为python学习交流的开源非营利项目，仅作为程序员之�
 
 ​	`第二个参数为 hidden 或 show，对应后台运行和前台运行；`
 
-​	`第三个参数为 single 或 multithread, 对应单线程和多线程学习；`
+​	`第三个参数为 single 或 multithread, 对应单线程和多线程学 xi ；`
 
-​	`第四个参数为 num 为输入一个数字，表示学习完成后多少秒自动关机。`  
+​	`第四个参数为 num 为输入一个数字，表示学 xi 完成后多少秒自动关机。`  
 
 ### 📅示例 win平台
 
 ​    user1 为已经保存了钉钉账户的用户标记
 
-​	`TechXueXi.exe user1 表示自动开启user1 学习`
+​	`TechXueXi.exe user1 表示自动开启user1 学 xi `
 
-​	`TechXueXi.exe user1 show single 表示前台显示且单线程开启user1 学习`
+​	`TechXueXi.exe user1 show single 表示前台显示且单线程开启user1 学 xi `
 
-​	`TechXueXi.exe user1 hidden multithread 300 表示后台多线程开启user1 学习，学习完毕300秒关机`
+​	`TechXueXi.exe user1 hidden multithread 300 表示后台多线程开启user1 学 xi ，学 xi 完毕300秒关机`
 -->
 ### 🔧更新方法
 
@@ -210,13 +210,13 @@ win平台可能提示`无法定位程序输入点ucrtbase.terminate于动态链�
 
 
 
-## 📌关于学习强国
+## 📌关于学 xi 强 guo 
 
-个人认为，学习强国本身受众就是国家的栋梁，本人不欢迎不热爱国家的人加入本项目。
+个人认为，学 xi 强 guo 本身受众就是 guo 家的栋梁，本人不欢迎不热爱 guo 家的人加入本项目。
 
-学习强国聚合了大量可免费阅读的期刊、古籍、公开课、歌曲、戏曲、电影、图书等资料，内容严谨，专业性强。没有博眼球，无下限的自媒体内容和虚假新闻。推荐大家自发积极学习使用。TechXueXi 仅额外提供给上班上学期间工作学业繁重，抽不出时间完成学习强国任务的非程序员。
+学 xi 强 guo 聚合了大量可免费阅读的期刊、古籍、公开课、歌曲、戏曲、电影、图书等资料，内容严谨，专业性强。没有博眼球，无下限的自媒体内容和虚假新闻。推荐大家自发积极学 xi 使用。TechXueXi 仅额外提供给上班上学期间工作学业繁重，抽不出时间完成学 xi 强 guo 任务的非程序员。
 
-“学习强国”意义深远。
+“学 xi 强 guo ”意义深远。
 
 
 
