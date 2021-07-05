@@ -5,7 +5,7 @@ from pdlearn import color
 def up_info():
     print(color.yellow("[*] 正在联网获取更新信息...(更新显示不会打断之前输入等操作)"))
 
-    __Version = "v20210704"
+    __Version = "v20210705"
 
     __INFO = "TechXueXi最新下载地址为 https://github.com/TechXueXi/TechXueXi"
     try:
