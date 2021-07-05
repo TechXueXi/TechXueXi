@@ -26,7 +26,7 @@ from selenium.common import exceptions
 class title_of_login:
     def __call__(self, driver):
         """ 用来结合webDriverWait判断出现的title """
-        is_title1 = bool(EC.title_is(u'我的学 xi ')(driver))
+        is_title1 = bool(EC.title_is(u'我的学习')(driver))
         is_title2 = bool(EC.title_is(u'系统维护中')(driver))
         if is_title1 or is_title2:
             return True
