@@ -1,18 +1,27 @@
 ## headless version for docker
 ###  修改内容
 * 使用headless driver（运行在无图形化的docker或服务器上）
-* 使用单线程学 xi 
+* 使用单线程学习
 * 调整部分input等不适应后台运行的方法
 * 少量指定版本driver兼容性处理
 * 必须使用钉钉机器人（以便于后台运行登录）
-* 增加完成学 xi 后钉钉机器人消息通知
+* 增加完成学习后钉钉机器人消息通知
 
 ### 20210616更新内容
 * 解决钉钉二维码图片不显示的问题，补充输出二维码图片识别url。
     * based on https://github.com/TechXueXi/TechXueXi/issues/108 (thanks to mudapi)
+    * **链接复制后打开学习APP，发送给自己，点击链接即可登录**
 * 加入登录自动超时重试（重试2次）
 * 加入超时退出（针对部分答题问题导致程序挂起）
 * 去除docker容器配置文件，简化使用（现在只需要一条命令即可）
+
+### 20210703更新内容
+* 合并最新的0630主分支答题部分修改
+* 支持arm架构docker（自动根据运行环境的arch判断拉取）
+    * 目前通过QEMU构建基于arm64v8与arm32v7的镜像
+    * 因无arm环境未进行测试验证，有问题可以提issue反馈（最好有报错的日志），请@wx5223
+    * arm32v5的镜像目前还有较多的依赖包等问题（如上述镜像可以正常使用后期看需求再考虑）
+* 增加部分答题异常处理，避免部分无限循环的问题
 
 
 ![](https://raw.githubusercontent.com/wx5223/TechXueXi/headless-single-docker/img_folder/dingding2.jpg)
@@ -26,7 +35,7 @@
 使用方法：
 ```
 # 步骤1 创建并运行容器（首次运行，仅运行一次，除非删除容器）
-docker run -d --name xuexi wx5223/xuexi:v20210616_headless python pandalearning.py 替换为自己的token 替换为自己的secret
+docker run -d --name xuexi wx5223/xuexi:v20210703 python pandalearning.py 替换为自己的token 替换为自己的secret
 
 # 启动容器（每天运行）
 docker start xuexi
@@ -38,6 +47,15 @@ docker logs xuexi
 # 删除容器（可以重新执行步骤1 创建容器）
 docker rm xuexi
 ```
+
+#### 额外：
+* 20210704：TechXueXi主库好像已被迁移，原issue等信息已经丢失，目前好像不能pull request。暂未同步至主库。
+```
+# 版本更新步骤：v20210616_headless -> v20210703
+docker rm xuexi
+# 重新执行步骤1，注意命令中的版本号v20210703
+```
+---
 ---
 **[在线聊天室地址及说明](https://github.com/TechXueXi/TechXueXi/issues/14)**
 
@@ -52,11 +70,11 @@ docker rm xuexi
 
 ![](https://raw.githubusercontent.com/TechXueXi/TechXueXi/master/img_folder/kjqg.png)
 
-本仓库现由“科技强 guo ”组织进行维护，这是全网较好的成熟产品，但已停止，我们于心不忍。
+本仓库现由“科技强国”组织进行维护，这是全网较好的成熟产品，但已停止，我们于心不忍。
 
 许多IT人员本终日埋头写代码，确实有需求，与其各人重复修改编写浪费生产力不如团队合作维护，因此我们还是希望继续维护此生态。
 
-若您有意愿加入本组织，持续对本项目进行维护，请发送主题“申请科技强 guo 组织成员”的邮件至tobctobc@protonmail.com，请将您的github用户名添加到邮件正文中，便于发送邀请。谢谢。
+若您有意愿加入本组织，持续对本项目进行维护，请发送主题“申请科技强国组织成员”的邮件至tobctobc@protonmail.com，请将您的github用户名添加到邮件正文中，便于发送邀请。谢谢。
 
 本项目维护计划、路线图参见 https://github.com/TechXueXi/TechXueXi/projects/1
 
@@ -64,17 +82,17 @@ docker rm xuexi
 
 ### [👨‍👨‍👦‍👦   直接参与贡献](https://github.com/TechXueXi/TechXueXi/blob/master/CONTRIBUTING.md)(内附提交方法)
 
-如您开发了其他“科技强 guo ”项目，也可以加入本组织，相互交流，共同维护生态。
+如您开发了其他“科技强国”项目，也可以加入本组织，相互交流，共同维护生态。
 
 
 
 # TechXueXi
 
-TechXueXi 是一款使用python语言编写的学 xi 工具。可达 47 分/天
+TechXueXi 是一款使用python语言编写的学习工具。可达 47 分/天
 
 
 
-![学 xi 情景](https://github.com/TechXueXi/TechXueXi/blob/master/img_folder/peoplelearning.jpg?raw=true)
+![学习情景](https://github.com/TechXueXi/TechXueXi/blob/master/img_folder/peoplelearning.jpg?raw=true)
 [![Badge](https://img.shields.io/badge/link-996.icu-%23FF4D5B.svg?style=flat-square)](https://996.icu/#/zh_CN)
  [![GitHub stars](https://img.shields.io/github/stars/TechXueXi/TechXueXi.svg?style=social)](https://github.com/TechXueXi/TechXueXi/stargazers)     [![GitHub forks](https://img.shields.io/github/forks/TechXueXi/TechXueXi.svg?style=social)](https://github.com/TechXueXi/TechXueXi/network/members)  `请点击页面顶部靠右star与fork`
 
@@ -90,7 +108,7 @@ TechXueXi 是一款使用python语言编写的学 xi 工具。可达 47 分/天
 [TOC]
 
 ## 📃免责声明
-TechXueXi为python学 xi 交流的开源非营利项目，仅作为程序员之间相互学 xi 交流之用，使用需严格遵守开源许可协议。严禁用于商业用途，禁止使用TechXueXi进行任何盈利活动。对一切非法使用所产生的后果，我们概不负责。
+TechXueXi为python学习交流的开源非营利项目，仅作为程序员之间相互学习交流之用，使用需严格遵守开源许可协议。严禁用于商业用途，禁止使用TechXueXi进行任何盈利活动。对一切非法使用所产生的后果，我们概不负责。
 
 ![](https://raw.githubusercontent.com/TechXueXi/TechXueXi/master/img_folder/qsjwczlhql.jpg)
 
@@ -108,17 +126,17 @@ TechXueXi为python学 xi 交流的开源非营利项目，仅作为程序员之�
 
 `不支持xp`
 
-###### 全程后台静默学 xi ： 也可开启前台学 xi 展示
+###### 全程后台静默学习： 也可开启前台学习展示
 
-###### 自动核对学 xi 分数： 根据每日分数学满为止
+###### 自动核对学习分数： 根据每日分数学满为止
 
 ###### ~~支持保存账户信息： 可以保存帐户信息每日免去重复登陆~~
 
-###### 默认多线程学 xi ：  可关闭，建议开启，每日学满只需20分钟
+###### 默认多线程学习：  可关闭，建议开启，每日学满只需20分钟
 
-###### ~~可设置自动关机：  每天下班用办公室电脑学 xi 后自动关机~~
+###### ~~可设置自动关机：  每天下班用办公室电脑学习后自动关机~~
 
-###### 增强防检测：随机浏览器请求头及自然学 xi 行为模拟
+###### 增强防检测：随机浏览器请求头及自然学习行为模拟
 
 
 
@@ -140,7 +158,7 @@ TechXueXi为python学 xi 交流的开源非营利项目，仅作为程序员之�
 
 ​	~~根据提示选择是否保存钉钉账号密码，保存后下次使用将不需要输入。~~
 
-​	`登陆之后自动学 xi `
+​	`登陆之后自动学习`
 
 ​	注意`mac需要在终端中打开`
 
@@ -156,19 +174,19 @@ TechXueXi为python学 xi 交流的开源非营利项目，仅作为程序员之�
 
 ​	`第二个参数为 hidden 或 show，对应后台运行和前台运行；`
 
-​	`第三个参数为 single 或 multithread, 对应单线程和多线程学 xi ；`
+​	`第三个参数为 single 或 multithread, 对应单线程和多线程学习；`
 
-​	`第四个参数为 num 为输入一个数字，表示学 xi 完成后多少秒自动关机。`  
+​	`第四个参数为 num 为输入一个数字，表示学习完成后多少秒自动关机。`  
 
 ### 📅示例 win平台
 
 ​    user1 为已经保存了钉钉账户的用户标记
 
-​	`TechXueXi.exe user1 表示自动开启user1 学 xi `
+​	`TechXueXi.exe user1 表示自动开启user1 学习`
 
-​	`TechXueXi.exe user1 show single 表示前台显示且单线程开启user1 学 xi `
+​	`TechXueXi.exe user1 show single 表示前台显示且单线程开启user1 学习`
 
-​	`TechXueXi.exe user1 hidden multithread 300 表示后台多线程开启user1 学 xi ，学 xi 完毕300秒关机`
+​	`TechXueXi.exe user1 hidden multithread 300 表示后台多线程开启user1 学习，学习完毕300秒关机`
 -->
 ### 🔧更新方法
 
@@ -251,13 +269,13 @@ win平台可能提示`无法定位程序输入点ucrtbase.terminate于动态链�
 
 
 
-## 📌关于学 xi 强 guo 
+## 📌关于学习强国
 
-个人认为，学 xi 强 guo 本身受众就是 guo 家的栋梁，本人不欢迎不热爱 guo 家的人加入本项目。
+个人认为，学习强国本身受众就是国家的栋梁，本人不欢迎不热爱国家的人加入本项目。
 
-学 xi 强 guo 聚合了大量可免费阅读的期刊、古籍、公开课、歌曲、戏曲、电影、图书等资料，内容严谨，专业性强。没有博眼球，无下限的自媒体内容和虚假新闻。推荐大家自发积极学 xi 使用。TechXueXi 仅额外提供给上班上学期间工作学业繁重，抽不出时间完成学 xi 强 guo 任务的非程序员。
+学习强国聚合了大量可免费阅读的期刊、古籍、公开课、歌曲、戏曲、电影、图书等资料，内容严谨，专业性强。没有博眼球，无下限的自媒体内容和虚假新闻。推荐大家自发积极学习使用。TechXueXi 仅额外提供给上班上学期间工作学业繁重，抽不出时间完成学习强国任务的非程序员。
 
-“学 xi 强 guo ”意义深远。
+“学习强国”意义深远。
 
 
 
