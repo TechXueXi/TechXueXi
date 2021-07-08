@@ -66,7 +66,11 @@ def answer_question(quiz_type, cookies, scores, score_all, quiz_xpath, category_
             driver_ans.click_xpath(quiz_xpath)  # 点击各个题目的去答题按钮
             time.sleep(2)
             if quiz_type != "daily":  # 如果是每日答题就不用找available了
-                to_click = find_available_quiz(quiz_type, driver_ans, uid)
+                # 此处修改是因为页面可能刷新后导致的查找元素button 丢失从而引发异常重新此处用可以重新查找来解决
+                try:
+                    to_click = find_available_quiz(quiz_type, driver_ans, uid)
+                except Exception as e:
+                    to_click = find_available_quiz(quiz_type, driver_ans, uid)
                 if to_click is not None:
                     to_click.click()
                     time.sleep(0.5)
