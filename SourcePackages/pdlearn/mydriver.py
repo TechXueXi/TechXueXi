@@ -37,12 +37,16 @@ class title_of_login:
 class Mydriver:
 
     def __init__(self, noimg=True, nohead=True):
+        mydriver_log=''
         try:
             self.options = Options()
             if os.path.exists("./chrome/chrome.exe"):  # win
                 self.options.binary_location = "./chrome/chrome.exe"
+                mydriver_log='可找到 "./chrome/chrome.exe"'
             elif os.path.exists("/opt/google/chrome/chrome"):  # linux
                 self.options.binary_location = "/opt/google/chrome/chrome"
+                mydriver_log='可找到 "/opt/google/chrome/chrome"'
+
             if noimg:
                 self.options.add_argument('blink-settings=imagesEnabled=true')  # 不加载图片, 提升速度，但无法显示二维码
             if nohead:
@@ -67,23 +71,35 @@ class Mydriver:
             if os.path.exists("./chrome/chromedriver.exe"):  # win
                 self.driver = self.webdriver.Chrome(executable_path="./chrome/chromedriver.exe",
                                                     chrome_options=self.options)
+                mydriver_log=mydriver_log+'\r\n可找到 "./chrome/chromedriver.exe"'
             elif os.path.exists("./chromedriver"):  # linux
                 self.driver = self.webdriver.Chrome(executable_path="./chromedriver",
                                                     chrome_options=self.options)
+                mydriver_log=mydriver_log+'\r\n可找到 "./chromedriver"'
             elif os.path.exists("/usr/bin/chromedriver"):  # linux用户安装
                 self.driver = self.webdriver.Chrome(executable_path="/usr/bin/chromedriver",
                                                     chrome_options=self.options)
-            elif os.path.exists("/usr/lib64/chromium-browser/chromedriver"):  # linux 包安装chromedriver
+                mydriver_log=mydriver_log+'\r\n可找到 "/usr/bin/chromedriver"'
+            elif os.path.exists("/usr/lib64/chromium-browser/chromedriver"):  # raspberry linux （需要包安装chromedriver）
                 self.driver = self.webdriver.Chrome(executable_path="/usr/lib64/chromium-browser/chromedriver",
                                                     chrome_options=self.options)
+                mydriver_log=mydriver_log+'\r\n可找到 "/usr/lib64/chromium-browser/chromedriver"'
+            elif os.path.exists("/usr/lib/chromium-browser/chromedriver"):  # raspberry linux （需要包安装chromedriver）
+                self.driver = self.webdriver.Chrome(executable_path="/usr/lib/chromium-browser/chromedriver",
+                                                    chrome_options=self.options)
+                mydriver_log=mydriver_log+'\r\n可找到 "/usr/lib/chromium-browser/chromedriver"'
             elif os.path.exists("/usr/local/bin/chromedriver"):  # linux 包安装chromedriver
                 self.driver = self.webdriver.Chrome(executable_path="/usr/local/bin/chromedriver",
                                                     chrome_options=self.options)
+                mydriver_log=mydriver_log+'\r\n可找到 "/usr/local/bin/chromedriver"'
             else:
                 self.driver = self.webdriver.Chrome(chrome_options=self.options)
+                mydriver_log=mydriver_log+'\r\n未找到chromedriver，使用默认方法。'
         except:
             print("=" * 60)
-            print("Mydriver初始化失败。您可以检查下：")
+            print("谷歌浏览器初始化失败。信息：")
+            print(mydriver_log)
+            print('您可以检查下：')
             print("1. 是否存在./chrome/chromedriver.exe 或 PATH 中是否存在 chromedriver.exe")
             print("2. 浏览器地址栏输入 chrome://version 看到的chrome版本 和 运行 chromedriver.exe 显示的版本整数部分是否相同")
             print("针对上述问题，请在 http://npm.taobao.org/mirrors/chromedriver 下载对应版本程序并放在合适的位置")
