@@ -13,6 +13,9 @@ def check_delay():
     print('等待 ', delay_time, ' 秒')
     time.sleep(delay_time)
 
+def generate_tiku_data():
+    data='{quiz_type:'+quiz_type+',tip:'+tip+',option:'+option+',answer:'+answer+',question:'+question+'}'
+    return data
 
 def find_available_quiz(quiz_type, driver_ans, uid):
     pages = driver_ans.driver.find_elements_by_css_selector(".ant-pagination-item")
