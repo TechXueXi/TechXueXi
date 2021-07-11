@@ -16,7 +16,7 @@ def up_info():
     __SITE = "科技强国官方网站：https://techxuexi.js.org"
 
     # vercel_url = "https://techxuexi.vercel.app/Update.html"
-    jsdelivery_url = "https://cdn.jsdelivr.net/gh/TechXueXi/TechXueXi@dev/SourcePackages/pdlearn/version_info.json"
+    jsdelivery_url = "https://cdn.jsdelivr.net/gh/TechXueXi/TechXueXi@master/SourcePackages/pdlearn/version_info.json"
     try:
         native_version = get_native_version()
         remote_json = requests.get(jsdelivery_url).content.decode("utf8")
