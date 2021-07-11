@@ -79,7 +79,7 @@ if __name__ == '__main__':
         user_fullname = user.get_fullname(uid)
         user.update_last_user(uid)
     article_index = user.get_article_index(uid)
-    video_index = user.get_video_index(uid)
+    video_index = 1  # user.get_video_index(uid)
     
     total, scores = show_score(cookies)
     nohead, lock, stime = get_argv()

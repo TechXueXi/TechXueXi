@@ -54,6 +54,7 @@ class Mydriver:
                 self.options.add_argument('--disable-extensions')
                 self.options.add_argument('--disable-gpu')
                 self.options.add_argument('--no-sandbox')
+                self.options.add_argument('--disable-software-rasterizer')
             self.options.add_argument('--mute-audio')  # 关闭声音
             # self.options.add_argument('--window-size=400,500')
             self.options.add_argument('--window-size=750,450')
