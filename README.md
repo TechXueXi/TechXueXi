@@ -4,7 +4,7 @@
 
 **下载地址：https://github.com/TechXueXi/TechXueXi/releases**
 
-（如使用源码，请使用主分支。请勿使用 dev 分支，该分支用于存放正在开发的代码，不保证稳定、可用，可能造成问题）
+（**如果你不熟悉，请到这里下载 https://github.com/TechXueXi/TechXueXi/releases** ，不要点击项目首页的下载压缩包按钮 。否则会下载正在开发的代码，老司机尝鲜用的，不保证稳定、可用，可能造成问题）
 
 > 本项目基于某已终止的项目，请自行搜索后前往star。我们由衷地敬佩这个领域的先锋们
 ![](https://raw.githubusercontent.com/TechXueXi/TechXueXi/master/img_folder/banner.jpg)
@@ -227,6 +227,10 @@ win平台可能提示`无法定位程序输入点ucrtbase.terminate于动态链�
 [![](https://img.shields.io/badge/source-pandalearning-orange.svg?style=for-the-badge&logo=visualstudiocode)](https://github.com/TechXueXi/TechXueXi/tree/master/SourcePackages) 
 
 简易说明，具体请谷歌必应百度
+
+注意：如果你不熟悉，请到这里下载源码： https://github.com/TechXueXi/TechXueXi/releases
+
+dev 是正在开发的代码，老司机尝鲜用
 
 安装 python 3
 
