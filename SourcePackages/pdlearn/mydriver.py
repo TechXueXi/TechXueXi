@@ -39,14 +39,8 @@ class Mydriver:
     def __init__(self, noimg=True, nohead=True):
         mydriver_log=''
         try:
+            # ==================== 设置options ====================
             self.options = Options()
-            if os.path.exists("./chrome/chrome.exe"):  # win
-                self.options.binary_location = "./chrome/chrome.exe"
-                mydriver_log='可找到 "./chrome/chrome.exe"'
-            elif os.path.exists("/opt/google/chrome/chrome"):  # linux
-                self.options.binary_location = "/opt/google/chrome/chrome"
-                mydriver_log='可找到 "/opt/google/chrome/chrome"'
-
             if noimg:
                 self.options.add_argument('blink-settings=imagesEnabled=true')  # 不加载图片, 提升速度，但无法显示二维码
             if nohead:
@@ -54,14 +48,13 @@ class Mydriver:
                 self.options.add_argument('--disable-extensions')
                 self.options.add_argument('--disable-gpu')
                 self.options.add_argument('--no-sandbox')
-                self.options.add_argument('--disable-software-rasterizer')
+                self.options.add_argument('--disable-software-rasterizer')  # 解决GL报错问题
             self.options.add_argument('--mute-audio')  # 关闭声音
             # self.options.add_argument('--window-size=400,500')
             self.options.add_argument('--window-size=750,450')
             # self.options.add_argument('--window-size=900,800')
             self.options.add_argument('--window-position=700,0')
             self.options.add_argument('--log-level=3')
-
             self.options.add_argument('--user-agent={}'.format(user_agent.getheaders()))
             self.options.add_experimental_option('excludeSwitches', ['enable-automation'])  # 绕过js检测
             # 在chrome79版本之后，上面的实验选项已经不能屏蔽webdriver特征了
@@ -69,36 +62,35 @@ class Mydriver:
             self.options.add_argument("--disable-blink-features")
             self.options.add_argument("--disable-blink-features=AutomationControlled")
             self.webdriver = webdriver
-            if os.path.exists("./chrome/chromedriver.exe"):  # win
-                self.driver = self.webdriver.Chrome(executable_path="./chrome/chromedriver.exe",
-                                                    chrome_options=self.options)
-                mydriver_log=mydriver_log+'\r\n可找到 "./chrome/chromedriver.exe"'
-            elif os.path.exists("./chromedriver"):  # linux
-                self.driver = self.webdriver.Chrome(executable_path="./chromedriver",
-                                                    chrome_options=self.options)
-                mydriver_log=mydriver_log+'\r\n可找到 "./chromedriver"'
-            elif os.path.exists("/usr/bin/chromedriver"):  # linux用户安装
-                self.driver = self.webdriver.Chrome(executable_path="/usr/bin/chromedriver",
-                                                    chrome_options=self.options)
-                mydriver_log=mydriver_log+'\r\n可找到 "/usr/bin/chromedriver"'
-            elif os.path.exists("/usr/lib64/chromium-browser/chromedriver"):  # raspberry linux （需要包安装chromedriver）
-                self.driver = self.webdriver.Chrome(executable_path="/usr/lib64/chromium-browser/chromedriver",
-                                                    chrome_options=self.options)
-                mydriver_log=mydriver_log+'\r\n可找到 "/usr/lib64/chromium-browser/chromedriver"'
-            elif os.path.exists("/usr/lib/chromium-browser/chromedriver"):  # raspberry linux （需要包安装chromedriver）
-                self.driver = self.webdriver.Chrome(executable_path="/usr/lib/chromium-browser/chromedriver",
-                                                    chrome_options=self.options)
-                mydriver_log=mydriver_log+'\r\n可找到 "/usr/lib/chromium-browser/chromedriver"'
-            elif os.path.exists("/usr/local/bin/chromedriver"):  # linux 包安装chromedriver
-                self.driver = self.webdriver.Chrome(executable_path="/usr/local/bin/chromedriver",
-                                                    chrome_options=self.options)
-                mydriver_log=mydriver_log+'\r\n可找到 "/usr/local/bin/chromedriver"'
-            else:
+            # ==================== 寻找 chrome ====================
+            if os.path.exists("./chrome/chrome.exe"):  # win
+                self.options.binary_location = "./chrome/chrome.exe"
+                mydriver_log='可找到 "./chrome/chrome.exe"'
+            elif os.path.exists("/opt/google/chrome/chrome"):  # linux
+                self.options.binary_location = "/opt/google/chrome/chrome"
+                mydriver_log='可找到 "/opt/google/chrome/chrome"'
+            # ==================== 寻找 chromedriver ====================
+            chromedriver_paths = [
+                "./chrome/chromedriver.exe",                # win
+                "./chromedriver",                           # linux
+                "/usr/bin/chromedriver",                    # linux用户安装
+                "/usr/lib64/chromium-browser/chromedriver", # raspberry linux （需要包安装chromedriver）
+                "/usr/lib/chromium-browser/chromedriver",   # raspberry linux （需要包安装chromedriver）
+                "/usr/local/bin/chromedriver",              # linux 包安装chromedriver
+            ]
+            have_find = False
+            for one_path in chromedriver_paths:
+                if os.path.exists(one_path):
+                    self.driver = self.webdriver.Chrome(executable_path=one_path, chrome_options=self.options)
+                    mydriver_log=mydriver_log+'\r\n可找到 "' + one_path + '"'
+                    have_find = True
+                    break
+            if not have_find:
                 self.driver = self.webdriver.Chrome(chrome_options=self.options)
                 mydriver_log=mydriver_log+'\r\n未找到chromedriver，使用默认方法。'
         except:
             print("=" * 60)
-            print("谷歌浏览器初始化失败。信息：")
+            print(" Chrome 浏览器初始化失败。信息：")
             print(mydriver_log)
             print('您可以检查下：')
             print("1. 是否存在./chrome/chromedriver.exe 或 PATH 中是否存在 chromedriver.exe")
