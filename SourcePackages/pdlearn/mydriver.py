@@ -11,6 +11,7 @@ from pdlearn import user
 from pdlearn.dingding import DingDingHandler
 from pdlearn.config import cfg
 from bs4 import BeautifulSoup
+import string
 import lxml
 import os
 import time
