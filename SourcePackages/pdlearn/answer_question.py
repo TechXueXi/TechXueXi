@@ -3,7 +3,6 @@ import random
 from pdlearn import user
 from pdlearn import color
 from pdlearn.mydriver import Mydriver
-from pdlearn.mydriver import title_of_login
 from pdlearn.score import show_score
 from pdlearn.const import const
 from pdlearn.log import *
@@ -64,7 +63,7 @@ def answer_question(quiz_type, cookies, scores, score_all, quiz_xpath, category_
         if scores[quiz_type] < score_all:
             letters = list("ABCDEFGHIJKLMN")
             driver_ans.get_url('https://pc.xuexi.cn/points/my-points.html')
-            while title_of_login(driver_ans, u"我的积分"):  # 页面title为积分则一直循环
+            while driver_ans.title_is(u"我的积分"):  # 页面title为积分则一直循环
                 time.sleep(1)  # 等待页面刷新提示
                 refresh_buttons = driver_ans.driver.find_elements_by_css_selector(".ant-modal-wrap .ant-btn:not(.ant-btn-primary)")
                 if len(refresh_buttons) > 0:  #

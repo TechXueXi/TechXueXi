@@ -25,14 +25,15 @@ from selenium.webdriver.common.by import By
 from selenium.common import exceptions
 
 
-def title_of_login(my_driver, title=u"我的学习"):
-    """ 用来结合webDriverWait判断出现的title """
-    is_title1 = bool(EC.title_is(title)(my_driver.driver))
-    is_title2 = bool(EC.title_is(u'系统维护中')(my_driver.driver))
-    if is_title1 or is_title2:
-        return True
-    else:
-        return False
+class title_of_login:
+    def __call__(self, driver):
+        """ 用来结合webDriverWait判断出现的title """
+        is_title1 = bool(EC.title_is(u"我的学习")(driver))
+        is_title2 = bool(EC.title_is(u'系统维护中')(driver))
+        if is_title1 or is_title2:
+            return True
+        else:
+            return False
 
 
 class Mydriver:
@@ -140,7 +141,7 @@ class Mydriver:
 
         try:
             # WebDriverWait(self.driver, 270).until(EC.title_is(u"我的学 xi "))
-            WebDriverWait(self.driver, 270).until(title_of_login(self))
+            WebDriverWait(self.driver, 270).until(title_of_login())
             cookies = self.get_cookies()
             
             user.save_cookies(cookies)
@@ -199,6 +200,9 @@ class Mydriver:
                 self.driver.add_cookie(cookie)
         except exceptions.InvalidCookieDomainException as e:
             print(e.__str__)
+
+    def title_is(self, title):
+        return self.driver.title == title
 
     def get_url(self, url):
         self.driver.get(url)

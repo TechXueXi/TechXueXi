@@ -1,6 +1,9 @@
 {
-    "techxuexi_version": "v20210712",
+    "techxuexi_version": "v20210713",
     "techxuexi_update_log": [{
+        "version": "v20210713",
+        "info": "修复driver标题判定问题"
+    }, {
         "version": "v20210712",
         "info": "修复页面刷新提示问题、程序打开总是启动一个driver问题"
     }, {
