@@ -3,27 +3,33 @@
 
 请按这个模板来提交，否则直接关闭
 
-也可以到我们提供的在线聊天室寻求解决  (聊天室说明：https://github.com/TechXueXi/TechXueXi/issues/14)
+请确认您已通过下方方法尝试解决/交流联系，再发issue。在框中以 x 替换空格来勾选
 
-您只需在各冒号后填写
+如果你没有按要求勾选完成，这个 issue 会被直接关闭
 -->
+### 清单
+
+- [ ] 我已经仔细阅读过 README.md  (https://github.com/TechXueXi/TechXueXi/blob/master/README.md)
+- [ ] 我已经查看/搜索过所有已有 issue，无论是open还是close的
+- [ ] 我已经通过搜索引擎搜索   www.google.com  www.baidu.com
+- [ ] 我已经到提供的在线聊天室询问过  (聊天室说明：https://github.com/TechXueXi/TechXueXi/issues/14)
+
 <!--
-请确认您已通过下方方法尝试解决/交流联系，再发issue：
-仔细阅读 README.md                    (https://github.com/TechXueXi/TechXueXi/blob/master/README.md)
-查看/搜索所有已有issue，无论是open还是close的
-通过搜索引擎搜索                      www.google.com  www.baidu.com
-到我们提供的在线聊天室寻求解决              (聊天室说明：https://github.com/TechXueXi/TechXueXi/issues/14)
 
 请先填写下方信息，可以不填的项可留空
+您只需在各冒号后填写
+
 -->
 
 **系统版本，包含位数**：
 
-**python版本**：<!--（源码运行填写）-->
-
 **软件/源码版本**：
 
-**浏览器、驱动版本**：<!--（源码运行，且自己下载使用其他浏览器填写）-->
+**浏览器、驱动版本**：
+
+**python版本**：<!--（普通版源码运行填写）-->
+
+**docker版本**：<!--（docker运行填写）-->
 
 -----
 <!--
