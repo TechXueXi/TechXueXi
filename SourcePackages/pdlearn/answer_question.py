@@ -8,18 +8,13 @@ from pdlearn.const import const
 from pdlearn.log import *
 
 
-def check_delay():
-    delay_time = random.randint(2, 5)
-    print('等待 ', delay_time, ' 秒')
-    time.sleep(delay_time)
-
 def generate_tiku_data():
     data='{quiz_type:'+quiz_type+',tip:'+tip+',option:'+option+',answer:'+answer+',question:'+question+'}'
     return data
 
 def find_available_quiz(quiz_type, driver_ans, uid):
     pages = driver_ans.driver.find_elements_by_css_selector(".ant-pagination-item")
-    for p in range(len(pages)-1, -1, -1):  # 从最后一页开始往前找做题
+    for p in range(0, len(pages), 1):  # (从最后一页开始往前找做题)从前往后找题，专项答题等没有那么离谱
         time.sleep(0.5)
         print('进入答题第' + str(p+1) + '页')
         pages[p].click()

@@ -229,7 +229,7 @@ class Mydriver:
         return self.driver.find_element_by_xpath(xpath).text
 
     def check_delay(self):
-        delay_time = random.randint(2, 8)
+        delay_time = random.randint(2, 5)
         print('等待 ', delay_time, ' 秒')
         time.sleep(delay_time)
 

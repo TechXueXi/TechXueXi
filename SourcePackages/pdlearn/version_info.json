@@ -1,6 +1,9 @@
 {
-    "techxuexi_version": "v20210713",
+    "techxuexi_version": "v20210730",
     "techxuexi_update_log": [{
+        "version": "v20210730",
+        "info": "答题从前往后搜寻，避免题目太旧难以查找答案"
+    }, {
         "version": "v20210713",
         "info": "修复driver标题判定问题"
     }, {
