@@ -149,10 +149,10 @@ class Mydriver:
             picc = re.search(
                 "(data:image/png;base64,)(.*)(\"></div><div data-v-be4de7b6)", source).group(2)
             pic = base64.b64decode(picc)
-            # 微信发送图片到手机，以便扫码
-            wx = WeChat()
-            media_id = wx.get_media_url(pic)
-            wx.send_image(media_id)
+            # 微信发送图片到手机，以便扫码（此配置项暂未应用至代码。结合 main.ini 修改）
+            # wx = WeChat()
+            # media_id = wx.get_media_url(pic)
+            # wx.send_image(media_id)
 
             # WebDriverWait(self.driver, 270).until(EC.title_is(u"我的学习"))
             WebDriverWait(self.driver, 270).until(title_of_login())
