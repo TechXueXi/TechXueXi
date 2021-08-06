@@ -84,26 +84,26 @@ if __name__ == '__main__':
     total, scores = show_score(cookies)
     nohead, lock, stime = get_argv()
 
-    if TechXueXi_mode in ["1", "2", "3"]:
+    if TechXueXi_mode in ["1", "3"]:
         article_thread = threads.MyThread("文章学 xi ", article, uid, cookies, article_index, scores, lock=lock)
         video_thread = threads.MyThread("视频学 xi ", video, uid, cookies, video_index, scores, lock=lock)
         article_thread.start()
         video_thread.start()
         article_thread.join()
         video_thread.join()
+    if TechXueXi_mode in ["2", "3"]:
+        driver_default = Mydriver(nohead=False)
+        print('开始每日答题……')
+        daily(cookies, scores, driver_default=driver_default)
         if TechXueXi_mode in ["2", "3"]:
-            driver_default = Mydriver(nohead=False)
-            print('开始每日答题……')
-            daily(cookies, scores, driver_default=driver_default)
-            if TechXueXi_mode in ["3"]:
-                print('开始每周答题……')
-                weekly(cookies, scores, driver_default=driver_default)
-                print('开始专项答题……')
-                zhuanxiang(cookies, scores, driver_default=driver_default)
-            try:
-                driver_default.quit()
-            except Exception as e:
-                print('driver_default 在 main 退出时出了一点小问题...')
+            print('开始每周答题……')
+            weekly(cookies, scores, driver_default=driver_default)
+            print('开始专项答题……')
+            zhuanxiang(cookies, scores, driver_default=driver_default)
+        try:
+            driver_default.quit()
+        except Exception as e:
+            print('driver_default 在 main 退出时出了一点小问题...')
     if TechXueXi_mode == "4":
         user.select_user()
     if TechXueXi_mode == "5":
