@@ -11,6 +11,7 @@ from pdlearn import user
 from pdlearn.dingding import DingDingHandler
 from pdlearn.config import cfg
 from bs4 import BeautifulSoup
+import string
 import lxml
 import os
 import time
@@ -23,7 +24,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common import exceptions
 import base64  # 解码二维码图片
-from pdlearn.qywx import WeChat  # 使用微信发送二维码图片到手机
+#from pdlearn.qywx import WeChat  # 使用微信发送二维码图片到手机
 
 
 class title_of_login:
@@ -40,71 +41,69 @@ class title_of_login:
 class Mydriver:
 
     def __init__(self, noimg=True, nohead=True):
+        mydriver_log=''
         try:
+            # ==================== 设置options ====================
             self.options = Options()
-            if os.path.exists("./chrome/chrome.exe"):  # win
-                self.options.binary_location = "./chrome/chrome.exe"
-            elif os.path.exists("/opt/google/chrome/chrome"):  # linux
-                self.options.binary_location = "/opt/google/chrome/chrome"
             if noimg:
-                self.options.add_argument(
-                    'blink-settings=imagesEnabled=true')  # 不加载图片, 提升速度，但无法显示二维码
+                self.options.add_argument('blink-settings=imagesEnabled=true')  # 不加载图片, 提升速度，但无法显示二维码
             if nohead:
                 self.options.add_argument('--headless')
                 self.options.add_argument('--disable-extensions')
                 self.options.add_argument('--disable-gpu')
                 self.options.add_argument('--no-sandbox')
+                self.options.add_argument('--disable-software-rasterizer')  # 解决GL报错问题
             self.options.add_argument('--mute-audio')  # 关闭声音
             # self.options.add_argument('--window-size=400,500')
-            # self.options.add_argument('--window-size=750,450')
+            self.options.add_argument('--window-size=750,450')
             # self.options.add_argument('--window-size=900,800')
-            self.options.add_argument("--window-size=1920,1050")
+            # self.options.add_argument("--window-size=1920,1050")
             self.options.add_argument('--window-position=700,0')
             self.options.add_argument('--log-level=3')
-
-            self.options.add_argument(
-                '--user-agent={}'.format(user_agent.getheaders()))
-            self.options.add_experimental_option(
-                'excludeSwitches', ['enable-automation'])  # 绕过js检测
+            self.options.add_argument('--user-agent={}'.format(user_agent.getheaders()))
+            self.options.add_experimental_option('excludeSwitches', ['enable-automation'])  # 绕过js检测
             # 在chrome79版本之后，上面的实验选项已经不能屏蔽webdriver特征了
             # 屏蔽webdriver特征
             self.options.add_argument("--disable-blink-features")
-            self.options.add_argument(
-                "--disable-blink-features=AutomationControlled")
+            self.options.add_argument("--disable-blink-features=AutomationControlled")
             self.webdriver = webdriver
-            if os.path.exists("./chrome/chromedriver.exe"):  # win
-                self.driver = self.webdriver.Chrome(executable_path="./chrome/chromedriver.exe",
-                                                    chrome_options=self.options)
-            elif os.path.exists("./chromedriver"):  # linux
-                self.driver = self.webdriver.Chrome(executable_path="./chromedriver",
-                                                    chrome_options=self.options)
-            elif os.path.exists("/usr/bin/chromedriver"):  # linux用户安装
-                self.driver = self.webdriver.Chrome(executable_path="/usr/bin/chromedriver",
-                                                    chrome_options=self.options)
-            # linux 包安装chromedriver
-            elif os.path.exists("/usr/lib64/chromium-browser/chromedriver"):
-                self.driver = self.webdriver.Chrome(executable_path="/usr/lib64/chromium-browser/chromedriver",
-                                                    chrome_options=self.options)
-            elif os.path.exists("/usr/local/bin/chromedriver"):  # linux 包安装chromedriver
-                self.driver = self.webdriver.Chrome(executable_path="/usr/local/bin/chromedriver",
-                                                    chrome_options=self.options)
-            else:
-                self.driver = self.webdriver.Chrome(
-                    executable_path="./chrome/chromedriver.exe", chrome_options=self.options)
+            # ==================== 寻找 chrome ====================
+            if os.path.exists("./chrome/chrome.exe"):  # win
+                self.options.binary_location = "./chrome/chrome.exe"
+                mydriver_log='可找到 "./chrome/chrome.exe"'
+            elif os.path.exists("/opt/google/chrome/chrome"):  # linux
+                self.options.binary_location = "/opt/google/chrome/chrome"
+                mydriver_log='可找到 "/opt/google/chrome/chrome"'
+            # ==================== 寻找 chromedriver ====================
+            chromedriver_paths = [
+                "./chrome/chromedriver.exe",                # win
+                "./chromedriver",                           # linux
+                "/usr/bin/chromedriver",                    # linux用户安装
+                "/usr/lib64/chromium-browser/chromedriver", # raspberry linux （需要包安装chromedriver）
+                "/usr/lib/chromium-browser/chromedriver",   # raspberry linux （需要包安装chromedriver）
+                "/usr/local/bin/chromedriver",              # linux 包安装chromedriver
+            ]
+            have_find = False
+            for one_path in chromedriver_paths:
+                if os.path.exists(one_path):
+                    self.driver = self.webdriver.Chrome(executable_path=one_path, chrome_options=self.options)
+                    mydriver_log=mydriver_log+'\r\n可找到 "' + one_path + '"'
+                    have_find = True
+                    break
+            if not have_find:
+                self.driver = self.webdriver.Chrome(chrome_options=self.options)
+                mydriver_log=mydriver_log+'\r\n未找到chromedriver，使用默认方法。'
         except:
             print("=" * 60)
-
-            print("Mydriver初始化失败。")
-            print("如果您是 windows 系统，建议从我们的项目地址或者交流群下载打包好的 chrome73 使用")
-            print("您也可以检查下：")
+            print(" Chrome 浏览器初始化失败。信息：")
+            print(mydriver_log)
+            print('您可以检查下：')
             print("1. 是否存在./chrome/chromedriver.exe 或 PATH 中是否存在 chromedriver.exe")
-            print(
-                "2. 浏览器地址栏输入 chrome://version 看到的chrome版本 和 运行 chromedriver.exe 显示的版本整数部分是否相同")
+            print("2. 浏览器地址栏输入 chrome://version 看到的chrome版本 和 运行 chromedriver.exe 显示的版本整数部分是否相同")
             print("针对上述问题，请在 http://npm.taobao.org/mirrors/chromedriver 下载对应版本程序并放在合适的位置")
             print("3. 如不是以上问题，请提issue，附上报错信息和您的环境信息")
             print("=" * 60)
             input("按回车键继续......")
-
             raise
 
     def get_cookie_from_network(self):
@@ -131,10 +130,10 @@ class Mydriver:
             print("当前网络缓慢...")
         else:
             self.driver.execute_script('arguments[0].remove()', remover)
-            self.driver.execute_script(
-                'window.scrollTo(document.body.scrollWidth/2 - 200 , 0)')
+            self.driver.execute_script('window.scrollTo(document.body.scrollWidth/2 - 200 , 0)')
 
-        try:
+
+        try: 
             # 取出iframe中二维码，并发往钉钉
             if cfg["addition"]["SendLoginQRcode"] == "1":
                 print("二维码将发往钉钉机器人...\n" + "=" * 60)
@@ -142,34 +141,32 @@ class Mydriver:
         except KeyError as e:
             print("未检测到SendLoginQRcode配置，请手动扫描二维码登陆...")
 
+
         try:
-            # 获取二维码图片
-            self.driver.switch_to.frame("ddlogin-iframe")
-            source = self.driver.page_source
-            picc = re.search(
-                "(data:image/png;base64,)(.*)(\"></div><div data-v-be4de7b6)", source).group(2)
-            pic = base64.b64decode(picc)
+            # 获取二维码图片  # 这一块等待测试完毕再加入代码
+            # self.driver.switch_to.frame("ddlogin-iframe")
+            # source = self.driver.page_source
+            # picc = re.search(
+            #     "(data:image/png;base64,)(.*)(\"></div><div data-v-be4de7b6)", source).group(2)
+            # pic = base64.b64decode(picc)
             # 微信发送图片到手机，以便扫码（此配置项暂未应用至代码。结合 main.ini 修改）
             # wx = WeChat()
             # media_id = wx.get_media_url(pic)
             # wx.send_image(media_id)
 
+
             # WebDriverWait(self.driver, 270).until(EC.title_is(u"我的学习"))
             WebDriverWait(self.driver, 270).until(title_of_login())
             cookies = self.get_cookies()
-
             user.save_cookies(cookies)
-
             return cookies
         except Exception as e:
             self.quit()
-
             print("扫描二维码超时... 错误信息：" + str(e))
             if str(e).find("check_hostname") > -1 and str(e).find("server_hostname") > -1:
                 print("针对“check_hostname requires server_hostname”问题：")
                 print("您的网络连接存在问题，请检查您与xuexi.cn的网络连接并关闭“某些”软件")
             input("按回车键退出程序. ")
-
             exit()
 
     def toDingDing(self):
@@ -220,6 +217,9 @@ class Mydriver:
         except exceptions.InvalidCookieDomainException as e:
             print(e.__str__)
 
+    def title_is(self, title):
+        return self.driver.title == title
+
     def get_url(self, url):
         self.driver.get(url)
 
@@ -233,8 +233,7 @@ class Mydriver:
         try:
             self.condition = EC.visibility_of_element_located(
                 (By.XPATH, xpath))
-            WebDriverWait(driver=self.driver, timeout=15,
-                          poll_frequency=1).until(self.condition)
+            WebDriverWait(driver=self.driver, timeout=15, poll_frequency=1).until(self.condition)
         except Exception as e:
             print('一点小问题：', e)
         self.driver.find_element_by_xpath(xpath).click()
@@ -242,12 +241,11 @@ class Mydriver:
     def xpath_getText(self, xpath):
         self.condition = EC.visibility_of_element_located(
             (By.XPATH, xpath))
-        WebDriverWait(driver=self.driver, timeout=15,
-                      poll_frequency=1).until(self.condition)
+        WebDriverWait(driver=self.driver, timeout=15, poll_frequency=1).until(self.condition)
         return self.driver.find_element_by_xpath(xpath).text
 
     def check_delay(self):
-        delay_time = random.randint(2, 8)
+        delay_time = random.randint(2, 5)
         print('等待 ', delay_time, ' 秒')
         time.sleep(delay_time)
 
@@ -264,7 +262,7 @@ class Mydriver:
         except Exception as e:
             print("没有可点击的【查看提示】按钮")
             return [], ""
-        time.sleep(3)
+        time.sleep(1)
         try:
             # tips_open = self.driver.find_element_by_xpath('//*[@id="app"]/div/div[2]/div/div[4]/div[1]/div[3]/span')
             tips_open = self.driver.find_element_by_xpath(
@@ -275,13 +273,12 @@ class Mydriver:
             print("关闭查看提示失败！没有可点击的【查看提示】按钮")
             return [], ""
         time.sleep(1)
-        tip_div = self.driver.find_element_by_css_selector(
-            ".ant-popover .line-feed")
+        tip_div = self.driver.find_element_by_css_selector(".ant-popover .line-feed")
         tip_full_text = tip_div.get_attribute('innerHTML')
         html = tip_full_text
+        html = re.sub('</font[a-zA-Z]*?><font+.*?>', '', html)  # 连续的两个font合并为一个font
         soup1 = BeautifulSoup(html, 'lxml')
-        # tips.get_attribute("name") ,attrs={'color'}
-        content = soup1.find_all('font')
+        content = soup1.find_all('font')  # tips.get_attribute("name") ,attrs={'color'}
         answer: List[str] = []
         try:
             for i in content:
@@ -300,11 +297,9 @@ class Mydriver:
         time.sleep(1)
         try:
             display_tip = 0  # 页面上没有加载提示的内容
-            display_tip = self.driver.find_element_by_css_selector(
-                ".ant-popover-hidden")  # 关闭tip则为hidden
+            display_tip = self.driver.find_element_by_css_selector(".ant-popover-hidden")  # 关闭tip则为hidden
             if(display_tip == 0):  # 没有关闭tip
-                tips_close = self.driver.find_element_by_xpath(
-                    '//*[@id="app"]/div/div[2]/div/div[4]/div[1]/div[1]')
+                tips_close = self.driver.find_element_by_xpath('//*[@id="app"]/div/div[2]/div/div[4]/div[1]/div[1]')
                 tips_close.click()
         except Exception as e:
             print("没有可点击的【关闭提示】按钮")
@@ -332,12 +327,10 @@ class Mydriver:
         submit = WebDriverWait(self.driver, 15).until(
             lambda driver: driver.find_element_by_class_name("action-row").find_elements_by_xpath("button"))
         if len(submit) > 1:
-            self.click_xpath(
-                '//*[@id="app"]/div/div[2]/div/div[6]/div[2]/button[2]')
+            self.click_xpath('//*[@id="app"]/div/div[2]/div/div[6]/div[2]/button[2]')
             print("成功点击交卷！")
         else:
-            self.click_xpath(
-                '//*[@id="app"]/div/div[*]/div/div[*]/div[*]/button')
+            self.click_xpath('//*[@id="app"]/div/div[*]/div/div[*]/div[*]/button')
             print("点击进入下一题")
 
     def blank_get(self):
@@ -353,62 +346,63 @@ class Mydriver:
         print(dest)
 
     def fill_in_blank(self, answer):  # by Sean
-        ans = WebDriverWait(self.driver, 15).until(
-            lambda driver: driver.find_elements_by_xpath("//input[@type='text']"))
-        #去除answer中的空格
-        for i in range(len(answer)):
-            if (answer[i] == ''):
-                del answer[i]
-        #无答案题
-        if (answer == ['好']):
-            print('可能是视频题')
-            for i in range(0, len(ans)):
-                try:
-                    ans[i].send_keys(answer)
-                except Exception as e:
-                    print(e)
-                    pass
-                continue
-        #答案数量不一致题
-        elif (len(ans)!=len(answer)):
-            print ('答案数量不对')
-            answer = ['好']
-            for i in range(0, len(ans)):
-                try:
-                    ans[i].send_keys(answer)
-                except Exception as e:
-                    print(e)
-                    pass
-                continue
-        else:
-            for i in range(0, len(answer)):
-                try:
-                    self.driver.find_element_by_xpath(
-                        '//*[@id="app"]/div/div[2]/div/div[4]/div[1]/div[2]/div/input[' + str(i + 1) + ']').send_keys(answer[i])
-                    # self.driver.find_element_by_xpath("//input[" + str(i + 1) + "]").send_keys(answer[i])
-                except Exception as e:
-                    print(e)
-                    try:
-                        ans[i].send_keys(answer[i])
-                    except Exception as e:
-                        print(e)
-                        pass
-                    pass
-                    # print('可能是视频题')
-                    # self.driver.find_element_by_xpath("//input[@type='text']").send_keys(answer[i])
-                    # self.driver.find_element_by_xpath(
-                    #    '//*[@id="app"]/div/div[2]/div/div[4]/div[1]/div[3]/div/input[' + str(i + 1) + ']').send_keys(answer[i])
-                continue
+        # ans = WebDriverWait(self.driver, 15).until(
+        #     lambda driver: driver.find_elements_by_xpath("//input[@type='text']"))
+        # #去除answer中的空格
+        # for i in range(len(answer)):
+        #     if (answer[i] == ''):
+        #         del answer[i]
+        # #无答案题
+        # if (answer == ['好']):
+        #     print('可能是视频题')
+        #     for i in range(0, len(ans)):
+        #         try:
+        #             ans[i].send_keys(answer)
+        #         except Exception as e:
+        #             print(e)
+        #             pass
+        #         continue
+        # #答案数量不一致题
+        # elif (len(ans)!=len(answer)):
+        #     print ('答案数量不对')
+        #     answer = ['好']
+        #     for i in range(0, len(ans)):
+        #         try:
+        #             ans[i].send_keys(answer)
+        #         except Exception as e:
+        #             print(e)
+        #             pass
+        #         continue
+        # else:
+        #     for i in range(0, len(answer)):
+        #         try:
+        #             self.driver.find_element_by_xpath(
+        #                 '//*[@id="app"]/div/div[2]/div/div[4]/div[1]/div[2]/div/input[' + str(i + 1) + ']').send_keys(answer[i])
+        #             # self.driver.find_element_by_xpath("//input[" + str(i + 1) + "]").send_keys(answer[i])
+        #         except Exception as e:
+        #             print(e)
+        #             try:
+        #                 ans[i].send_keys(answer[i])
+        #             except Exception as e:
+        #                 print(e)
+        #                 pass
+        #             pass
+        #             # print('可能是视频题')
+        #             # self.driver.find_element_by_xpath("//input[@type='text']").send_keys(answer[i])
+        #             # self.driver.find_element_by_xpath(
+        #             #    '//*[@id="app"]/div/div[2]/div/div[4]/div[1]/div[3]/div/input[' + str(i + 1) + ']').send_keys(answer[i])
+        #         continue
+        for i in range(0, len(answer)):
+            self.driver.find_element_by_xpath(
+                '//*[@id="app"]/div/div[2]/div/div[4]/div[1]/div[2]/div/input[' + str(i + 1) + ']').send_keys(answer[i])
         self.check_delay()
         submit = WebDriverWait(self.driver, 15).until(
             lambda driver: driver.find_element_by_class_name("action-row").find_elements_by_xpath("button"))
         if len(submit) > 1:
-            self.click_xpath(
-                '//*[@id="app"]/div/div[2]/div/div[6]/div[2]/button[2]')
+            self.click_xpath('//*[@id="app"]/div/div[2]/div/div[6]/div[2]/button[2]')
             print("成功点击交卷！")
         else:
-            self.click_xpath(
-                '//*[@id="app"]/div/div[*]/div/div[*]/div[*]/button')
+            self.click_xpath('//*[@id="app"]/div/div[*]/div/div[*]/div[*]/button')
             print("点击进入下一题")
 
     def zhuanxiang_fill_in_blank(self, answer):
@@ -419,12 +413,10 @@ class Mydriver:
         submit = WebDriverWait(self.driver, 15).until(
             lambda driver: driver.find_element_by_class_name("action-row").find_elements_by_xpath("button"))
         if len(submit) > 1:
-            self.click_xpath(
-                '//*[@id="app"]/div/div[2]/div/div[6]/div[2]/button[2]')
+            self.click_xpath('//*[@id="app"]/div/div[2]/div/div[6]/div[2]/button[2]')
             print("成功点击交卷！")
         else:
-            self.click_xpath(
-                '//*[@id="app"]/div/div[*]/div/div[*]/div[*]/button')
+            self.click_xpath('//*[@id="app"]/div/div[*]/div/div[*]/div[*]/button')
             print("点击进入下一题")
 
     def _search(self, content, options, exclude=''):
@@ -436,8 +428,7 @@ class Mydriver:
             print(f'根据经验: {chr(len(options) + 64)} 很可能是正确答案')
             return chr(len(options) + 64)
         # url = quote('https://www.baidu.com/s?wd=' + content, safe=string.printable)
-        url = quote("https://www.sogou.com/web?query=" +
-                    content, safe='string.printable')
+        url = quote("https://www.sogou.com/web?query=" + content, safe=string.printable)
         response = requests.get(url, headers=self.headers).text
         counts = []
         for i, option in zip(['A', 'B', 'C', 'D', 'E', 'F'], options):
