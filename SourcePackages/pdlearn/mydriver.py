@@ -8,6 +8,7 @@ from selenium.common import exceptions
 from selenium.webdriver.chrome.options import Options
 from pdlearn import user_agent
 from pdlearn import user
+from pdlearn import auto
 from pdlearn.dingding import DingDingHandler
 from pdlearn.config import cfg
 from bs4 import BeautifulSoup
@@ -103,7 +104,7 @@ class Mydriver:
             print("针对上述问题，请在 http://npm.taobao.org/mirrors/chromedriver 下载对应版本程序并放在合适的位置")
             print("3. 如不是以上问题，请提issue，附上报错信息和您的环境信息")
             print("=" * 60)
-            input("按回车键继续......")
+            auto.prompt("按回车键继续......")
             raise
 
     def get_cookie_from_network(self):
@@ -166,7 +167,7 @@ class Mydriver:
             if str(e).find("check_hostname") > -1 and str(e).find("server_hostname") > -1:
                 print("针对“check_hostname requires server_hostname”问题：")
                 print("您的网络连接存在问题，请检查您与xuexi.cn的网络连接并关闭“某些”软件")
-            input("按回车键退出程序. ")
+            auto.prompt("按回车键退出程序. ")
             exit()
 
     def toDingDing(self):

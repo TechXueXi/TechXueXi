@@ -2,7 +2,7 @@
     "techxuexi_version": "v20210809",
     "techxuexi_update_log": [{
         "version": "v20210809",
-        "info": "整理代码、修复cookie expiry问题"
+        "info": "整理代码、修复cookie expiry问题、优化input time.sleep"
     }, {
         "version": "v20210806",
         "info": "菜单选项调整"

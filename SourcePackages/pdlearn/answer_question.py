@@ -1,5 +1,6 @@
 import time
 import random
+from pdlearn import auto
 from pdlearn import user
 from pdlearn import color
 from pdlearn.mydriver import Mydriver
@@ -8,9 +9,13 @@ from pdlearn.const import const
 from pdlearn.log import *
 
 
-def generate_tiku_data():
-    data='{quiz_type:'+quiz_type+',tip:'+tip+',option:'+option+',answer:'+answer+',question:'+question+'}'
+def generate_tiku_data(quiz_type=None, tip=None, option=None, answer=None, question=None):
+    """
+    需要信息：题目类型、题干html、题干文本、tips html、tips文本、选项列表（选择题）、视频链接（视频题）
+    """
+    data = '{quiz_type:'+quiz_type+',tip:'+tip+',option:'+option+',answer:'+answer+',question:'+question+'}'
     return data
+
 
 def find_available_quiz(quiz_type, driver_ans, uid):
     pages = driver_ans.driver.find_elements_by_css_selector(".ant-pagination-item")
@@ -31,7 +36,7 @@ def find_available_quiz(quiz_type, driver_ans, uid):
                 continue
             else:
                 to_click = j
-                # input("wait for Enter press...")
+                # auto.prompt("wait for Enter press...")
                 return to_click
 
 
@@ -98,7 +103,7 @@ def answer_question(quiz_type, cookies, scores, score_all, quiz_xpath, category_
                         print(ans_results[0].text)
                         print(ans_results[2].get_attribute("innerHTML"))
                         print(ans_results[2].text)
-                        time.sleep(3)
+                        time.sleep(1)
                         # exit(2)
                         break
                     log_daily("\n====================")
@@ -119,12 +124,12 @@ def answer_question(quiz_type, cookies, scores, score_all, quiz_xpath, category_
                     pass_count += 1
                     if pass_count >= 5:  #####
                         print("暂时略过已达到 5 次，【 建议您将此题目的题干、提示、选项信息提交到github问题收集issue：https://github.com/TechXueXi/TechXueXi/issues/29 】")
-                        input("等待用户手动答题...完成后请在此按回车...")
+                        auto.prompt("等待用户手动答题...完成后请在此按回车...")
                         pass_count = 0
                     if quiz_type == "daily":  #####
                         log_daily("！！！！！本题没有找到提示，暂时略过！！！！！")
-                        input("等待用户手动答题...完成后请在此按回车...")
-                        time.sleep(3)
+                        auto.prompt("等待用户手动答题...完成后请在此按回车...")
+                        time.sleep(1)
                     if "填空题" in category:
                         print('没有找到提示，暂时略过')
                         ##### print('使用默认答案  好 ')   #如无填空答案，使用默认答案 好 字 by Sean
@@ -183,7 +188,7 @@ def answer_question(quiz_type, cookies, scores, score_all, quiz_xpath, category_
                                 ##### len_option = len(options)
                                 ##### radio_in_tips = letters[:len_option]
                                 ##### driver_daily.radio_check(radio_in_tips)
-                                input("等待用户手动答题...完成后请在此按回车...")  #####
+                                auto.prompt("等待用户手动答题...完成后请在此按回车...")
                         elif quiz_type == "weekly":
                             options = driver_weekly.radio_get_options()
                             radio_in_tips, radio_out_tips = "", ""
@@ -210,7 +215,7 @@ def answer_question(quiz_type, cookies, scores, score_all, quiz_xpath, category_
                                 ##### len_option = len(options)
                                 ##### radio_in_tips = letters[:len_option]
                                 ##### driver_weekly.radio_check(radio_in_tips)
-                                input("等待用户手动答题...完成后请在此按回车...")  #####
+                                auto.prompt("等待用户手动答题...完成后请在此按回车...")
                         elif quiz_type == "zhuanxiang":
                             options = driver_zhuanxiang.radio_get_options()
                             radio_in_tips, radio_out_tips = "", ""
@@ -237,7 +242,7 @@ def answer_question(quiz_type, cookies, scores, score_all, quiz_xpath, category_
                                 ##### len_option = len(options)
                                 ##### radio_in_tips = letters[:len_option]
                                 ##### driver_zhuanxiang.radio_check(radio_in_tips)
-                                input("等待用户手动答题...完成后请在此按回车...")  #####
+                                auto.prompt("等待用户手动答题...完成后请在此按回车...")
                     elif "单选题" in category:
                         if quiz_type == "daily":
                             options = driver_daily.radio_get_options()
@@ -280,7 +285,7 @@ def answer_question(quiz_type, cookies, scores, score_all, quiz_xpath, category_
                                     ##### print('将使用默认选 B')     #by Sean
                                     ##### radio_in_tips = "B"
                                     ##### driver_daily.radio_check(radio_in_tips)
-                                    input("等待用户手动答题...完成后请在此按回车...")  #####
+                                    auto.prompt("等待用户手动答题...完成后请在此按回车...")
                         elif quiz_type == "weekly":
                             options = driver_weekly.radio_get_options()
                             if '因此本题选' in tips:
@@ -317,7 +322,7 @@ def answer_question(quiz_type, cookies, scores, score_all, quiz_xpath, category_
                                     ##### print('将使用默认选 B')     #by Sean
                                     ##### radio_in_tips = "B"
                                     ##### driver_weekly.radio_check(radio_in_tips)
-                                    input("等待用户手动答题...完成后请在此按回车...")  #####
+                                    auto.prompt("等待用户手动答题...完成后请在此按回车...")
                         elif quiz_type == "zhuanxiang":
                             options = driver_zhuanxiang.radio_get_options()
                             if '因此本题选' in tips:
@@ -354,7 +359,7 @@ def answer_question(quiz_type, cookies, scores, score_all, quiz_xpath, category_
                                     ##### print('将使用默认选 B')     #by Sean
                                     ##### radio_in_tips = "B"
                                     ##### driver_zhuanxiang.radio_check(radio_in_tips)
-                                    input("等待用户手动答题...完成后请在此按回车...")  #####
+                                    auto.prompt("等待用户手动答题...完成后请在此按回车...")
                     else:
                         print("题目类型非法")
                         if quiz_type == "daily":
@@ -366,7 +371,7 @@ def answer_question(quiz_type, cookies, scores, score_all, quiz_xpath, category_
                 print("检测到"+quiz_zh_CN[quiz_type]+"答题分数已满,退出学 xi ")
             else:
                 print("！！！！！没拿到满分，请收集日志反馈错误题目！！！！！")
-                input("完成后（或懒得弄）请在此按回车...")  #####
+                auto.prompt("完成后（或懒得弄）请在此按回车...")
                 #log_daily("！！！！！没拿到满分！！！！！")
         if driver_default == None:
             try:

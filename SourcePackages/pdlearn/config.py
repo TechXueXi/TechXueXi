@@ -12,7 +12,7 @@ if(not os.path.exists("config")):
     os.mkdir("config")
 if(not os.path.exists("./config/main.ini")):
     init_main_ini()
-    # input("缺少配置文件 config/main.ini，请检查. 按回车键退出程序. ")
+    # auto.prompt("缺少配置文件 config/main.ini，请检查. 按回车键退出程序. ")
     # exit()
 cfg.read('./config/main.ini', encoding='utf-8')
 
