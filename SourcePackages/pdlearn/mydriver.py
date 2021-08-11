@@ -136,10 +136,10 @@ class Mydriver:
 
         try: 
             # 取出iframe中二维码，并发往钉钉
-            if cfg["addition"]["SendLoginQRcode"] == "1":
+            if cfg["addition"]["SendLoginQRcode"] == 1:
                 print("二维码将发往钉钉机器人...\n" + "=" * 60)
                 self.toDingDing()
-        except KeyError as e:
+        except Exception as e:
             print("未检测到SendLoginQRcode配置，请手动扫描二维码登陆...")
 
 
@@ -150,7 +150,7 @@ class Mydriver:
             # picc = re.search(
             #     "(data:image/png;base64,)(.*)(\"></div><div data-v-be4de7b6)", source).group(2)
             # pic = base64.b64decode(picc)
-            # 微信发送图片到手机，以便扫码（此配置项暂未应用至代码。结合 main.ini 修改）
+            # 微信发送图片到手机，以便扫码（此配置项暂未应用至代码。结合 default_template.conf 修改）
             # wx = WeChat()
             # media_id = wx.get_media_url(pic)
             # wx.send_image(media_id)

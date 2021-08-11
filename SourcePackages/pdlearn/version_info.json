@@ -1,6 +1,9 @@
 {
-    "techxuexi_version": "v20210809",
+    "techxuexi_version": "v20210811",
     "techxuexi_update_log": [{
+        "version": "v20210811",
+        "info": "采用新的conf配置文件格式"
+    }, {
         "version": "v20210809",
         "info": "整理代码、修复cookie expiry问题、优化input time.sleep"
     }, {
