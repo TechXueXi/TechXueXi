@@ -1,6 +1,9 @@
 {
-    "techxuexi_version": "v20210811",
+    "techxuexi_version": "v20210813",
     "techxuexi_update_log": [{
+        "version": "v20210813",
+        "info": "新conf运行失败的补丁"
+    }, {
         "version": "v20210811",
         "info": "采用新的conf配置文件格式"
     }, {
