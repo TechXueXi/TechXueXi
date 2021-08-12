@@ -3,3 +3,4 @@ lxml==4.6.3
 colorama==0.4.1
 beautifulsoup4==4.9.3
 selenium==3.141.0
+pyhocon==0.3.58
