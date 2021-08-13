@@ -3,7 +3,7 @@
 **[在线聊天室地址及说明](https://github.com/TechXueXi/TechXueXi/issues/14)**
 
 > 本项目基于某已终止的项目，请自行搜索后前往star。我们由衷地敬佩这个领域的先锋们。  
-> 这是全网较好的成熟产品，但已停止，我们于心不忍。本仓库现由“科技强 guo ”组织进行维护。
+> 这是全网较好的成熟产品，但已停止，我们于心不忍。本仓库现由“科技强国”组织进行维护。
 
 许多IT人员本终日埋头写代码，确实有需求，与其各人重复修改编写浪费生产力不如团队合作维护，
 因此我们还是希望继续维护此生态。具体请详细阅读下文
@@ -114,6 +114,8 @@ TechXueXi为python学 xi 交流的开源非营利项目，仅作为程序员之�
 
 win平台可能提示`无法定位程序输入点ucrtbase.terminate于动态链接库api-ms-win-crt-runtime-|1-1-0.dll`等缺失dll文件的问题而无法使用，尝试安装`Visual C++ Redistributable for Visual Studio 2015`
 
+链接已失效，请自己百度下载
+
 **下载安装:**
 
 [![](https://img.shields.io/badge/download-vc_redist.x64-blue.svg?style=for-the-badge&logo=visualstudiocode)](https://raw.fastgit.org/TechXueXi/Panda-Learning/master/windows不能运行时安装/vc_redist.x64.exe) 
@@ -140,29 +142,31 @@ win平台可能提示`无法定位程序输入点ucrtbase.terminate于动态链�
 # 💪 代码贡献
 
 ### 🕔 项目计划
-本项目维护计划、路线图参见 https://github.com/TechXueXi/TechXueXi/projects/1
+本项目维护计划、路线图参见（TechXueXi 开发团队成员才可以查看） https://github.com/orgs/TechXueXi/projects/2
+
+申请加入 TechXueXi 开发团队参见下方说明
 
 如您参与贡献，请注意：维护计划、路线图中每一条未列至"Done"下时，仅可在 dev 分支改动。
 
 ### [👨‍👨‍👦‍👦 直接参与贡献](https://github.com/TechXueXi/TechXueXi/blob/master/CONTRIBUTING.md)(内附提交方法)
 
-如您开发了其他“科技强 guo ”项目，也可以加入本组织，相互交流，共同维护生态。
+如您开发了其他“科技强国”项目，也可以加入本组织，相互交流，共同维护生态。
 
 ### 🙋‍♂️ 加入组织
-若您有意愿加入本组织，持续对本项目进行维护，请发送主题“申请科技强 guo 组织成员”的邮件至 techxuexi@protonmail.com，请将您的github用户名添加到邮件正文中，便于发送邀请。谢谢。
+若您有意愿加入本组织，持续对本项目进行维护，请发送主题“申请科技强国组织成员”的邮件至 techxuexi@protonmail.com，请将您的github用户名添加到邮件正文中，便于发送邀请。谢谢。建议使用境外邮箱，不要用国区苹果账号，QQ邮箱，163 等等的邮箱。
 
 ### 🟥 Pay Attention
-**如果你的github账户包括个人信息，请重新申请一个github账号专门提交这个项目有关的代码，绑定境外邮箱，不要用国区苹果账号的邮箱。**  
+**如果你的github账户包括个人信息，请重新申请一个github账号专门提交这个项目有关的代码，绑定境外邮箱，不要用国区苹果账号，QQ邮箱，163 等等的邮箱。**  
 
 
 
-# 📌关于学 xi 强 guo 
+# 📌关于学 xi 强国
 
-个人认为，学 xi 强 guo 本身受众就是 guo 家的栋梁，本人不欢迎不热爱 guo 家的人加入本项目。
+个人认为，学 xi 强国本身受众就是国家的栋梁，本人不欢迎不热爱国家的人加入本项目。
 
-学 xi 强 guo 聚合了大量可免费阅读的期刊、古籍、公开课、歌曲、戏曲、电影、图书等资料，内容严谨，专业性强。没有博眼球，无下限的自媒体内容和虚假新闻。推荐大家自发积极学 xi 使用。TechXueXi 仅额外提供给上班上学期间工作学业繁重，抽不出时间完成学 xi 强 guo 任务的非程序员。
+学 xi 强国聚合了大量可免费阅读的期刊、古籍、公开课、歌曲、戏曲、电影、图书等资料，内容严谨，专业性强。没有博眼球，无下限的自媒体内容和虚假新闻。推荐大家自发积极学 xi 使用。TechXueXi 仅额外提供给上班上学期间工作学业繁重，抽不出时间完成学 xi 强国任务的非程序员。
 
-“学 xi 强 guo ”意义深远。
+“学 xi 强国”意义深远。
 
 
 
