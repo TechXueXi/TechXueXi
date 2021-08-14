@@ -118,9 +118,9 @@ win平台可能提示`无法定位程序输入点ucrtbase.terminate于动态链�
 
 **下载安装:**
 
-[![](https://img.shields.io/badge/download-vc_redist.x64-blue.svg?style=for-the-badge&logo=visualstudiocode)](https://raw.fastgit.org/TechXueXi/Panda-Learning/master/windows不能运行时安装/vc_redist.x64.exe) 
+[![](https://img.shields.io/badge/download-vc_redist.x64-blue.svg?style=for-the-badge&logo=visualstudiocode)](https://raw.fastgit.org/TechXueXi/VC-REDIST/master/vc_redist.x64.exe) 
 
-[![](https://img.shields.io/badge/download-vc_redist.x86-blue.svg?style=for-the-badge&logo=visualstudiocode)](https://raw.fastgit.org/TechXueXi/Panda-Learning/master/windows不能运行时安装/vc_redist.x86.exe) 
+[![](https://img.shields.io/badge/download-vc_redist.x86-blue.svg?style=for-the-badge&logo=visualstudiocode)](https://raw.fastgit.org/TechXueXi/VC-REDIST/master/vc_redist.x86.exe) 
 
 
 
