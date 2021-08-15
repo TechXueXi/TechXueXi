@@ -1,8 +1,8 @@
 {
-    "techxuexi_version": "v20210815",
+    "techxuexi_version": "v20210816",
     "techxuexi_update_log": [{
-        "version": "v20210815",
-        "info": "程序启动时模块自检、windows一键更新脚本\nwindows一键更新方法：下载\nhttps://cdn.jsdelivr.net/gh/TechXueXi/TechXueXi@master/windows系统git_pull_一键更新.bat\n并放置在项目根目录（即和SourcePackages文件夹同目录），然后双击运行"
+        "version": "v20210816",
+        "info": "程序启动时模块自检、windows一键更新脚本\nwindows一键更新方法：下载\nhttps://raw.githubusercontents.com/TechXueXi/TechXueXi/master/windows%E7%B3%BB%E7%BB%9Fgit_pull_%E4%B8%80%E9%94%AE%E6%9B%B4%E6%96%B0.bat\n并放置在项目根目录（即和SourcePackages文件夹同目录），然后双击运行"
     }, {
         "version": "v20210813",
         "info": "新conf运行失败的补丁、整理readme.md"

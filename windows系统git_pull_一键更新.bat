@@ -30,7 +30,7 @@ exit /b 0
 :start
 set repo_url1=https://github.com.cnpmjs.org/TechXueXi/TechXueXi.git
 set repo_url2=https://hub.fastgit.org/TechXueXi/TechXueXi.git
-set push_url=https://github.com/TechXueXi/TechXueXi.git
+set push_url=git@github.com:TechXueXi/TechXueXi.git
 
 if exist "_unavailable_dir" (
 	call :replace_dir
