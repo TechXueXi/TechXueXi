@@ -3,10 +3,10 @@ import requests
 from pdlearn import color
 
 
-def get_native_version():
+def get_native_json():
     with open("./pdlearn/version_info.json", encoding="utf-8") as v:
         content = v.read()
-        return json.loads(content)["techxuexi_version"]
+        return json.loads(content)
 
 
 def up_info():
@@ -18,7 +18,9 @@ def up_info():
     # vercel_url = "https://techxuexi.vercel.app/Update.html"
     jsdelivery_url = "https://cdn.jsdelivr.net/gh/TechXueXi/TechXueXi@master/SourcePackages/pdlearn/version_info.json"
     try:
-        native_version = get_native_version()
+        native_info = get_native_json()
+        native_version = native_info["techxuexi_version"]
+        native_update_logs = native_info["techxuexi_update_log"]
         remote_json = requests.get(jsdelivery_url).content.decode("utf8")
         remote_info = json.loads(remote_json)
         remote_version = remote_info["techxuexi_version"]

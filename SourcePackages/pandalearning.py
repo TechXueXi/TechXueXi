@@ -1,12 +1,10 @@
 import os
 import sys
-# 切换pwd到python文件路径，避免找不到相对路径下的ini和相关文件
-base_path = os.path.dirname(os.path.realpath(sys.argv[0]))
-os.chdir(base_path)
-# 注：不要再pandalearning.py之外使用os.chdir(sys.path[0])，否则可能造成打包程序不能运行
 import time
 import math
 from sys import argv
+from pdlearn import boot
+boot.check_environment()
 from pdlearn import version
 from pdlearn import user
 from pdlearn import score
