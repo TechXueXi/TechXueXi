@@ -1,6 +1,6 @@
 
 
-from SourcePackages.pdlearn import globalvar
+from pdlearn import globalvar
 
 
 def get_docker_mode():

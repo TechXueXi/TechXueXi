@@ -24,7 +24,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common import exceptions
-import globalvar as gl
+from pdlearn import globalvar as gl
 
 import base64  # 解码二维码图片
 #from pdlearn.qywx import WeChat  # 使用微信发送二维码图片到手机
