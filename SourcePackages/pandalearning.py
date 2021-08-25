@@ -21,7 +21,7 @@ def get_argv():
     nohead = False
     lock = False
     stime = False
-    if os.getenv('nohead') == True:
+    if os.getenv('Nohead') == "True":
         nohead=True
     if len(argv) > 2:
         if argv[2] == "hidden":
