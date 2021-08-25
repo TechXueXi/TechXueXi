@@ -1,7 +1,10 @@
 
 
+from SourcePackages.pdlearn import globalvar
+
+
 def get_docker_mode():
-    return False
+    return globalvar.nohead
 
 
 def prompt(prompt_str):

@@ -15,7 +15,7 @@ from pdlearn.mydriver        import Mydriver
 from pdlearn.score           import show_score
 from pdlearn.article_video   import article, video
 from pdlearn.answer_question import daily, weekly, zhuanxiang
-
+import pdlearn.globalvar as gl
 
 def get_argv():
     nohead = True
@@ -34,6 +34,7 @@ def get_argv():
     if len(argv) > 4:
         if argv[4].isdigit():
             stime = argv[4]
+    gl.nohead=nohead
     return nohead, lock, stime
 
 
@@ -67,9 +68,10 @@ if __name__ == '__main__':
     info_shread.start()
     #  1 创建用户标记，区分多个用户历史纪录
     uid = user.get_default_userId()
+    nohead, lock, stime = get_argv()
     if not cookies or TechXueXi_mode == "0":
         print("未找到有效登录信息，需要登录")
-        driver_login = Mydriver(nohead=False)
+        driver_login = Mydriver()
         cookies = driver_login.login()
         driver_login.quit()
         user.save_cookies(cookies)
@@ -80,7 +82,6 @@ if __name__ == '__main__':
     video_index = 1  # user.get_video_index(uid)
     
     total, scores = show_score(cookies)
-    nohead, lock, stime = get_argv()
 
     if TechXueXi_mode in ["1", "3"]:
         article_thread = threads.MyThread("文章学 xi ", article, uid, cookies, article_index, scores, lock=lock)
@@ -90,7 +91,7 @@ if __name__ == '__main__':
         article_thread.join()
         video_thread.join()
     if TechXueXi_mode in ["2", "3"]:
-        driver_default = Mydriver(nohead=False)
+        driver_default = Mydriver()
         print('开始每日答题……')
         daily(cookies, scores, driver_default=driver_default)
         if TechXueXi_mode in ["2", "3"]:
