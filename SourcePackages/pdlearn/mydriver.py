@@ -1,3 +1,4 @@
+from pdlearn.fangtang import FangtangHandler
 from typing import List, Any
 
 import selenium
@@ -172,6 +173,14 @@ class Mydriver:
                 print("您的网络连接存在问题，请检查您与xuexi.cn的网络连接并关闭“某些”软件")
             auto.prompt("按回车键退出程序. ")
             exit()
+
+    def toFangTang(self):
+            if os.getenv('AccessToken')==None:   
+                token = cfg["addition"]["token"]
+            else:
+                token=os.getenv('AccessToken')
+            ddhandler = FangtangHandler(token)
+            ddhandler.ftmsgsend(self.getQRcode())
 
     def toDingDing(self):
         if os.getenv('AccessToken')==None:   
