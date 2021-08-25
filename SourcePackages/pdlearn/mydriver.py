@@ -139,11 +139,11 @@ class Mydriver:
 
         try: 
             # 取出iframe中二维码，并发往钉钉
-            if cfg["addition"]["SendLoginQRcode"] == 1 or gl.nohead==True:
+            if  gl.nohead==True or cfg["addition"]["SendLoginQRcode"] == 1 :
                 print("二维码将发往钉钉机器人...\n" + "=" * 60)
                 self.toDingDing()
         except Exception as e:
-            print("未检测到SendLoginQRcode配置，请手动扫描二维码登陆...")
+            print("未检测到SendLoginQRcode配置，请手动扫描二维码登陆..."+e)
 
 
         try:
