@@ -139,7 +139,7 @@ class Mydriver:
 
         try: 
             # 取出iframe中二维码，并发往钉钉
-            if cfg["addition"]["SendLoginQRcode"] == 1:
+            if cfg["addition"]["SendLoginQRcode"] == 1 or gl.nohead==True:
                 print("二维码将发往钉钉机器人...\n" + "=" * 60)
                 self.toDingDing()
         except Exception as e:
@@ -174,8 +174,14 @@ class Mydriver:
             exit()
 
     def toDingDing(self):
-        token = cfg["addition"]["token"]
-        secret = cfg["addition"]["secret"]
+        if os.getenv('AccessToken')==None:   
+            token = cfg["addition"]["token"]
+        else:
+            token=os.getenv('AccessToken')
+        if os.getenv('Secret')==None:      
+            secret = cfg["addition"]["secret"]
+        else:
+            secret=os.getenv('Secret')
         ddhandler = DingDingHandler(token, secret)
         ddhandler.ddmsgsend(self.getQRcode())
 

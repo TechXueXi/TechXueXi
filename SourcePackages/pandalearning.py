@@ -18,9 +18,11 @@ from pdlearn.answer_question import daily, weekly, zhuanxiang
 import pdlearn.globalvar as gl
 
 def get_argv():
-    nohead = True
+    nohead = False
     lock = False
     stime = False
+    if os.getenv('nohead') == True:
+        nohead=True
     if len(argv) > 2:
         if argv[2] == "hidden":
             nohead = True
