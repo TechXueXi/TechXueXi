@@ -58,19 +58,22 @@ if __name__ == '__main__':
     user.refresh_all_cookies()
     print("=" * 60, '''\nTechXueXi 现支持以下模式（答题时请值守电脑旁处理少部分不正常的题目）：''')
     print(cfg['base']['ModeText'] + '\n' + "=" * 60) # 模式提示文字请在 ./config/default_template.conf 处修改。
-    
-    try:
-        if cfg["base"]["ModeType"]:
-            print("默认选择模式：" + str(cfg["base"]["ModeType"]) + "\n" + "=" * 60)
-            TechXueXi_mode = str(cfg["base"]["ModeType"])
-    except Exception as e:
-        TechXueXi_mode = input("请选择模式（输入对应数字）并回车： ")
+    nohead, lock, stime = get_argv()
+    if nohead==True:
+        TechXueXi_mode=3
+    else:    
+        try:
+            if cfg["base"]["ModeType"]:
+                print("默认选择模式：" + str(cfg["base"]["ModeType"]) + "\n" + "=" * 60)
+                TechXueXi_mode = str(cfg["base"]["ModeType"])
+        except Exception as e:
+            TechXueXi_mode = input("请选择模式（输入对应数字）并回车： ")
 
     info_shread = threads.MyThread("获取更新信息...", version.up_info)
     info_shread.start()
     #  1 创建用户标记，区分多个用户历史纪录
     uid = user.get_default_userId()
-    nohead, lock, stime = get_argv()
+  
     if not cookies or TechXueXi_mode == "0":
         print("未找到有效登录信息，需要登录")
         driver_login = Mydriver()
