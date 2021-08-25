@@ -1,4 +1,4 @@
-from SourcePackages.pdlearn import globalvar
+from pdlearn import globalvar
 import time
 import random
 from pdlearn import auto
