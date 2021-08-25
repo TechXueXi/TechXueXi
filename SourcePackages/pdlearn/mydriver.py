@@ -138,14 +138,21 @@ class Mydriver:
             self.driver.execute_script('window.scrollTo(document.body.scrollWidth/2 - 200 , 0)')
 
 
+        # try: 
+        #     # 取出iframe中二维码，并发往钉钉
+        #     if  gl.nohead==True or cfg["addition"]["SendLoginQRcode"] == 1 :
+        #         print("二维码将发往钉钉机器人...\n" + "=" * 60)
+        #         self.toDingDing()
+        # except Exception as e:
+        #     print("未检测到SendLoginQRcode配置，请手动扫描二维码登陆..."+e)
+
         try: 
-            # 取出iframe中二维码，并发往钉钉
+            # 取出iframe中二维码，并发往方糖，拿到的base64没办法直接发钉钉，所以发方糖
             if  gl.nohead==True or cfg["addition"]["SendLoginQRcode"] == 1 :
-                print("二维码将发往钉钉机器人...\n" + "=" * 60)
-                self.toDingDing()
+                print("二维码将发往方糖机器人...\n" + "=" * 60)
+                self.toFangTang()
         except Exception as e:
             print("未检测到SendLoginQRcode配置，请手动扫描二维码登陆..."+e)
-
 
         try:
             # 获取二维码图片  # 这一块等待测试完毕再加入代码
