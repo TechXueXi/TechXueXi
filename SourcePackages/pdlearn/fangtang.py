@@ -12,5 +12,5 @@ class FangtangHandler:
                 "desp":"![avatar][base64str]\n[base64str]:"+msgurl
             }
 
-            res = requests.post(self.get_url(), data=data, headers=headers)  # 发送post请求
+            res = requests.post(url, data=data, headers=headers)  # 发送post请求
             print(res.text)
