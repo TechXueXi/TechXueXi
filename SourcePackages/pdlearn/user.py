@@ -1,4 +1,4 @@
-from SourcePackages.pdlearn import globalvar
+from pdlearn import globalvar
 import os
 import re
 import time
