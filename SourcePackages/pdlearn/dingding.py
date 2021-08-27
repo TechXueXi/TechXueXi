@@ -30,11 +30,9 @@ class DingDingHandler:
 
         headers = {"Content-Type": "application/json"}  # 定义数据类型
         data = {
-            "msgtype": "link",
-            "link": {
-                "text": "学 xi 强 guo ",
-                "title": "学 xi 吧少年",
-                "messageUrl": msgurl,
+            "msgtype": "text",
+            "text": {
+                "content": msgurl,
             },
         }
 
