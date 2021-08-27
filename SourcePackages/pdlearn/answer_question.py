@@ -1,3 +1,4 @@
+from pdlearn import globalvar
 import time
 import random
 from pdlearn import auto
@@ -7,7 +8,6 @@ from pdlearn.mydriver import Mydriver
 from pdlearn.score import show_score
 from pdlearn.const import const
 from pdlearn.log import *
-
 
 def generate_tiku_data(quiz_type=None, tip=None, option=None, answer=None, question=None):
     """
@@ -61,6 +61,8 @@ def answer_question(quiz_type, cookies, scores, score_all, quiz_xpath, category_
         driver_ans.get_url("https://www.xuexi.cn/notFound.html")
         driver_ans.set_cookies(cookies)
         pass_count = 0
+        #最大值，用于nohead模式退出
+        max_count=0
         if scores[quiz_type] < score_all:
             letters = list("ABCDEFGHIJKLMN")
             driver_ans.get_url('https://pc.xuexi.cn/points/my-points.html')
@@ -121,7 +123,11 @@ def answer_question(quiz_type, cookies, scores, score_all, quiz_xpath, category_
                     log_daily(str(tips)+"\n"+tip_full_text)
                 if not tips:
                     print("本题没有提示")
+                    max_count+=1
                     pass_count += 1
+                    if max_count>=100 and globalvar.nohead==True:
+                       print("略过次数已经超过100次，且出于Nohead模式，退出答题")
+                       break;
                     if pass_count >= 5:  #####
                         print("暂时略过已达到 5 次，【 建议您将此题目的题干、提示、选项信息提交到github问题收集issue：https://github.com/TechXueXi/TechXueXi/issues/29 】")
                         auto.prompt("等待用户手动答题...完成后请在此按回车...")

@@ -15,12 +15,14 @@ from pdlearn.mydriver        import Mydriver
 from pdlearn.score           import show_score
 from pdlearn.article_video   import article, video
 from pdlearn.answer_question import daily, weekly, zhuanxiang
-
+import pdlearn.globalvar as gl
 
 def get_argv():
-    nohead = True
+    nohead = False
     lock = False
     stime = False
+    if os.getenv('Nohead') == "True":
+        nohead=True
     if len(argv) > 2:
         if argv[2] == "hidden":
             nohead = True
@@ -34,10 +36,12 @@ def get_argv():
     if len(argv) > 4:
         if argv[4].isdigit():
             stime = argv[4]
+    gl.nohead=nohead
     return nohead, lock, stime
 
 
 if __name__ == '__main__':
+    nohead, lock, stime = get_argv()
     #  0 读取版本信息
     start_time = time.time()
     if(cfg['display']['banner'] != False): # banner文本直接硬编码，不要放在conf中
@@ -55,21 +59,25 @@ if __name__ == '__main__':
     user.refresh_all_cookies()
     print("=" * 60, '''\nTechXueXi 现支持以下模式（答题时请值守电脑旁处理少部分不正常的题目）：''')
     print(cfg['base']['ModeText'] + '\n' + "=" * 60) # 模式提示文字请在 ./config/default_template.conf 处修改。
-    
-    try:
-        if cfg["base"]["ModeType"]:
-            print("默认选择模式：" + str(cfg["base"]["ModeType"]) + "\n" + "=" * 60)
-            TechXueXi_mode = str(cfg["base"]["ModeType"])
-    except Exception as e:
-        TechXueXi_mode = input("请选择模式（输入对应数字）并回车： ")
+
+    if nohead==True:
+        TechXueXi_mode="3"
+    else:    
+        try:
+            if cfg["base"]["ModeType"]:
+                print("默认选择模式：" + str(cfg["base"]["ModeType"]) + "\n" + "=" * 60)
+                TechXueXi_mode = str(cfg["base"]["ModeType"])
+        except Exception as e:
+            TechXueXi_mode = input("请选择模式（输入对应数字）并回车： ")
 
     info_shread = threads.MyThread("获取更新信息...", version.up_info)
     info_shread.start()
     #  1 创建用户标记，区分多个用户历史纪录
     uid = user.get_default_userId()
+  
     if not cookies or TechXueXi_mode == "0":
         print("未找到有效登录信息，需要登录")
-        driver_login = Mydriver(nohead=False)
+        driver_login = Mydriver()
         cookies = driver_login.login()
         driver_login.quit()
         user.save_cookies(cookies)
@@ -80,7 +88,6 @@ if __name__ == '__main__':
     video_index = 1  # user.get_video_index(uid)
     
     total, scores = show_score(cookies)
-    nohead, lock, stime = get_argv()
 
     if TechXueXi_mode in ["1", "3"]:
         article_thread = threads.MyThread("文章学 xi ", article, uid, cookies, article_index, scores, lock=lock)
@@ -90,14 +97,15 @@ if __name__ == '__main__':
         article_thread.join()
         video_thread.join()
     if TechXueXi_mode in ["2", "3"]:
-        driver_default = Mydriver(nohead=False)
+        driver_default = Mydriver()
         print('开始每日答题……')
         daily(cookies, scores, driver_default=driver_default)
         if TechXueXi_mode in ["2", "3"]:
             print('开始每周答题……')
             weekly(cookies, scores, driver_default=driver_default)
-            print('开始专项答题……')
-            zhuanxiang(cookies, scores, driver_default=driver_default)
+            if nohead!=True:
+                print('开始专项答题……')
+                zhuanxiang(cookies, scores, driver_default=driver_default)
         try:
             driver_default.quit()
         except Exception as e:
