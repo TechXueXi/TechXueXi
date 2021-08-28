@@ -68,10 +68,6 @@ jobs:
                       -t ${{ steps.meta.outputs.tags }}-arm64-${{ github.run_number }} \
                       --push \
                       -f ./Dockerfile_arm64v8 .
-              docker buildx build --platform linux/arm/v7 \
-                      -t ${{ steps.meta.outputs.tags }}-arm32-${{ github.run_number }} \
-                      --push \
-                      -f ./Dockerfile_arm32v7 .
               docker buildx build --platform linux/amd64 \
                       -t ${{ steps.meta.outputs.tags }}-amd64-${{ github.run_number }} \
                       --push \
