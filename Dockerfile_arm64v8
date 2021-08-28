@@ -1,5 +1,6 @@
 FROM alpine AS builder
-
+ARG branche="dev"
+ENV pullbranche=$branche
 ENV QEMU_URL https://github.com/balena-io/qemu/releases/download/v3.0.0%2Bresin/qemu-3.0.0+resin-aarch64.tar.gz
 RUN apk add curl && curl -L ${QEMU_URL} | tar zxvf - -C . --strip-components 1
 
@@ -14,7 +15,7 @@ ENV TZ=Asia/Shanghai
 ENV AccessToken=
 ENV Secret=
 ENV Nohead=True
-ENV Sourcepath=https://github.com/Darkzhangfei/TechXueXi.git
+ENV Sourcepath="https://github.com/TechXueXi/TechXueXi.git"
 ENV CRONTIME="30 9 * * *"
 # RUN rm -f /xuexi/config/*; ls -la
 COPY requirements.txt /xuexi/requirements.txt
@@ -26,6 +27,6 @@ RUN chmod +x ./run.sh
 RUN chmod +x ./start.sh
 RUN mkdir code
 WORKDIR /xuexi/code
-RUN git clone $Sourcepath
+RUN git clone -b $branche $Sourcepath
 WORKDIR /xuexi
 ENTRYPOINT ["/bin/bash", "./start.sh"]

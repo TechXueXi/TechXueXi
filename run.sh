@@ -1,7 +1,7 @@
 #!/bin/sh
 cd /xuexi/code/TechXueXi
 echo "检查更新"
-git pull
+git pull $Sourcepath $pullbranche
 echo "检查更新完毕"
 cp -r /xuexi/code/TechXueXi/SourcePackages/* /xuexi
 cd /xuexi/code
