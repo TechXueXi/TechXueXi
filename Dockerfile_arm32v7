@@ -1,6 +1,6 @@
 FROM alpine AS builder
-ARG branche="dev"
-ENV pullbranche=$branche
+ARG usebranche="dev"
+ENV pullbranche=$usebranche
 ENV QEMU_URL https://github.com/balena-io/qemu/releases/download/v3.0.0%2Bresin/qemu-3.0.0+resin-arm.tar.gz
 RUN apk add curl && curl -L ${QEMU_URL} | tar zxvf - -C . --strip-components 1
 FROM arm32v7/python:3.7-slim
@@ -23,6 +23,6 @@ RUN chmod +x ./run.sh
 RUN chmod +x ./start.sh
 RUN mkdir code
 WORKDIR /xuexi/code
-RUN git clone -b $branche $Sourcepath
+RUN git clone -b $pullbranche $Sourcepath
 WORKDIR /xuexi
 ENTRYPOINT ["/bin/bash", "./start.sh"]
