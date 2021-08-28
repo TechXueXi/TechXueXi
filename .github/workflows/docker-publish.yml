@@ -59,16 +59,19 @@ jobs:
 
           # Platforms to install (e.g. arm64,riscv64,arm)
           platforms: arm64,arm/v7,amd64
-          
+      - name: downcase REPO
+        run: |
+          echo "dimagetag=${env.REGISTRY,,}/${ env.IMAGE_NAME,,}" >>${GITHUB_ENV}    
       - name: Build and push Docker image
         run: |
+              
               docker buildx create --use
               docker buildx build --platform linux/amd64 \
-                      -t ${{ env.REGISTRY,, }}/${{ env.IMAGE_NAME,, }}-amd64-${{ github.run_number }} \
+                      -t ${dimagetag}-amd64-${{ github.run_number }} \
                       --push \
                       -f ./Dockerfile .
               docker buildx build --platform linux/arm64 \
-                      -t ${{ env.REGISTRY,, }}/${{ env.IMAGE_NAME,, }}-arm64-${{ github.run_number }} \
+                      -t ${dimagetag}-arm64-${{ github.run_number }} \
                       --push \
                       -f ./Dockerfile_arm64v8 .
 
