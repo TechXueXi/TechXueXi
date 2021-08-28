@@ -67,11 +67,11 @@ jobs:
               
               docker buildx create --use
               docker buildx build --platform linux/amd64 \
-                      -t ${{ env.REGISTRY }}/${dimagetag}-amd64-${{ github.run_number }} \
+                      -t ${{ env.REGISTRY }}/${dimagetag}:amd64-${{ github.run_number }} \
                       --push \
                       -f ./Dockerfile .
               docker buildx build --platform linux/arm64 \
-                      -t ${{ env.REGISTRY }}/${dimagetag}-arm64-${{ github.run_number }} \
+                      -t ${{ env.REGISTRY }}/${dimagetag}:arm64-${{ github.run_number }} \
                       --push \
                       -f ./Dockerfile_arm64v8 .
 
