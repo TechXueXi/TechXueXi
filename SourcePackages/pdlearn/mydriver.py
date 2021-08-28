@@ -207,7 +207,7 @@ class Mydriver:
         else:
             secret=os.getenv('Secret')
         ddhandler = DingDingHandler(token, secret)
-        ddhandler.ddmsgsend(decode_img(self.getQRcode()))
+        ddhandler.ddtextsend(decode_img(self.getQRcode()))
 
     
     def getQRcode(self):
