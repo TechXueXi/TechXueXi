@@ -1,0 +1,63 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the action will run. 
+on:
+  # 任意推送都会触发构建
+  push:
+# 定时调度
+  schedule:
+    - cron: "0 0 * * 1"
+
+  # Allows you to run this workflow manually from the Actions tab
+# 可以手动触发
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'   
+        required: true
+        default: 'warning'
+      tags:
+        description: 'Test scenario tags'  
+
+jobs:
+  buildx:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=today::$(date +'%Y-%m-%d')"
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      -
+        name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Available platforms
+        run: echo ${{ steps.buildx.outputs.platforms }}
+      -
+        name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile
+# 所需要的体系结构，可以在 Available platforms 步骤中获取所有的可用架构
+          platforms: linux/amd64,linux/arm64/v8
+# 镜像推送时间
+          push: ${{ github.event_name != 'pull_request' }}
+# 给清单打上多个标签
+          tags: |
+            user/app:latest
+            user/app:${{ steps.date.outputs.today }}
