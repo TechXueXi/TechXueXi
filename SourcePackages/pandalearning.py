@@ -42,7 +42,7 @@ def get_argv():
 
 if __name__ == '__main__':
     nohead, lock, stime = get_argv()
-    print("是否无头模式：{0}".format(nohead))
+    print("是否无头模式：{0} {1}".format(nohead,os.getenv('Nohead')))
     #  0 读取版本信息
     start_time = time.time()
     if(cfg['display']['banner'] != False): # banner文本直接硬编码，不要放在conf中
