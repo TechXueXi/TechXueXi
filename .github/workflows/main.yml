@@ -30,7 +30,7 @@ jobs:
       - name: Build And Push Docker image
         env:
           # 指定自己的仓库地址
-          docker_repo: jone2008
+          docker_repo: hub.docker.com/repositories/jone2008
           # 指定镜像名称
           image_name: xuexi
           # 指定镜像标签
@@ -39,7 +39,7 @@ jobs:
           # 查看docker 版本
           docker version
           # 登录仓库， 这里登录docker的用户名和密码在Secrets中设置，下面有介绍
-          docker login --username=${{ secrets.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD }}
+          docker login --username=${{ secrets.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD }} hub.docker.com
           # 使用Dockerfile构建镜像
           docker build . --file Dockerfile --tag $docker_repo/$image_name:$tag
           # 推送镜像到镜像仓库
