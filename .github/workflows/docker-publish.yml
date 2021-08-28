@@ -65,15 +65,15 @@ jobs:
         run: |
               docker buildx create --use
               docker buildx build --platform linux/arm64 \
-                      -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:arm64-${{ github.run_number }} \
+                      -t ${{ steps.meta.outputs.tags }}-arm64-${{ github.run_number }} \
                       --push \
                       -f ./Dockerfile_arm64v8 .
               docker buildx build --platform linux/arm/v7 \
-                      -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:arm32-${{ github.run_number }} \
+                      -t ${{ steps.meta.outputs.tags }}-arm32-${{ github.run_number }} \
                       --push \
                       -f ./Dockerfile_arm32v7 .
               docker buildx build --platform linux/amd64 \
-                      -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:amd64-${{ github.run_number }} \
+                      -t ${{ steps.meta.outputs.tags }}-amd64-${{ github.run_number }} \
                       --push \
                       -f ./Dockerfile .
 
