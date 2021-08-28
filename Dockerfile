@@ -1,7 +1,7 @@
   
 FROM python:3.7-slim
 ARG usebranche="dev"
-ENV pullbranche=$usebranche
+ENV pullbranche=${usebranche}
 RUN apt-get update
 RUN apt-get install -y wget unzip libzbar0 git cron
 ENV TZ=Asia/Shanghai
@@ -23,6 +23,6 @@ RUN chmod +x ./run.sh
 RUN chmod +x ./start.sh
 RUN mkdir code
 WORKDIR /xuexi/code
-RUN git clone -b $pullbranche $Sourcepath
+RUN git clone -b ${pullbranche} ${Sourcepath}
 WORKDIR /xuexi
 ENTRYPOINT ["/bin/bash", "./start.sh"]
