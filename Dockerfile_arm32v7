@@ -1,9 +1,10 @@
 FROM alpine AS builder
-ARG usebranche="dev"
-ENV pullbranche=${usebranche}
+
 ENV QEMU_URL https://github.com/balena-io/qemu/releases/download/v3.0.0%2Bresin/qemu-3.0.0+resin-arm.tar.gz
 RUN apk add curl && curl -L ${QEMU_URL} | tar zxvf - -C . --strip-components 1
 FROM arm32v7/python:3.7-slim
+ARG usebranche="dev"
+ENV pullbranche=${usebranche}
 COPY --from=builder qemu-arm-static /usr/bin  
 RUN apt-get update
 RUN apt-get install -y wget unzip libzbar0 git cron chromium-driver; chromedriver --version; which chromedriver; chromium --version
