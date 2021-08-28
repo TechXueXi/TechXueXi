@@ -1,0 +1,13 @@
+1 name: Build and Publish Docker
+  2 on: [push]
+  3 jobs:
+  4   build:
+  5     runs-on: ubuntu-latest
+  6     steps:
+  7     - uses: actions/checkout@master
+  8     - name: Publish to Docker Repository
+  9       uses: elgohr/Publish-Docker-Github-Action@master
+ 10       with:
+ 11         name: jon2008/xuexi
+ 12         username: ${{ secrets.DOCKER_USERNAME }}
+ 13         password: ${{ secrets.DOCKER_PASSWORD }}
