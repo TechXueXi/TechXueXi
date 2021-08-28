@@ -1,13 +1,46 @@
-1 name: Build and Publish Docker
-  2 on: [push]
-  3 jobs:
-  4   build:
-  5     runs-on: ubuntu-latest
-  6     steps:
-  7     - uses: actions/checkout@master
-  8     - name: Publish to Docker Repository
-  9       uses: elgohr/Publish-Docker-Github-Action@master
- 10       with:
- 11         name: jon2008/xuexi
- 12         username: ${{ secrets.DOCKER_USERNAME }}
- 13         password: ${{ secrets.DOCKER_PASSWORD }}
+# This is a basic workflow to help you get started with Actions
+
+name: xuexi
+
+# Controls when the action will run. 
+# 控制这个action什么时候运行
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  # 这里是只有master分支发生 push 或者 pull事件时才会触发action运行
+  push:
+    branches: [ dev ]
+  pull_request:
+    branches: [ dev ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch: 
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Build And Push Docker image
+        env:
+          # 指定自己的仓库地址
+          docker_repo: jone2008
+          # 指定镜像名称
+          image_name: xuexi
+          # 指定镜像标签
+          tag: latest
+        run: | 
+          # 查看docker 版本
+          docker version
+          # 登录仓库， 这里登录docker的用户名和密码在Secrets中设置，下面有介绍
+          docker login --username=${{ secrets.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD }}
+          # 使用Dockerfile构建镜像
+          docker build . --file Dockerfile --tag $docker_repo/$image_name:$tag
+          # 推送镜像到镜像仓库
+          docker push $docker_repo/$image_name:$tag
