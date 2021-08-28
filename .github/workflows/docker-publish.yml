@@ -51,13 +51,31 @@ jobs:
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-
-      # Build and push Docker image with Buildx (don't push on PR)
-      # https://github.com/docker/build-push-action
-      - name: Build and push Docker image
-        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+      - name: Docker Setup QEMU
+        # You may pin to the exact commit or the version.
+        # uses: docker/setup-qemu-action@27d0a4f181a40b142cce983c5393082c365d1480
+        uses: docker/setup-qemu-action@v1.2.0
         with:
-          context: .
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          # QEMU static binaries Docker image (e.g. tonistiigi/binfmt:latest)
+
+          # Platforms to install (e.g. arm64,riscv64,arm)
+          platforms: arm64,arm/v7,amd64
+          
+      - name: Build and push Docker image
+      - run: |
+              docker buildx create --use
+              docker buildx build --platform linux/arm64 \
+                      -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:arm64-${{ steps.meta.outputs.tags }} \
+                      --push \
+                      -f ./Dockerfile_arm64v8 .
+              docker buildx build --platform linux/arm/v7 \
+                      -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:arm32-${{ steps.meta.outputs.tags }} \
+                      --push \
+                      -f ./Dockerfile_arm32v7 .
+              docker buildx build --platform linux/amd64 \
+                      -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:amd64-${{ steps.meta.outputs.tags }} \
+                      --push \
+                      -f ./Dockerfile .
+
+
+
