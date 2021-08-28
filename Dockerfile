@@ -8,8 +8,8 @@ ENV TZ=Asia/Shanghai
 ENV AccessToken=
 ENV Secret=
 ENV Nohead=True
-ENV Sourcepath="https://github.com/Jone2008/TechXueXi.git"
-# ENV CRONTIME="30 9 * * *"
+ENV Sourcepath="https://github.com/TechXueXi/TechXueXi.git"
+ENV CRONTIME="30 9 * * *"
 # RUN rm -f /xuexi/config/*; ls -la
 COPY requirements.txt /xuexi/requirements.txt
 COPY run.sh /xuexi/run.sh 
