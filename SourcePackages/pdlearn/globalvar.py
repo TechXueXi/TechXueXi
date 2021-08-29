@@ -7,6 +7,7 @@ pushmode ="1"
 nohead = False
 accesstoken = ""
 secret=""
+islooplogin=False
 ##推送或者显示
 def pushprint(text):
     print(accesstoken,secret)
@@ -20,4 +21,5 @@ def pushprint(text):
        elif pushmode=="4":
             push=PlusPushHandler(accesstoken)
             push.fttext(text)
+
     print(text)

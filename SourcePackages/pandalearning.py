@@ -23,6 +23,8 @@ def get_argv():
     stime = False
     if os.getenv('Nohead') == "True":
         nohead=True
+    if os.getenv('islooplogin') == "True":
+        gl.islooplogin=True
     if len(argv) > 2:
         if argv[2] == "hidden":
             nohead = True

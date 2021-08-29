@@ -181,8 +181,13 @@ class Mydriver:
             user.save_cookies(cookies)
             return cookies
         except Exception as e:
-            self.quit()
             print("扫描二维码超时... 错误信息：" + str(e))
+            if(gl.islooplogin==True):
+                print("循环模式开启，即将重新获取二维码")
+                time.sleep(3)
+                return self.get_cookie_from_network()
+            self.quit()
+            
             if str(e).find("check_hostname") > -1 and str(e).find("server_hostname") > -1:
                 print("针对“check_hostname requires server_hostname”问题：")
                 print("您的网络连接存在问题，请检查您与xuexi.cn的网络连接并关闭“某些”软件")
