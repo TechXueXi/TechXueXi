@@ -16,7 +16,6 @@ on:
 
 env:
   # Use docker.io for Docker Hub if empty
-  REGISTRY: ghcr.io
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
 
@@ -35,13 +34,12 @@ jobs:
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
-      - name: Log into registry ${{ env.REGISTRY }}
+      - name: Log into registry 
         if: github.event_name != 'pull_request'
         uses: docker/login-action@28218f9b04b4f3f62068d7b6ce6ca5b26e35336c
         with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: techxuexi
+          password: ${{ secrets.TECHXUEXI_DOCKER_TOKEN }}
 
       # Extract metadata (tags, labels) for Docker
       # https://github.com/docker/metadata-action
@@ -49,7 +47,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: techxuexi/techxuexi
       - name: Docker Setup QEMU
         # You may pin to the exact commit or the version.
         # uses: docker/setup-qemu-action@27d0a4f181a40b142cce983c5393082c365d1480
@@ -59,19 +57,17 @@ jobs:
 
           # Platforms to install (e.g. arm64,riscv64,arm)
           platforms: arm64,arm/v7,amd64
-      - name: downcase REPO
-        run: |
-          echo "dimagetag=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}    
+ 
       - name: Build and push Docker image
         run: |
               
               docker buildx create --use
               docker buildx build --platform linux/amd64 \
-                      -t ${{ env.REGISTRY }}/${dimagetag}:amd64-${{ github.run_number }} \
+                      -t techxuexi/techxuexi:amd64-${{ github.run_number }} \
                       --push \
                       -f ./Dockerfile .
               docker buildx build --platform linux/arm64 \
-                      -t ${{ env.REGISTRY }}/${dimagetag}:arm64-${{ github.run_number }} \
+                      -t techxuexi/techxuexi:arm64-${{ github.run_number }} \
                       --push \
                       -f ./Dockerfile_arm64v8 .
 
