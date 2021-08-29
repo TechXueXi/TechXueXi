@@ -7,6 +7,7 @@ accesstoken = ""
 secret=""
 ##推送或者显示
 def pushprint(text):
+    print(accesstoken,secret)
     if nohead==True:
        push=DingDingHandler(accesstoken,secret)
        push.ddtextsend(text)
