@@ -1,3 +1,4 @@
+from pdlearn import globalvar
 import requests
 from requests.cookies import RequestsCookieJar
 import json
@@ -20,8 +21,8 @@ def handle_score_color(score, full_score):
 
 def show_score(cookies):
     userId, total, scores = get_score(cookies)
-    print("当前学 xi 总积分：" + str(total) + "\t" + "今日得分：" + str(scores["today"]))
-    print("阅读文章:", handle_score_color(scores["article_num"], const.article_num_all), ",",
+    globalvar.pushprint("当前学 xi 总积分：" + str(total) + "\t" + "今日得分：" + str(scores["today"]))
+    globalvar.pushprint("阅读文章:", handle_score_color(scores["article_num"], const.article_num_all), ",",
         "观看视频:", handle_score_color(scores["video_num"], const.video_num_all), ",",
         "文章时长:", handle_score_color(scores["article_time"], const.article_time_all), ",",
         "视频时长:", handle_score_color(scores["video_time"], const.video_time_all), ",",

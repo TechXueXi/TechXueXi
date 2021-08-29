@@ -36,6 +36,20 @@ def get_argv():
     if len(argv) > 4:
         if argv[4].isdigit():
             stime = argv[4]
+    if os.getenv('AccessToken')==None:
+        try:   
+            gl.accesstoken = cfg["addition"]["token"]
+        finally:
+            gl.accesstoken=""
+    else:
+        gl.accesstoken=os.getenv('AccessToken')
+    if os.getenv('Secret')==None:
+        try:      
+            gl.secret = cfg["addition"]["secret"]
+        finally:
+            gl.secret=""    
+    else:
+        gl.secret=os.getenv('Secret')        
     gl.nohead=nohead
     return nohead, lock, stime
 
@@ -99,18 +113,18 @@ if __name__ == '__main__':
         video_thread.join()
     if TechXueXi_mode in ["2", "3"]:
         driver_default = Mydriver()
-        print('开始每日答题……')
+        gl.pushprint('开始每日答题……')
         daily(cookies, scores, driver_default=driver_default)
         if TechXueXi_mode in ["2", "3"]:
-            print('开始每周答题……')
+            gl.pushprint('开始每周答题……')
             weekly(cookies, scores, driver_default=driver_default)
             if nohead!=True:
-                print('开始专项答题……')
+                gl.pushprint('开始专项答题……')
                 zhuanxiang(cookies, scores, driver_default=driver_default)
         try:
             driver_default.quit()
         except Exception as e:
-            print('driver_default 在 main 退出时出了一点小问题...')
+            gl.pushprint('driver_default 在 main 退出时出了一点小问题...')
     if TechXueXi_mode == "4":
         user.select_user()
     if TechXueXi_mode == "5":
@@ -119,7 +133,7 @@ if __name__ == '__main__':
         user.refresh_all_cookies(live_time=11.90)
 
     seconds_used = int(time.time() - start_time)
-    print("总计用时 " + str(math.floor(seconds_used / 60)) + " 分 " + str(seconds_used % 60) + " 秒")
+    gl.pushprint("总计用时 " + str(math.floor(seconds_used / 60)) + " 分 " + str(seconds_used % 60) + " 秒")
     try:
         user.shutdown(stime)
     except Exception as e:

@@ -1,6 +1,7 @@
 # import sys
 # import signal
 # from pdlearn import color
+from pdlearn import globalvar
 from threading import Thread
 from threading import Lock
 
@@ -34,7 +35,7 @@ class MyThread(Thread):
         self.lock = lock
 
     def run(self):
-        print("开启： " + self.name)
+        globalvar.accesstoken("开启： " + self.name)
         if self.lock:
             threadLock.acquire()
             self.func(*self.args)

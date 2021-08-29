@@ -209,7 +209,9 @@ class Mydriver:
         ddhandler = DingDingHandler(token, secret)
         ddhandler.ddtextsend(decode_img(self.getQRcode()))
 
+
     
+
     def getQRcode(self):
         try:
             # 获取iframe内的二维码
