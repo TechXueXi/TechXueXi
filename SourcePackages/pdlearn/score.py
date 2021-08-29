@@ -22,14 +22,14 @@ def handle_score_color(score, full_score):
 def show_score(cookies):
     userId, total, scores = get_score(cookies)
     globalvar.pushprint("当前学 xi 总积分：" + str(total) + "\t" + "今日得分：" + str(scores["today"]))
-    globalvar.pushprint("阅读文章:", handle_score_color(scores["article_num"], const.article_num_all), ",",
-        "观看视频:", handle_score_color(scores["video_num"], const.video_num_all), ",",
-        "文章时长:", handle_score_color(scores["article_time"], const.article_time_all), ",",
-        "视频时长:", handle_score_color(scores["video_time"], const.video_time_all), ",",
-        "\n每日登陆:", handle_score_color(scores["login"], const.login_all), ",",
-        "每日答题:", handle_score_color(scores["daily"], const.daily_all), ",",
-        "每周答题:", handle_score_color(scores["weekly"], const.weekly_all), ",",
-        "专项答题:", handle_score_color(scores["zhuanxiang"], const.zhuanxiang_all))
+    globalvar.pushprint("阅读文章:"+ handle_score_color(scores["article_num"], const.article_num_all)+ ","+
+        "观看视频:"+ handle_score_color(scores["video_num"], const.video_num_all)+ ","+
+        "文章时长:"+ handle_score_color(scores["article_time"], const.article_time_all)+ ","+
+        "视频时长:"+ handle_score_color(scores["video_time"], const.video_time_all)+ ","+
+        "\n每日登陆:"+ handle_score_color(scores["login"], const.login_all)+ ","+
+        "每日答题:"+ handle_score_color(scores["daily"], const.daily_all)+ ","+
+        "每周答题:"+ handle_score_color(scores["weekly"], const.weekly_all)+ ","+
+        "专项答题:"+ handle_score_color(scores["zhuanxiang"], const.zhuanxiang_all))
     return total, scores
 
 

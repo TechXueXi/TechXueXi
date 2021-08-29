@@ -1,4 +1,5 @@
 #!/bin/sh
+rm -rf /xuexi/code/TechXueXi
 git -C /xuexi/code/TechXueXi config pull.ff only
 printenv >> /etc/environment
 touch /var/log/cron.log
