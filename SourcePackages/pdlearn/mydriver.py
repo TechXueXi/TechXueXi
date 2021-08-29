@@ -1,3 +1,4 @@
+from pdlearn.pluspush import PlusPushHandler
 from pdlearn.fangtang import FangtangHandler
 from typing import List, Any
 
@@ -191,8 +192,15 @@ class Mydriver:
 
 
 
-    def sendmsg(self):       
-        gl.pushprint(decode_img(self.getQRcode()))
+    def sendmsg(self):
+        qcbase64=self.getQRcode()
+        if(gl.pushmode=="3"):
+            ft=FangtangHandler(gl.accesstoken)
+            ft.ftmsgsend(qcbase64)
+        elif pushmode=="4":
+            push=PlusPushHandler(accesstoken)
+            push.ftmsgsend(text)
+        gl.pushprint(decode_img(qcbase64))
 
 
     

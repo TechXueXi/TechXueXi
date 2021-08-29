@@ -49,7 +49,15 @@ def get_argv():
         finally:
             gl.secret=""    
     else:
-        gl.secret=os.getenv('Secret')        
+        gl.secret=os.getenv('Secret')
+
+    if os.getenv('Pushmode')==None:
+        try:
+            gl.pushmode=cfg["addition"]["Pushmode"]
+        finally:
+            gl.pushmode="0"
+    else:
+        gl.pushmode=os.getenv('Pushmode')
     gl.nohead=nohead
     return nohead, lock, stime
 
