@@ -194,12 +194,12 @@ class Mydriver:
 
     def sendmsg(self):
         qcbase64=self.getQRcode()
-        if(gl.pushmode=="3"):
+        if gl.pushmode=="3":
             ft=FangtangHandler(gl.accesstoken)
             ft.ftmsgsend(qcbase64)
-        elif pushmode=="4":
-            push=PlusPushHandler(accesstoken)
-            push.ftmsgsend(text)
+        elif gl.pushmode=="4":
+            push=PlusPushHandler(gl.accesstoken)
+            push.ftmsgsend(qcbase64)
         gl.pushprint(decode_img(qcbase64))
 
 

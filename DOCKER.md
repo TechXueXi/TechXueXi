@@ -22,3 +22,6 @@ Sourcepath=项目源，默认是https://github.com.cnpmjs.org/TechXueXi/TechXueX
 ```
 pullbranche=项目分支，默认是dev，后续可能会变为master
 ```
+##### 钉钉机器人接入方式请参考 https://developers.dingtalk.com/document/app/custom-robot-access/title-72m-8ag-pqw
+##### Server酱接入参考 http://pushplus.hxtrip.com/
+##### pluspush介入参考 http://pushplus.hxtrip.com/
