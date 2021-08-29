@@ -105,6 +105,7 @@ if __name__ == '__main__':
     total, scores = show_score(cookies)
 
     if TechXueXi_mode in ["1", "3"]:
+        gl.pushprint("开始学 Xi")
         article_thread = threads.MyThread("文章学 xi ", article, uid, cookies, article_index, scores, lock=lock)
         video_thread = threads.MyThread("视频学 xi ", video, uid, cookies, video_index, scores, lock=lock)
         article_thread.start()
@@ -112,14 +113,15 @@ if __name__ == '__main__':
         article_thread.join()
         video_thread.join()
     if TechXueXi_mode in ["2", "3"]:
+        gl.pushprint("开始答题")
         driver_default = Mydriver()
-        gl.pushprint('开始每日答题……')
+        print('开始每日答题……')
         daily(cookies, scores, driver_default=driver_default)
         if TechXueXi_mode in ["2", "3"]:
-            gl.pushprint('开始每周答题……')
+            print('开始每周答题……')
             weekly(cookies, scores, driver_default=driver_default)
             if nohead!=True:
-                gl.pushprint('开始专项答题……')
+                print('开始专项答题……')
                 zhuanxiang(cookies, scores, driver_default=driver_default)
         try:
             driver_default.quit()

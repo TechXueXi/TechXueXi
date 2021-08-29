@@ -35,7 +35,7 @@ class MyThread(Thread):
         self.lock = lock
 
     def run(self):
-        globalvar.pushprint("开启： " + self.name)
+        print("开启： " + self.name)
         if self.lock:
             threadLock.acquire()
             self.func(*self.args)
