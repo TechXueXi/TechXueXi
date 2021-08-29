@@ -26,5 +26,5 @@ pullbranche=项目分支，默认是dev，后续可能会变为master
 islooplogin=循环参数，当设置为True的时候，如果扫码超时会一直尝试循环获取新的扫码，考虑到微信公众号推送有次数限制，慎用
 ```
 ##### 钉钉机器人接入方式请参考 https://developers.dingtalk.com/document/app/custom-robot-access/title-72m-8ag-pqw
-##### Server酱接入参考 http://www.pushplus.plus
-##### pluspush介入参考 http://pushplus.com
+##### Server酱接入参考 https://sct.ftqq.com/
+##### pluspush介入参考 http://www.pushplus.plus
