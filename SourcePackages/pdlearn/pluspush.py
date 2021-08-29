@@ -5,7 +5,7 @@ class PlusPushHandler:
         self.token = token
     def ftmsgsend(self, msgurl):
            
-            url="http://pushplus.hxtrip.com/send"
+            url="http://www.pushplus.plus/send"
             headers = {"Content-Type": "application/json"}  # 定义数据类型
             data = {
                 "token":self.token,
@@ -16,7 +16,7 @@ class PlusPushHandler:
             res = requests.post(url, data=json.dumps(data), headers=headers)  # 发送post请求
             print(res.text)
     def fttext(self,text):
-            url="http://pushplus.hxtrip.com/send"
+            url="http://www.pushplus.plus/send"
             headers = {"Content-Type": "application/json"}  # 定义数据类型
             data = {
                 "token":self.token,
