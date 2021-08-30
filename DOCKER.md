@@ -1,3 +1,4 @@
+#### 镜像地址： https://hub.docker.com/r/techxuexi/techxuexi
 # Docker运行命令
 ```shell
 docker run -e "AccessToken={token}" -e "Secret={密钥}" -d --name={容器名称} techxuexi/techxuexi:{tag}
@@ -14,7 +15,7 @@ Pushmode=推送模式，1表示：钉钉，2表示：微信（并未实现），
 ```
 ##### 可选参数  
 ```
-CRONTIME=Cron参数，默认是30 9 * * *，既每天早上9:30执行  
+CRONTIME=Cron参数，默认是30 9 * * *，既每天早上9:30执行  ,可以把Cron表达式放到这里去验证 https://crontab.guru/
 ```
 ```
 Sourcepath=项目源，默认是https://github.com.cnpmjs.org/TechXueXi/TechXueXi.git

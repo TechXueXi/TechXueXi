@@ -6,12 +6,12 @@ name: Docker
 # documentation.
 
 on:
-  schedule:
-    - cron: '39 12 * * *'
-  push:
-    branches: [ dev ]
-    # Publish semver tags as releases.
-    tags: [ 'v*.*.*' ]
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: ''
+        required: true
+        default: 'unstable'
 
 
 env:
@@ -63,11 +63,11 @@ jobs:
               
               docker buildx create --use
               docker buildx build --platform linux/amd64 \
-                      -t techxuexi/techxuexi:amd64-${{ github.run_number }} \
+                      -t techxuexi/techxuexi:amd64-${GITHUB_REF##*/}${{ github.run_number }} \
                       --push \
                       -f ./Dockerfile .
               docker buildx build --platform linux/arm64 \
-                      -t techxuexi/techxuexi:arm64-${{ github.run_number }} \
+                      -t techxuexi/techxuexi:arm64-${GITHUB_REF##*/}${{ github.run_number }} \
                       --push \
                       -f ./Dockerfile_arm64v8 .
 

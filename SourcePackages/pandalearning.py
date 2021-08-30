@@ -1,3 +1,4 @@
+from pdlearn.score import show_scorePush
 import os
 import sys
 import time
@@ -113,9 +114,9 @@ if __name__ == '__main__':
     video_index = 1  # user.get_video_index(uid)
     
     total, scores = show_score(cookies)
-
+    gl.pushprint("开始学 Xi")
     if TechXueXi_mode in ["1", "3"]:
-        gl.pushprint("开始学 Xi")
+  
         article_thread = threads.MyThread("文章学 xi ", article, uid, cookies, article_index, scores, lock=lock)
         video_thread = threads.MyThread("视频学 xi ", video, uid, cookies, video_index, scores, lock=lock)
         article_thread.start()
@@ -123,7 +124,7 @@ if __name__ == '__main__':
         article_thread.join()
         video_thread.join()
     if TechXueXi_mode in ["2", "3"]:
-        gl.pushprint("开始答题")
+
         driver_default = Mydriver()
         print('开始每日答题……')
         daily(cookies, scores, driver_default=driver_default)
@@ -136,7 +137,7 @@ if __name__ == '__main__':
         try:
             driver_default.quit()
         except Exception as e:
-            gl.pushprint('driver_default 在 main 退出时出了一点小问题...')
+            print('driver_default 在 main 退出时出了一点小问题...')
     if TechXueXi_mode == "4":
         user.select_user()
     if TechXueXi_mode == "5":
@@ -145,7 +146,8 @@ if __name__ == '__main__':
         user.refresh_all_cookies(live_time=11.90)
 
     seconds_used = int(time.time() - start_time)
-    gl.pushprint("总计用时 " + str(math.floor(seconds_used / 60)) + " 分 " + str(seconds_used % 60) + " 秒")
+    print("总计用时 " + str(math.floor(seconds_used / 60)) + " 分 " + str(seconds_used % 60) + " 秒")
+    show_scorePush(cookies)
     try:
         user.shutdown(stime)
     except Exception as e:
