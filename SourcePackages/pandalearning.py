@@ -124,7 +124,6 @@ if __name__ == '__main__':
         article_thread.join()
         video_thread.join()
     if TechXueXi_mode in ["2", "3"]:
-
         driver_default = Mydriver()
         print('开始每日答题……')
         daily(cookies, scores, driver_default=driver_default)
@@ -137,7 +136,7 @@ if __name__ == '__main__':
         try:
             driver_default.quit()
         except Exception as e:
-            print('driver_default 在 main 退出时出了一点小问题...')
+            gl.pushprint('driver_default 在 main 退出时出了一点小问题...')
     if TechXueXi_mode == "4":
         user.select_user()
     if TechXueXi_mode == "5":
