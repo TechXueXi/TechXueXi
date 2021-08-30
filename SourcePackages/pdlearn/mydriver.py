@@ -1,3 +1,4 @@
+from pdlearn.pluspush import PlusPushHandler
 from pdlearn.fangtang import FangtangHandler
 from typing import List, Any
 
@@ -148,8 +149,8 @@ class Mydriver:
         try: 
              # 取出iframe中二维码，并发往钉钉
              if  gl.nohead==True or cfg["addition"]["SendLoginQRcode"] == 1 :
-                 print("二维码将发往钉钉机器人...\n" + "=" * 60)
-                 self.toDingDing()
+                 print("二维码将发往机器人...\n" + "=" * 60)
+                 self.sendmsg()
         except Exception as e:
              print("未检测到SendLoginQRcode配置，请手动扫描二维码登陆..."+e)
 
@@ -180,36 +181,35 @@ class Mydriver:
             user.save_cookies(cookies)
             return cookies
         except Exception as e:
-            self.quit()
             print("扫描二维码超时... 错误信息：" + str(e))
+            if(gl.islooplogin==True):
+                print("循环模式开启，即将重新获取二维码")
+                time.sleep(3)
+                return self.get_cookie_from_network()
+            self.quit()
+            
             if str(e).find("check_hostname") > -1 and str(e).find("server_hostname") > -1:
                 print("针对“check_hostname requires server_hostname”问题：")
                 print("您的网络连接存在问题，请检查您与xuexi.cn的网络连接并关闭“某些”软件")
             auto.prompt("按回车键退出程序. ")
             exit()
 
-    def toFangTang(self):
-            if os.getenv('AccessToken')==None:   
-                token = cfg["addition"]["token"]
-            else:
-                token=os.getenv('AccessToken')
-            ddhandler = FangtangHandler(token)
-            ddhandler.ftmsgsend(self.getQRcode())
 
 
-    def toDingDing(self):
-        if os.getenv('AccessToken')==None:   
-            token = cfg["addition"]["token"]
-        else:
-            token=os.getenv('AccessToken')
-        if os.getenv('Secret')==None:      
-            secret = cfg["addition"]["secret"]
-        else:
-            secret=os.getenv('Secret')
-        ddhandler = DingDingHandler(token, secret)
-        ddhandler.ddmsgsend(decode_img(self.getQRcode()))
+
+    def sendmsg(self):
+        qcbase64=self.getQRcode()
+        if gl.pushmode=="3":
+            ft=FangtangHandler(gl.accesstoken)
+            ft.ftmsgsend(qcbase64)
+        elif gl.pushmode=="4":
+            push=PlusPushHandler(gl.accesstoken)
+            push.ftmsgsend(qcbase64)
+        gl.pushprint(decode_img(qcbase64))
+
 
     
+
     def getQRcode(self):
         try:
             # 获取iframe内的二维码

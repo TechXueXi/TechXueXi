@@ -1,10 +1,7 @@
 #!/bin/sh
-cd code
-cd TechXueXi
 echo "检查更新"
-git pull
+git -C /xuexi/code/TechXueXi pull $Sourcepath $pullbranche
 echo "检查更新完毕"
-cd ..
-cp -r TechXueXi/SourcePackages/* ..
-cd ..
-python pandalearning.py > /proc/1/fd/1
+cp -r /xuexi/code/TechXueXi/SourcePackages/* /xuexi
+echo "开始运行"
+/usr/local/bin/python /xuexi/pandalearning.py

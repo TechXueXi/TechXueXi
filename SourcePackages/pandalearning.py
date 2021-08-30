@@ -23,6 +23,8 @@ def get_argv():
     stime = False
     if os.getenv('Nohead') == "True":
         nohead=True
+    if os.getenv('islooplogin') == "True":
+        gl.islooplogin=True
     if len(argv) > 2:
         if argv[2] == "hidden":
             nohead = True
@@ -36,12 +38,35 @@ def get_argv():
     if len(argv) > 4:
         if argv[4].isdigit():
             stime = argv[4]
+    if os.getenv('AccessToken')==None:
+        try:   
+            gl.accesstoken = cfg["addition"]["token"]
+        finally:
+            gl.accesstoken=""
+    else:
+        gl.accesstoken=os.getenv('AccessToken')
+    if os.getenv('Secret')==None:
+        try:      
+            gl.secret = cfg["addition"]["secret"]
+        finally:
+            gl.secret=""    
+    else:
+        gl.secret=os.getenv('Secret')
+
+    if os.getenv('Pushmode')==None:
+        try:
+            gl.pushmode=cfg["addition"]["Pushmode"]
+        finally:
+            gl.pushmode="0"
+    else:
+        gl.pushmode=os.getenv('Pushmode')
     gl.nohead=nohead
     return nohead, lock, stime
 
 
 if __name__ == '__main__':
     nohead, lock, stime = get_argv()
+    print("是否无头模式：{0} {1}".format(nohead,os.getenv('Nohead')))
     #  0 读取版本信息
     start_time = time.time()
     if(cfg['display']['banner'] != False): # banner文本直接硬编码，不要放在conf中
@@ -90,6 +115,7 @@ if __name__ == '__main__':
     total, scores = show_score(cookies)
 
     if TechXueXi_mode in ["1", "3"]:
+        gl.pushprint("开始学 Xi")
         article_thread = threads.MyThread("文章学 xi ", article, uid, cookies, article_index, scores, lock=lock)
         video_thread = threads.MyThread("视频学 xi ", video, uid, cookies, video_index, scores, lock=lock)
         article_thread.start()
@@ -97,6 +123,7 @@ if __name__ == '__main__':
         article_thread.join()
         video_thread.join()
     if TechXueXi_mode in ["2", "3"]:
+        gl.pushprint("开始答题")
         driver_default = Mydriver()
         print('开始每日答题……')
         daily(cookies, scores, driver_default=driver_default)
@@ -109,7 +136,7 @@ if __name__ == '__main__':
         try:
             driver_default.quit()
         except Exception as e:
-            print('driver_default 在 main 退出时出了一点小问题...')
+            gl.pushprint('driver_default 在 main 退出时出了一点小问题...')
     if TechXueXi_mode == "4":
         user.select_user()
     if TechXueXi_mode == "5":
@@ -118,7 +145,7 @@ if __name__ == '__main__':
         user.refresh_all_cookies(live_time=11.90)
 
     seconds_used = int(time.time() - start_time)
-    print("总计用时 " + str(math.floor(seconds_used / 60)) + " 分 " + str(seconds_used % 60) + " 秒")
+    gl.pushprint("总计用时 " + str(math.floor(seconds_used / 60)) + " 分 " + str(seconds_used % 60) + " 秒")
     try:
         user.shutdown(stime)
     except Exception as e:

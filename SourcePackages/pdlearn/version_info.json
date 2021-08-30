@@ -1,6 +1,9 @@
 {
     "techxuexi_version": "v20210816",
     "techxuexi_update_log": [{
+        "version": "v20210829",
+        "info": "Docker功能增加"
+    }, {
         "version": "v20210827",
         "info": "针对Docker的优化"
     }, {
