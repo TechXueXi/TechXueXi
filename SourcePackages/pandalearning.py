@@ -42,14 +42,14 @@ def get_argv():
     if os.getenv('AccessToken')==None:
         try:   
             gl.accesstoken = cfg["addition"]["token"]
-        finally:
+        except:
             gl.accesstoken=""
     else:
         gl.accesstoken=os.getenv('AccessToken')
     if os.getenv('Secret')==None:
         try:      
             gl.secret = cfg["addition"]["secret"]
-        finally:
+        except:
             gl.secret=""    
     else:
         gl.secret=os.getenv('Secret')
@@ -57,7 +57,7 @@ def get_argv():
     if os.getenv('Pushmode')==None:
         try:
             gl.pushmode=cfg["addition"]["Pushmode"]
-        finally:
+        except:
             gl.pushmode="0"
     else:
         gl.pushmode=os.getenv('Pushmode')

@@ -64,7 +64,7 @@ class Mydriver:
                 self.options.add_argument('--disable-extensions')
                 self.options.add_argument('--disable-gpu')
                 self.options.add_argument('--no-sandbox')
-                selenium.webdriver.DesiredCapabilities.FIREFOX["unexpectedAlertBehaviour"] = "accept"
+                self.options.set_capability('unhandledPromptBehavior', 'accept')
                 self.options.add_argument('--disable-software-rasterizer')  # 解决GL报错问题
             self.options.add_argument('--mute-audio')  # 关闭声音
             # self.options.add_argument('--window-size=400,500')
@@ -80,6 +80,7 @@ class Mydriver:
             self.options.add_argument("--disable-blink-features")
             self.options.add_argument("--disable-blink-features=AutomationControlled")
             self.webdriver = webdriver
+
             # ==================== 寻找 chrome ====================
             if os.path.exists("./chrome/chrome.exe"):  # win
                 self.options.binary_location = "./chrome/chrome.exe"
@@ -152,7 +153,7 @@ class Mydriver:
                  print("二维码将发往机器人...\n" + "=" * 60)
                  self.sendmsg()
         except Exception as e:
-             print("未检测到SendLoginQRcode配置，请手动扫描二维码登陆..."+e)
+             print("未检测到SendLoginQRcode配置，请手动扫描二维码登陆..."+str(e))
 
         # try: 
         #     # 取出iframe中二维码，并发往方糖，拿到的base64没办法直接发钉钉，所以发方糖
