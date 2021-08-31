@@ -1,6 +1,7 @@
 # import sys
 # import signal
 # from pdlearn import color
+from pdlearn import globalvar
 from threading import Thread
 from threading import Lock
 
