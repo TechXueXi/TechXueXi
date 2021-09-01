@@ -1,3 +1,4 @@
+#### [其他运行方式](https://github.com/TechXueXi/TechXueXi/blob/dev/%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95-%E6%9B%B4%E6%96%B0%E6%96%B9%E6%B3%95-%E4%B8%8B%E8%BD%BD%E6%96%B9%E5%BC%8F.md)
 #### 镜像地址： https://hub.docker.com/r/techxuexi/techxuexi
 # Docker运行命令
 ```shell

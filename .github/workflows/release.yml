@@ -1,0 +1,41 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_tag:
+        description: ''
+        required: true
+        default: 'v'
+      prerelease:
+        description: ''
+        required: true
+        default: 'false'
+      techxuexi_text:
+        description: ''
+        required: true
+        default: '交流群： https://github.com/TechXueXi/TechXueXi/issues/14 ，使用方法：https://github.com/TechXueXi/TechXueXi/blob/v20210816/%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95-%E6%9B%B4%E6%96%B0%E6%96%B9%E6%B3%95-%E4%B8%8B%E8%BD%BD%E6%96%B9%E5%BC%8F.md'
+  
+
+jobs:
+  Release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Get tag
+        id: tag
+        run: |
+          echo ::set-output name=tag::${GITHUB_REF#refs/tags/}
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.event.inputs.version_tag }}
+          release_name: ${{ github.event.inputs.version_tag }}
+          draft: false
+          prerelease: ${{ github.event.inputs.prerelease }}
+          body: ${{ github.event.inputs.techxuexi_text }}
