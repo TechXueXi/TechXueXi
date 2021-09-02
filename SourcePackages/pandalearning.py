@@ -1,4 +1,3 @@
-from pdlearn.score import show_scorePush
 import os
 import sys
 import time
@@ -6,17 +5,22 @@ import math
 from sys import argv
 from pdlearn import boot
 boot.check_environment()
-from pdlearn import version
-from pdlearn import user
-from pdlearn import score
-from pdlearn import color
-from pdlearn import threads
-from pdlearn.config          import cfg
-from pdlearn.mydriver        import Mydriver
-from pdlearn.score           import show_score
-from pdlearn.article_video   import article, video
-from pdlearn.answer_question import daily, weekly, zhuanxiang
-import pdlearn.globalvar as gl
+try:
+    # 在此处导入所有 pdlearn 内的模块
+    from pdlearn import version
+    from pdlearn import user
+    from pdlearn import score
+    from pdlearn import color
+    from pdlearn import threads
+    from pdlearn.config          import cfg
+    from pdlearn.mydriver        import Mydriver
+    from pdlearn.score           import show_score
+    from pdlearn.score           import show_scorePush
+    from pdlearn.article_video   import article, video
+    from pdlearn.answer_question import daily, weekly, zhuanxiang
+    import pdlearn.globalvar as gl
+except ImportError as e:
+    boot.try_pip_install(exception=e)
 
 def get_argv():
     nohead = False
