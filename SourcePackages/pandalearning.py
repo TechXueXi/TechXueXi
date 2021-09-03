@@ -44,17 +44,17 @@ def get_argv():
         if argv[4].isdigit():
             stime = argv[4]
     if os.getenv('AccessToken')==None:
-        try:   
+        try:
             gl.accesstoken = cfg["addition"]["token"]
         except:
             gl.accesstoken=""
     else:
         gl.accesstoken=os.getenv('AccessToken')
     if os.getenv('Secret')==None:
-        try:      
+        try:
             gl.secret = cfg["addition"]["secret"]
         except:
-            gl.secret=""    
+            gl.secret=""
     else:
         gl.secret=os.getenv('Secret')
 
@@ -92,7 +92,7 @@ if __name__ == '__main__':
 
     if nohead==True:
         TechXueXi_mode="3"
-    else:    
+    else:
         try:
             if cfg["base"]["ModeType"]:
                 print("默认选择模式：" + str(cfg["base"]["ModeType"]) + "\n" + "=" * 60)
@@ -104,7 +104,7 @@ if __name__ == '__main__':
     info_shread.start()
     #  1 创建用户标记，区分多个用户历史纪录
     uid = user.get_default_userId()
-  
+
     if not cookies or TechXueXi_mode == "0":
         print("未找到有效登录信息，需要登录")
         driver_login = Mydriver()
@@ -114,13 +114,27 @@ if __name__ == '__main__':
         uid = user.get_userId(cookies)
         user_fullname = user.get_fullname(uid)
         user.update_last_user(uid)
+    # 增加多用户支持，已经有登录信息的重新扫码
+    else:
+        user_fullname = user.get_fullname(uid)
+        output = "\n用户" + user_fullname + "已登录,如要再次学习请重新扫码\n"
+        print(output)
+        gl.pushprint(output)
+        driver_login = Mydriver()
+        cookies = driver_login.login()
+        driver_login.quit()
+        user.save_cookies(cookies)
+        uid = user.get_userId(cookies)
+        user.update_last_user(uid)
+    output = "\n用户：" + user_fullname + "登录正常，开始学习...\n"
+
     article_index = user.get_article_index(uid)
     video_index = 1  # user.get_video_index(uid)
-    
+
     total, scores = show_score(cookies)
-    gl.pushprint("开始学 Xi")
+    gl.pushprint(output)
     if TechXueXi_mode in ["1", "3"]:
-  
+
         article_thread = threads.MyThread("文章学 xi ", article, uid, cookies, article_index, scores, lock=lock)
         video_thread = threads.MyThread("视频学 xi ", video, uid, cookies, video_index, scores, lock=lock)
         article_thread.start()
