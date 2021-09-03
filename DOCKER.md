@@ -4,6 +4,13 @@
 ```shell
 docker run -e "AccessToken={token}" -e "Secret={密钥}" -d --name={容器名称} techxuexi/techxuexi:{tag}
 ```
+
+```shell
+docker run -e "从Docker.md找到参数1" -e "从Docker.md找到参数2" -e "从Docker.md找到参数3" -d --name={容器名称} techxuexi/techxuexi:{tag}
+```
+
+参数，输入时不输入`{}`
+
 参数  
 tag=如果你是amd64的机器，那么就是amd64，如果是arm64那么就是arm64，然后后面跟版本号,例如 techxuexi/techxuexi:amd64-40   techxuexi/techxuexi:arm64-40  
 ##### 对于Server酱和pluspush，只需要填写token，而钉钉机器人需要填写token和secret
@@ -16,7 +23,7 @@ Pushmode=推送模式，1表示：钉钉，2表示：微信（并未实现），
 ```
 ##### 可选参数  
 ```
-CRONTIME=Cron参数，默认是30 9 * * *，既每天早上9:30执行  ,可以把Cron表达式放到这里去验证 https://crontab.guru/
+CRONTIME=Cron参数，默认是30 9 * * *，即每天早上9:30执行  ,可以把Cron表达式放到这里去验证 https://crontab.guru/
 ```
 ```
 Sourcepath=项目源，默认是https://github.com.cnpmjs.org/TechXueXi/TechXueXi.git
@@ -29,4 +36,6 @@ islooplogin=循环参数，当设置为True的时候，如果扫码超时会一�
 ```
 ##### 钉钉机器人接入方式请参考 https://developers.dingtalk.com/document/app/custom-robot-access/title-72m-8ag-pqw
 ##### Server酱接入参考 https://sct.ftqq.com/
-##### pluspush介入参考 http://www.pushplus.plus
+##### pluspush接入参考 http://www.pushplus.plus
+
+多账号等其他没有固定下来的用法，请加群了解。
