@@ -114,11 +114,26 @@ if __name__ == '__main__':
         uid = user.get_userId(cookies)
         user_fullname = user.get_fullname(uid)
         user.update_last_user(uid)
+    #增加多用户支持，已经有登录信息的重新扫码
+    else:
+        user_fullname = user.get_fullname(uid)
+        output="\n用户" + user_fullname + "已登录,如要再次学习请重新扫码\n"
+        print(output)
+        gl.pushprint(output)
+        driver_login = Mydriver()
+        cookies = driver_login.login()
+        driver_login.quit()
+        user.save_cookies(cookies)
+        uid = user.get_userId(cookies)
+        user.update_last_user(uid)                  
+    output="\n用户：" + user_fullname +"登录正常，开始学习...\n"
+
     article_index = user.get_article_index(uid)
     video_index = 1  # user.get_video_index(uid)
     
     total, scores = show_score(cookies)
-    gl.pushprint("开始学 Xi")
+    gl.pushprint(output)
+    
     if TechXueXi_mode in ["1", "3"]:
   
         article_thread = threads.MyThread("文章学 xi ", article, uid, cookies, article_index, scores, lock=lock)
