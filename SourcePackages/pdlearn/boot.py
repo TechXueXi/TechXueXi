@@ -13,7 +13,7 @@ def try_pip_install(exception=None):
     input("如需自动安装按回车键继续...（如不需要自动尝试安装可现在关闭程序）\n")
     try:
         from pip._internal import main as pip_main
-        pip_main(['install', '-r', '../requirements.txt'])
+        pip_main(['install', '-r', '../requirements.txt','-i','https://mirrors.aliyun.com/pypi/simple/'])
         print("\n自动安装完成，请重新运行程序")
         input("按回车键退出程序......")
         exit(333)
