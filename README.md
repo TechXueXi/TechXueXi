@@ -1,6 +1,8 @@
 # 前言
 
-**[在线聊天室地址及说明](https://github.com/TechXueXi/TechXueXi/issues/14)**
+**[交流群地址及说明](https://github.com/TechXueXi/TechXueXi/issues/14)**
+
+**我们随时删库跑路，请加交流群防失联。**
 
 > 本项目基于某已终止的项目，请自行搜索后前往star。我们由衷地敬佩这个领域的先锋们。  
 > 这是全网较好的成熟产品，但已停止，我们于心不忍。本仓库现由“科技强国”组织进行维护。
