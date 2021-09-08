@@ -50,3 +50,11 @@ jobs:
           UPDATE_1: ${{ secrets.UPDATE_1 }}
         run: |
           wget ${{ secrets.UPDATE_1 }}
+      - name: Delete Workflow Runs
+        uses: Mattraks/delete-workflow-runs@main
+        with:
+          token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          retain_days: 1
+          keep_minimum_runs: 0
+

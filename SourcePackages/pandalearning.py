@@ -115,7 +115,7 @@ if __name__ == '__main__':
         user_fullname = user.get_fullname(uid)
         user.update_last_user(uid)
     # 增加多用户支持，已经有登录信息的重新扫码
-    else:
+    elif nohead==True:
         user_fullname = user.get_fullname(uid)
         output = "\n用户" + user_fullname + "已登录,如要再次学习请重新扫码\n"
         print(output)
