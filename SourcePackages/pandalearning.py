@@ -104,7 +104,7 @@ if __name__ == '__main__':
     info_shread.start()
     #  1 创建用户标记，区分多个用户历史纪录
     uid = user.get_default_userId()
-
+    user_fullname=""
     if not cookies or TechXueXi_mode == "0":
         print("未找到有效登录信息，需要登录")
         driver_login = Mydriver()
