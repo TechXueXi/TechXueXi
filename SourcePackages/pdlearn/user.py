@@ -14,7 +14,7 @@ from pdlearn.mydriver import Mydriver
 
 
 def get_userId(cookies):
-    userId, total, scores = score.get_score(cookies)
+    userId, total, scores,userName = score.get_score(cookies)
     return userId
 
 
@@ -27,18 +27,20 @@ def get_fullname(userId):
             fullname = i + '_' + nickname
             break
     if (fullname == ""):
-        print("查找 userId: " + str(userId) + " 失败...")
-        pattern = re.compile(u'^[a-zA-Z0-9_\u4e00-\u9fa5]+$')
-        while True:
-            if globalvar.nohead==True:
-                input_name="Docker"
-            else:
-                input_name = input("将为此 userId 添加一个新用户。请输入此用户昵称：")
-            if (pattern.search(input_name) != None):
-                break
-            else:
-                print("输入不符合要求，输入内容只能为：英文字母、数字、下划线、中文。")
-        save_fullname(str(userId) + '_' + input_name)
+        cookies=get_cookie(userId)
+        userId ,total, scores,userName = score.get_score(cookies)
+        # print("查找 userId: " + str(userId) + " 失败...")
+        # pattern = re.compile(u'^[a-zA-Z0-9_\u4e00-\u9fa5]+$')
+        # while True:
+        #     if globalvar.nohead==True:
+        #         input_name="Docker"
+        #     else:
+        #         input_name = input("将为此 userId 添加一个新用户。请输入此用户昵称：")
+        #     if (pattern.search(input_name) != None):
+        #         break
+        #     else:
+        #         print("输入不符合要求，输入内容只能为：英文字母、数字、下划线、中文。")
+        save_fullname(str(userId) + '_' + userName)
         return get_fullname(userId)
     return fullname
 
