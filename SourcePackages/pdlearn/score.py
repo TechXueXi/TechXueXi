@@ -1,3 +1,4 @@
+from pickle import TRUE
 from pdlearn import globalvar
 import requests
 from requests.cookies import RequestsCookieJar
@@ -12,16 +13,16 @@ from pdlearn.const import const
 # https://pc-api.xuexi.cn/open/api/score/today/query
 
 
-def handle_score_color(score, full_score):
-    if int(score) < int(full_score):
+def handle_score_color(score, full_score,colorful=True):
+    if int(score) < int(full_score) and colorful:
         return color.red(str(score))+" / "+str(full_score)
     else:
         return str(score)+" / "+str(full_score)
 
 
 def show_score(cookies):
-    userId, total, scores = get_score(cookies)
-    print("当前学 xi 总积分：" + str(total) + "\t" + "今日得分：" + str(scores["today"]))
+    userId, total, scores,userName = get_score(cookies)
+    print(userName+" 当前学 xi 总积分：" + str(total) + "\t" + "今日得分：" + str(scores["today"]))
     print("阅读文章:", handle_score_color(scores["article_num"], const.article_num_all), ",",
         "观看视频:", handle_score_color(scores["video_num"], const.video_num_all), ",",
         "文章时长:", handle_score_color(scores["article_time"], const.article_time_all), ",",
@@ -33,16 +34,16 @@ def show_score(cookies):
     return total, scores
 
 def show_scorePush(cookies):
-    userId, total, scores = get_score(cookies)
-    globalvar.pushprint("当前学 xi 总积分：" + str(total) + "\t" + "今日得分：" + str(scores["today"])+
-        "\n阅读文章:"+ handle_score_color(scores["article_num"], const.article_num_all)+ ","+
-        "观看视频:"+ handle_score_color(scores["video_num"], const.video_num_all)+ ","+
-        "文章时长:"+ handle_score_color(scores["article_time"], const.article_time_all)+ ","+
-        "视频时长:"+ handle_score_color(scores["video_time"], const.video_time_all)+ ","+
-        "\n每日登陆:"+ handle_score_color(scores["login"], const.login_all)+ ","+
-        "每日答题:"+ handle_score_color(scores["daily"], const.daily_all)+ ","+
-        "每周答题:"+ handle_score_color(scores["weekly"], const.weekly_all)+ ","+
-        "专项答题:"+ handle_score_color(scores["zhuanxiang"], const.zhuanxiang_all))
+    userId, total, scores,userName = get_score(cookies)
+    globalvar.pushprint(userName+" 当前学 xi 总积分：" + str(total) + "\t" + "今日得分：" + str(scores["today"])+
+        "\n阅读文章:"+ handle_score_color(scores["article_num"], const.article_num_all,False)+ ","+
+        "观看视频:"+ handle_score_color(scores["video_num"], const.video_num_all,False)+ ","+
+        "文章时长:"+ handle_score_color(scores["article_time"], const.article_time_all,False)+ ","+
+        "视频时长:"+ handle_score_color(scores["video_time"], const.video_time_all,False)+ ","+
+        "\n每日登陆:"+ handle_score_color(scores["login"], const.login_all,False)+ ","+
+        "每日答题:"+ handle_score_color(scores["daily"], const.daily_all,False)+ ","+
+        "每周答题:"+ handle_score_color(scores["weekly"], const.weekly_all,False)+ ","+
+        "专项答题:"+ handle_score_color(scores["zhuanxiang"], const.zhuanxiang_all,False))
     return total, scores
 
 def get_score(cookies):
@@ -54,7 +55,11 @@ def get_score(cookies):
         total_json = requests.get("https://pc-api.xuexi.cn/open/api/score/get", cookies=jar,
                                   headers={'Cache-Control': 'no-cache'}).content.decode("utf8")
         total = int(json.loads(total_json)["data"]["score"])
-        userId = json.loads(total_json)["data"]["userId"]
+        #userId = json.loads(total_json)["data"]["userId"]
+        user_info=requests.get("https://pc-api.xuexi.cn/open/api/user/info", cookies=jar,
+                                  headers={'Cache-Control': 'no-cache'}).content.decode("utf8")
+        userId=json.loads(user_info)["data"]["uid"]
+        userName=json.loads(user_info)["data"]["nick"]
         score_json = requests.get("https://pc-api.xuexi.cn/open/api/score/today/queryrate", cookies=jar,
                                   headers={'Cache-Control': 'no-cache'}).content.decode("utf8")
         today_json = requests.get("https://pc-api.xuexi.cn/open/api/score/today/query", cookies=jar,
@@ -80,7 +85,7 @@ def get_score(cookies):
         scores["zhuanxiang"]   = score_list[7] # 4专项答题
         
         scores["today"]        = today         # 8今日得分
-        return userId ,total, scores
+        return userId ,total, scores,userName
     except:
         print("=" * 60)
         print("get_score 获取失败")

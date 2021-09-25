@@ -5,6 +5,7 @@ import math
 from sys import argv
 from pdlearn import boot
 boot.check_environment()
+
 try:
     # 在此处导入所有 pdlearn 内的模块
     from pdlearn import version
@@ -68,28 +69,10 @@ def get_argv():
     gl.nohead=nohead
     return nohead, lock, stime
 
-
-if __name__ == '__main__':
+def start_learn(uid,name):
     nohead, lock, stime = get_argv()
     print("是否无头模式：{0} {1}".format(nohead,os.getenv('Nohead')))
-    #  0 读取版本信息
-    start_time = time.time()
-    if(cfg['display']['banner'] != False): # banner文本直接硬编码，不要放在conf中
-        print("=" * 60 + \
-        '\n    科技强 guo 官方网站：https://techxuexi.js.org' + \
-        '\n    Github地址：https://github.com/TechXueXi' + \
-        '\n使用本项目，必须接受以下内容，否则请立即退出：' + \
-        '\n    - TechXueXi 仅额外提供给“爱党爱 guo ”且“工作学业繁重”的人' + \
-        '\n    - 项目开源协议 LGPL-3.0' + \
-        '\n    - 不得利用本项目盈利' + \
-        '\n另外，我们建议你参与一个维护劳动法的项目：' + \
-        '\nhttps://996.icu/ 或 https://github.com/996icu/996.ICU/blob/master/README_CN.md')
-    cookies = user.check_default_user_cookie()
-    user.list_user()
-    user.refresh_all_cookies()
-    print("=" * 60, '''\nTechXueXi 现支持以下模式（答题时请值守电脑旁处理少部分不正常的题目）：''')
-    print(cfg['base']['ModeText'] + '\n' + "=" * 60) # 模式提示文字请在 ./config/default_template.conf 处修改。
-
+    cookies = user.get_cookie(uid)
     if nohead==True:
         TechXueXi_mode="3"
     else:
@@ -98,33 +81,28 @@ if __name__ == '__main__':
                 print("默认选择模式：" + str(cfg["base"]["ModeType"]) + "\n" + "=" * 60)
                 TechXueXi_mode = str(cfg["base"]["ModeType"])
         except Exception as e:
-            TechXueXi_mode = input("请选择模式（输入对应数字）并回车： ")
-
-    info_shread = threads.MyThread("获取更新信息...", version.up_info)
-    info_shread.start()
-    #  1 创建用户标记，区分多个用户历史纪录
-    uid = user.get_default_userId()
-    user_fullname=""
+            TechXueXi_mode = "3"
+    if not name:
+        user_fullname=user.get_fullname(uid)
+    else:
+       user_fullname= uid+"_"+name
     if not cookies or TechXueXi_mode == "0":
-        print("未找到有效登录信息，需要登录")
+        msg=""
+        if name=="新用户":
+            msg="需要增加新用户，请扫码登录，否则请无视"
+        else:
+            msg=user_fullname+"登录信息失效，请重新扫码"
+        print(msg)
+        gl.pushprint(msg)
         driver_login = Mydriver()
         cookies = driver_login.login()
         driver_login.quit()
+        if not cookies:
+            print("登录超时")
+            return
         user.save_cookies(cookies)
         uid = user.get_userId(cookies)
         user_fullname = user.get_fullname(uid)
-        user.update_last_user(uid)
-    # 增加多用户支持，已经有登录信息的重新扫码
-    elif nohead==True:
-        user_fullname = user.get_fullname(uid)
-        output = "\n用户" + user_fullname + "已登录,如要再次学习请重新扫码\n"
-        print(output)
-        gl.pushprint(output)
-        driver_login = Mydriver()
-        cookies = driver_login.login()
-        driver_login.quit()
-        user.save_cookies(cookies)
-        uid = user.get_userId(cookies)
         user.update_last_user(uid)
     output = "\n用户：" + user_fullname + "登录正常，开始学习...\n"
 
@@ -169,3 +147,31 @@ if __name__ == '__main__':
         user.shutdown(stime)
     except Exception as e:
         pass
+
+if __name__ == '__main__':
+    
+    #  0 读取版本信息
+    start_time = time.time()
+    if(cfg['display']['banner'] != False): # banner文本直接硬编码，不要放在conf中
+        print("=" * 60 + \
+        '\n    科技强 guo 官方网站：https://techxuexi.js.org' + \
+        '\n    Github地址：https://github.com/TechXueXi' + \
+        '\n使用本项目，必须接受以下内容，否则请立即退出：' + \
+        '\n    - TechXueXi 仅额外提供给“爱党爱 guo ”且“工作学业繁重”的人' + \
+        '\n    - 项目开源协议 LGPL-3.0' + \
+        '\n    - 不得利用本项目盈利' + \
+        '\n另外，我们建议你参与一个维护劳动法的项目：' + \
+        '\nhttps://996.icu/ 或 https://github.com/996icu/996.ICU/blob/master/README_CN.md')
+    print("=" * 60, '''\nTechXueXi 现支持以下模式（答题时请值守电脑旁处理少部分不正常的题目）：''')
+    print(cfg['base']['ModeText'] + '\n' + "=" * 60) # 模式提示文字请在 ./config/default_template.conf 处修改。
+    info_shread = threads.MyThread("获取更新信息...", version.up_info)
+    info_shread.start()
+    user_list = user.list_user(printing=False)
+    user.refresh_all_cookies() 
+    user_list.append(["","新用户"])
+    for i in range(len(user_list)):
+        _learn= threads.MyThread(user_list[i][0]+"开始学xi",start_learn,user_list[i][0],user_list[i][1])
+        _learn.start()
+
+
+    
