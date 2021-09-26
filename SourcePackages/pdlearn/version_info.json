@@ -1,8 +1,11 @@
 {
     "techxuexi_version": "v20210903",
     "techxuexi_update_log": [{
+        "version": "v20210925",
+        "info": "此版暂无exe文件，win exe 可以不升级。增加Telegram通知；修改为多线程，多账号同时学习；修复通知中的乱码 ；获取用户完整用户名"
+    },{
         "version": "v20210903",
-        "info": "此版暂无exe文件，win exe 可以不升级。增加docker多用户支持，pip使用镜像加速,修正PushMode应为字符串,更新md说明"
+        "info": "增加docker多用户支持，pip使用镜像加速,修正PushMode应为字符串,更新md说明"
     }, {
         "version": "v20210902",
         "info": "鲁棒性更新"
