@@ -4,9 +4,11 @@
 
 #### 镜像地址： https://hub.docker.com/u/techxuexi/
 
+**警告：如您不熟悉，请使用源码运行的方式**
+
 # Docker 地址
 
-2021 年 9 月 25 日起 arm 和 amd 地址分开
+> 2021 年 9 月 25 日起 arm 和 amd 地址分开，请重新配置 docker
 
 arm64
 
@@ -41,6 +43,8 @@ docker pull techxuexi/techxuexi-amd64:{tag}
   > 4 pluspush
 
   > 5 Telegram Bot
+  
+  **推送消息是为了把登录链接发送给你，现在请明天点击链接登录。**
 
 - CRONTIME Cron 参数，默认是`30 9 * * *`，即每天早上 9:30 执行 ,可以把 Cron 表达式放到这里去验证 https://crontab.guru/
 - Sourcepath 项目源，默认是`https://github.com.cnpmjs.org/TechXueXi/TechXueXi.git`
