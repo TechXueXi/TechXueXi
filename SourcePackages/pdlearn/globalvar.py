@@ -2,7 +2,7 @@
 from pdlearn.pluspush import PlusPushHandler
 from pdlearn.fangtang import FangtangHandler
 from pdlearn.dingding import DingDingHandler
-import pdlearn.telegram as tbot
+from pdlearn.telegram import TelegarmHandler
 
 pushmode ="1"
 nohead = False
@@ -23,5 +23,6 @@ def pushprint(text):
             push=PlusPushHandler(accesstoken)
             push.fttext(text)
        elif pushmode=="5":
-            tbot.send_message(text)
+            push=TelegarmHandler(accesstoken,secret)
+            push.send_message(text)
     print(text)

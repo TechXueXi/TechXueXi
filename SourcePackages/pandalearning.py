@@ -27,10 +27,14 @@ def get_argv():
     nohead = False
     lock = False
     stime = False
+    Single=False
     if os.getenv('Nohead') == "True":
         nohead=True
     if os.getenv('islooplogin') == "True":
         gl.islooplogin=True
+    if os.getenv('Single') == "True":
+        Single=True
+
     if len(argv) > 2:
         if argv[2] == "hidden":
             nohead = True
@@ -67,10 +71,12 @@ def get_argv():
     else:
         gl.pushmode=os.getenv('Pushmode')
     gl.nohead=nohead
-    return nohead, lock, stime
+    return nohead, lock, stime,Single
 
 def start_learn(uid,name):
-    nohead, lock, stime = get_argv()
+    #  0 读取版本信息
+    start_time = time.time()
+    nohead, lock, stime ,Single= get_argv()
     print("是否无头模式：{0} {1}".format(nohead,os.getenv('Nohead')))
     cookies = user.get_cookie(uid)
     if nohead==True:
@@ -148,10 +154,49 @@ def start_learn(uid,name):
     except Exception as e:
         pass
 
+def start():
+    nohead, lock, stime ,Single= get_argv()
+    info_shread = threads.MyThread("获取更新信息...", version.up_info)
+    info_shread.start()
+    user_list = user.list_user(printing=False)
+    user.refresh_all_cookies() 
+    # user_list.append(["","新用户"])
+    for i in range(len(user_list)):
+        try:
+            _learn= threads.MyThread(user_list[i][0]+"开始学xi",start_learn,user_list[i][0],user_list[i][1],lock=Single)
+            _learn.start()
+        except:
+            gl.pushprint("学习页面崩溃，学习终止")
+        
+def get_user_list():
+    get_argv()
+    dic= user.refresh_all_cookies(display_score=True)
+    values = dic.values()
+    msg=""
+    for v in values:
+        msg+=v+"\n"
+    if msg=="":
+        msg="cookie全部过期，请重新登录"
+    return msg
+def add_user():
+    get_argv()
+    gl.pushprint("请扫码登录：")
+    driver_login = Mydriver()
+    cookies = driver_login.login()
+    driver_login.quit()
+    if not cookies:
+        gl.pushprint("登录超时。")
+        return
+    user.save_cookies(cookies)
+    uid = user.get_userId(cookies)
+    user_fullname = user.get_fullname(uid)
+    user.update_last_user(uid)
+    gl.pushprint(user_fullname+"登录成功")
+
+
 if __name__ == '__main__':
     
-    #  0 读取版本信息
-    start_time = time.time()
+    
     if(cfg['display']['banner'] != False): # banner文本直接硬编码，不要放在conf中
         print("=" * 60 + \
         '\n    科技强 guo 官方网站：https://techxuexi.js.org' + \
@@ -164,14 +209,7 @@ if __name__ == '__main__':
         '\nhttps://996.icu/ 或 https://github.com/996icu/996.ICU/blob/master/README_CN.md')
     print("=" * 60, '''\nTechXueXi 现支持以下模式（答题时请值守电脑旁处理少部分不正常的题目）：''')
     print(cfg['base']['ModeText'] + '\n' + "=" * 60) # 模式提示文字请在 ./config/default_template.conf 处修改。
-    info_shread = threads.MyThread("获取更新信息...", version.up_info)
-    info_shread.start()
-    user_list = user.list_user(printing=False)
-    user.refresh_all_cookies() 
-    user_list.append(["","新用户"])
-    for i in range(len(user_list)):
-        _learn= threads.MyThread(user_list[i][0]+"开始学xi",start_learn,user_list[i][0],user_list[i][1])
-        _learn.start()
+    start()
 
 
     

@@ -90,4 +90,4 @@ def get_score(cookies):
         print("=" * 60)
         print("get_score 获取失败")
         print("=" * 60)
-        raise
+        return 0 ,0, 0,""

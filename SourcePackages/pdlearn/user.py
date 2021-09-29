@@ -26,9 +26,9 @@ def get_fullname(userId):
         if (str(userId) == i):
             fullname = i + '_' + nickname
             break
-    if (fullname == ""):
+    if (nickname == ""):
         cookies=get_cookie(userId)
-        userId ,total, scores,userName = score.get_score(cookies)
+        uid ,total, scores,userName = score.get_score(cookies)
         # print("查找 userId: " + str(userId) + " 失败...")
         # pattern = re.compile(u'^[a-zA-Z0-9_\u4e00-\u9fa5]+$')
         # while True:
@@ -40,8 +40,8 @@ def get_fullname(userId):
         #         break
         #     else:
         #         print("输入不符合要求，输入内容只能为：英文字母、数字、下划线、中文。")
-        save_fullname(str(userId) + '_' + userName)
-        return get_fullname(userId)
+        fullname=str(userId) + '_' + userName
+        save_fullname(fullname)
     return fullname
 
 
@@ -98,7 +98,6 @@ def save_user_status(status):
 #
 # def save_last_quiz(status):
 #     file.save_json_data("user/last_quiz.json", status)
-
 
 def get_cookie(userId):
     userId = str(userId)
@@ -210,6 +209,7 @@ def check_default_user_cookie():
 
 # 保活。执行会花费一定时间，全新cookies的有效时间是12h
 def refresh_all_cookies(live_time=8.0, display_score=False):  # cookie有效时间保持在live_time以上
+    msgInfo={}
     template_json_str = '''{}'''
     cookies_json_obj = file.get_json_data("user/cookies.json", template_json_str)
     need_check = False
@@ -221,8 +221,9 @@ def refresh_all_cookies(live_time=8.0, display_score=False):  # cookie有效时�
         for d in cookie_list:  # 检查是否过期
             if 'name' in d and 'value' in d and 'expiry' in d and d["name"] == "token":
                 remain_time = (int(d['expiry']) - (int)(time.time())) / 3600
-                print(color.green(
-                    uid + "_" + get_nickname(uid) + "，登录剩余有效时间：" + str(int(remain_time * 1000) / 1000) + " 小时."), end="")
+                msg=uid + "_" + get_nickname(uid) + "，登录剩余有效时间：" + str(int(remain_time * 1000) / 1000) + " 小时."
+                print(color.green(msg), end="")
+                msgInfo[uid]=msg
                 if remain_time < 0:
                     print(color.red(" 已过期 需要重新登陆，将自动移除此cookie."))
                     remove_cookie(uid)
@@ -258,12 +259,15 @@ def refresh_all_cookies(live_time=8.0, display_score=False):  # cookie有效时�
                         print(color.green(" 无需刷新"))
     if need_check:  # 再执行一遍来检查有效情况
         print("再次检查cookies有效时间...")
-        refresh_all_cookies()
+        return refresh_all_cookies(live_time,display_score)
     elif display_score:
         for cookie in valid_cookies:
             user_id = get_userId(cookie)
             print(color.blue(get_fullname(user_id)) + " 的今日得分：")
-            score.show_score(cookie)
+            total, scores=score.show_score(cookie)
+            if str(user_id) in msgInfo:
+                msgInfo[str(user_id)] += " 今日得分："+str(scores["today"])
+    return msgInfo
 
 
 # 如有多用户，打印各个用户信息
