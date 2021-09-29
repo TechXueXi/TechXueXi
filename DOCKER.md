@@ -2,11 +2,13 @@
 
 #### [其他运行方式](https://github.com/TechXueXi/TechXueXi/blob/dev/%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95-%E6%9B%B4%E6%96%B0%E6%96%B9%E6%B3%95-%E4%B8%8B%E8%BD%BD%E6%96%B9%E5%BC%8F.md)
 
-#### 镜像地址： https://hub.docker.com/r/techxuexi/techxuexi/tags?page=1&ordering=last_updated
+#### 镜像地址： https://hub.docker.com/u/techxuexi/
+
+**警告：如您不熟悉，请使用源码运行的方式**
 
 # Docker 地址
 
-2021 年 9 月 25 日起 arm 和 amd 地址分开
+> 2021 年 9 月 25 日起 arm 和 amd 地址分开，请重新配置 docker
 
 arm64
 
@@ -20,7 +22,7 @@ amd64
 docker pull techxuexi/techxuexi-amd64:{tag}
 ```
 
-目前最新的 tag 是`dev53`
+目前最新的 tag 请前往 https://hub.docker.com/u/techxuexi/ 查询
 
 # Docker 参数
 
@@ -42,6 +44,8 @@ docker pull techxuexi/techxuexi-amd64:{tag}
 
   > 5 Telegram Bot
 
+  **推送消息是为了把登录链接发送给你，现在请明天点击链接登录。**
+
 - CRONTIME Cron 参数，默认是`30 9 * * *`，即每天早上 9:30 执行 ,可以把 Cron 表达式放到这里去验证 https://crontab.guru/
 - Sourcepath 项目源，默认是`https://github.com.cnpmjs.org/TechXueXi/TechXueXi.git`
 - pullbranche 项目分支，默认是`dev`，后续可能会变为`master`
@@ -57,12 +61,14 @@ docker run -e "AccessToken={token}" -e "Secret={密钥}" -d --name={容器名称
 docker run -e "从Docker.md找到参数1" -e "从Docker.md找到参数2" -e "从Docker.md找到参数3" -d --name={容器名称} techxuexi/techxuexi:{tag}
 ```
 
+请不要无脑照搬，需要修改
+
 参数，输入时不输入`{}`
 
 参数  
 tag=如果你是 amd64 的机器，那么就是 amd64，如果是 arm64 那么就是 arm64，然后后面跟版本号,例如 techxuexi/techxuexi:amd64-40 techxuexi/techxuexi:arm64-40
 
-##### 对于 Server 酱和 pluspush，只需要填写 token，而钉钉机器人需要填写 token 和 secret
+##### 对于 Server 酱和 pluspush，只需要填写 token，而钉钉，TG 等机器人需要填写 token 和 secret
 
 ```
 AccessToken=token
@@ -70,8 +76,10 @@ Secret=密码
 ```
 
 ```
-Pushmode=推送模式，1表示：钉钉，2表示：微信（并未实现），3表示：Server酱，4表示：pluspush，0表示不开启
+Pushmode=1
 ```
+
+表示：钉钉，其他见上方
 
 ##### 可选参数
 
@@ -163,6 +171,21 @@ services:
 
 # 其他说明
 
-多账号等其他没有固定下来的用法，请加群了解。
+# 群晖 Docker 设置
 
-## Docker 如果发给你一个学习#国链接，不是让你下载，是让你登录，复制链接到学习#国 app，发给某个人，比如自己，再点击链接
+Docker 的安装就不赘述，直接从搜索注册表开始
+
+在注册表中搜索`techxuexi`根据你的版本，选择 arm 或者 amd 进行下载
+![image](https://user-images.githubusercontent.com/91232777/134791915-2a49ff12-56ed-4808-8400-58c5c491757b.png)
+
+下载完成之后，到镜像中双击启动
+![image](https://user-images.githubusercontent.com/91232777/134791968-1f206822-2d67-496c-884d-7ec51d446b85.png)
+点击`高级设置`
+
+- 映射虚拟目录 `可选`，此操作方便修改 config 文件
+
+  点击`添加文件夹`
+
+**[交流群地址及说明](https://github.com/TechXueXi/TechXueXi/issues/14)**
+
+## Docker 如果发给你一个学习强国链接，不是让你下载，是让你登录，复制链接到学习#国 app，发给某个人，比如自己，再点击链接
