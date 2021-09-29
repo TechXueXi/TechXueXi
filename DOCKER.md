@@ -54,19 +54,23 @@ docker pull techxuexi/techxuexi-amd64:{tag}
 # Docker 命令运行
 
 ```shell
-docker run -e "AccessToken={token}" -e "Secret={密钥}" -d --name={容器名称} techxuexi/techxuexi:{tag}
+docker run -e "AccessToken={token}" -e "Secret={密钥}" -d --name={容器名称} techxuexi/techxuexi-amd64:{tag}
 ```
 
 ```shell
-docker run -e "从Docker.md找到参数1" -e "从Docker.md找到参数2" -e "从Docker.md找到参数3" -d --name={容器名称} techxuexi/techxuexi:{tag}
+docker run -e "从Docker.md找到参数1" -e "从Docker.md找到参数2" -e "从Docker.md找到参数3" -d --name={容器名称} techxuexi/techxuexi-amd64:{tag}
 ```
 
 请不要无脑照搬，需要修改
 
+如果你是 `amd64` 的机器，那么就是 `techxuexi/techxuexi-amd64:{tag}`
+
+如果你是 `arm64` 的机器，那么就是 `techxuexi/techxuexi-arm64v8:{tag}`
+
 参数，输入时不输入`{}`
 
 参数  
-tag=如果你是 amd64 的机器，那么就是 amd64，如果是 arm64 那么就是 arm64，然后后面跟版本号,例如 techxuexi/techxuexi:amd64-40 techxuexi/techxuexi:arm64-40
+`tag` 请前往 https://hub.docker.com/u/techxuexi/ 查询
 
 ##### 对于 Server 酱和 pluspush，只需要填写 token，而钉钉，TG 等机器人需要填写 token 和 secret
 
