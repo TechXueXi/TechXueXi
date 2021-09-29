@@ -19,16 +19,25 @@ def get_help(message):
 
 @bot.message_handler(commands=['learn'])
 def learn(message):
-    pdl.start()
+    try:
+        pdl.start()
+    except:
+        bot.reply_to(message,"学习崩溃啦")
 
 @bot.message_handler(commands=['list'])
 def list(message):
-    msg=pdl.get_user_list()
-    bot.reply_to(message,msg)
+    try:
+        msg=pdl.get_user_list()
+        bot.reply_to(message,msg)
+    except:
+        bot.reply_to(message,"网络异常")
 
 @bot.message_handler(commands=['add'])
 def add(message):
-    pdl.add_user()
+    try:
+        pdl.add_user()
+    except:
+        bot.reply_to(message,"chrome 崩啦")
 
 if __name__ == '__main__':
     bot.send_message(master,"学xi助手上线啦，快来学xi吧")
