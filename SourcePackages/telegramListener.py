@@ -40,5 +40,6 @@ def add(message):
         bot.reply_to(message,"chrome 崩啦")
 
 if __name__ == '__main__':
-    bot.send_message(master,"学xi助手上线啦，快来学xi吧")
-    bot.polling()
+    if os.getenv('Nohead') == "True" and os.getenv('Pushmode')=="5":
+        bot.send_message(master,"学xi助手上线啦，快来学xi吧")
+        bot.polling()
