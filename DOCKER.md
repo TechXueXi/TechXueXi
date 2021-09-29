@@ -44,7 +44,7 @@ docker pull techxuexi/techxuexi-amd64:{tag}
 
   > 5 Telegram Bot
 
-  **推送消息是为了把登录链接发送给你，现在请明天点击链接登录。**
+  **推送消息是为了把登录链接发送给你，现在请每天点击链接登录。**
 
 - CRONTIME Cron 参数，默认是`30 9 * * *`，即每天早上 9:30 执行 ,可以把 Cron 表达式放到这里去验证 https://crontab.guru/
 - Sourcepath 项目源，默认是`https://github.com.cnpmjs.org/TechXueXi/TechXueXi.git`
@@ -171,20 +171,7 @@ services:
 
 # 其他说明
 
-# 群晖 Docker 设置
-
-Docker 的安装就不赘述，直接从搜索注册表开始
-
-在注册表中搜索`techxuexi`根据你的版本，选择 arm 或者 amd 进行下载
-![image](https://user-images.githubusercontent.com/91232777/134791915-2a49ff12-56ed-4808-8400-58c5c491757b.png)
-
-下载完成之后，到镜像中双击启动
-![image](https://user-images.githubusercontent.com/91232777/134791968-1f206822-2d67-496c-884d-7ec51d446b85.png)
-点击`高级设置`
-
-- 映射虚拟目录 `可选`，此操作方便修改 config 文件
-
-  点击`添加文件夹`
+多账号等其他没有固定下来的用法，请加群了解。
 
 **[交流群地址及说明](https://github.com/TechXueXi/TechXueXi/issues/14)**
 
