@@ -4,6 +4,8 @@
 
 #### 镜像地址： https://hub.docker.com/u/techxuexi/
 
+**重要公告**： [公告栏（国内打不开）](https://t.me/s/techxuexi_notice) || [公告栏（国内可以打开）](https://notice.techxuexi.workers.dev)
+
 **警告：如您不熟悉，请使用源码运行的方式**
 
 # Docker 地址
@@ -43,8 +45,8 @@ docker pull techxuexi/techxuexi-amd64:{tag}
   > 4 pluspush
 
   > 5 Telegram Bot
-  
-  **推送消息是为了把登录链接发送给你，现在请明天点击链接登录。**
+
+  **推送消息是为了把登录链接发送给你，现在请每天点击链接登录。**
 
 - CRONTIME Cron 参数，默认是`30 9 * * *`，即每天早上 9:30 执行 ,可以把 Cron 表达式放到这里去验证 https://crontab.guru/
 - Sourcepath 项目源，默认是`https://github.com.cnpmjs.org/TechXueXi/TechXueXi.git`
@@ -52,6 +54,12 @@ docker pull techxuexi/techxuexi-amd64:{tag}
 - islooplogin 循环参数，默认`False`，当设置为`True`的时候，如果扫码超时会一直尝试循环获取新的扫码，考虑到微信公众号推送有次数限制，慎用
 
 # Docker 命令运行
+
+**下方表述不对**，正确写法如下
+
+techxuexi/techxuexi-amd64:dev53
+
+注意短横线和冒号的位置。
 
 ```shell
 docker run -e "AccessToken={token}" -e "Secret={密钥}" -d --name={容器名称} techxuexi/techxuexi:{tag}
@@ -66,9 +74,9 @@ docker run -e "从Docker.md找到参数1" -e "从Docker.md找到参数2" -e "从
 参数，输入时不输入`{}`
 
 参数  
-tag=如果你是 amd64 的机器，那么就是 amd64，如果是 arm64 那么就是 arm64，然后后面跟版本号,例如 techxuexi/techxuexi:amd64-40 techxuexi/techxuexi:arm64-40
+tag=如果你是 amd64 的机器，那么就是 amd64，如果是 arm64 那么就是 arm64，然后后面跟版本号
 
-##### 对于 Server 酱和 pluspush，只需要填写 token，而钉钉，TG等机器人需要填写 token 和 secret
+##### 对于 Server 酱和 pluspush，只需要填写 token，而钉钉，TG 等机器人需要填写 token 和 secret
 
 ```
 AccessToken=token
@@ -168,6 +176,12 @@ services:
 3. 在 Tg 中搜索[`@userinfobot`](https://t.me/userinfobot)，点击`START`，它就会给你发送你的信息，记住 Id 即可，是一串 9 位的数字。
 4. 跟你创建的 bot 会话，点击`START`，或者发送`/start`
 5. 将第 2 步获取的 token 放在`AccessToken`中，第 3 步获取的 Id 放到`Secret`中，`Pushmode`设置为 5。
+
+增加telegram bot指令支持
+`/help` 获取帮助
+`/learn` 开始学习
+`/list` 获取账号列表，获取有效的cookie列表，显示过期时间，并显示当天学习积分。
+`/add` 添加新账号，只添加账号，不会立即学习
 
 # 其他说明
 
