@@ -8,6 +8,7 @@ from pdlearn.mydriver import Mydriver
 from pdlearn.score import show_score
 from pdlearn.const import const
 from pdlearn.log import *
+from pdlearn import globalvar as gl
 
 def generate_tiku_data(quiz_type=None, tip=None, option=None, answer=None, question=None):
     """
@@ -56,8 +57,15 @@ def answer_question(quiz_type, cookies, scores, score_all, quiz_xpath, category_
         driver_daily = driver_ans
         driver_weekly = driver_ans
         driver_zhuanxiang = driver_ans
-        driver_ans.driver.maximize_window()
-        print('请保持窗口最大化\n'*3)
+        try:
+            nohead = gl.nohead
+        except:
+            nohead=False
+        if nohead:
+            print("使用默认窗口大小")
+        else:
+            driver_ans.driver.maximize_window()
+            print('请保持窗口最大化\n'*3)
         driver_ans.get_url("https://www.xuexi.cn/notFound.html")
         driver_ans.set_cookies(cookies)
         pass_count = 0

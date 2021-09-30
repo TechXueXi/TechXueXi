@@ -66,11 +66,14 @@ class Mydriver:
                 self.options.add_argument('--no-sandbox')
                 self.options.set_capability('unhandledPromptBehavior', 'accept')
                 self.options.add_argument('--disable-software-rasterizer')  # 解决GL报错问题
+                self.options.add_argument("--window-size=1920,1050")
+            else:
+                self.options.add_argument('--window-size=750,450')
+                # self.options.add_argument('--window-size=400,500')
+                # self.options.add_argument('--window-size=900,800')
+                # self.options.add_argument("--window-size=1920,1050")
+
             self.options.add_argument('--mute-audio')  # 关闭声音
-            # self.options.add_argument('--window-size=400,500')
-            self.options.add_argument('--window-size=750,450')
-            # self.options.add_argument('--window-size=900,800')
-            # self.options.add_argument("--window-size=1920,1050")
             self.options.add_argument('--window-position=700,0')
             self.options.add_argument('--log-level=3')
             self.options.add_argument('--user-agent={}'.format(user_agent.getheaders()))

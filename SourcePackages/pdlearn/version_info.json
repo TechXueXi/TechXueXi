@@ -1,11 +1,14 @@
 {
-    "techxuexi_version": "v20210927",
+    "techxuexi_version": "v20210929",
     "techxuexi_update_log": [{
         "version": "v20211001",
         "info": "增加Telegram bot的互动操作"
     },{
+        "version": "v20210929",
+        "info": "此版暂无exe文件，win exe 可以不升级。增加telegram bot指令支持，调整bot通知代码与之前统一，增加学xi线程的异常捕获，修复名称获取不全的问题"
+    },{
         "version": "v20210927",
-        "info": "此版暂无exe文件，win exe 可以不升级。增加Telegram通知；修改为多线程，多账号同时学习；修复通知中的乱码 ；获取用户完整用户名"
+        "info": "增加Telegram通知；修改为多线程，多账号同时学习；修复通知中的乱码 ；获取用户完整用户名"
     },{
         "version": "v20210903",
         "info": "增加docker多用户支持，pip使用镜像加速,修正PushMode应为字符串,更新md说明"

@@ -4,6 +4,8 @@
 
 #### 镜像地址： https://hub.docker.com/u/techxuexi/
 
+**重要公告**： [公告栏（国内打不开）](https://t.me/s/techxuexi_notice) || [公告栏（国内可以打开）](https://notice.techxuexi.workers.dev)
+
 **警告：如您不熟悉，请使用源码运行的方式**
 
 # Docker 地址
@@ -53,6 +55,12 @@ docker pull techxuexi/techxuexi-amd64:{tag}
 
 # Docker 命令运行
 
+**下方表述不对**，正确写法如下
+
+techxuexi/techxuexi-amd64:dev53
+
+注意短横线和冒号的位置。
+
 ```shell
 docker run -e "AccessToken={token}" -e "Secret={密钥}" -d --name={容器名称} techxuexi/techxuexi-amd64:{tag}
 ```
@@ -70,7 +78,7 @@ docker run -e "从Docker.md找到参数1" -e "从Docker.md找到参数2" -e "从
 参数，输入时不输入`{}`
 
 参数  
-`tag` 请前往 https://hub.docker.com/u/techxuexi/ 查询
+tag=如果你是 amd64 的机器，那么就是 amd64，如果是 arm64 那么就是 arm64，然后后面跟版本号
 
 ##### 对于 Server 酱和 pluspush，只需要填写 token，而钉钉，TG 等机器人需要填写 token 和 secret
 
@@ -172,6 +180,12 @@ services:
 3. 在 Tg 中搜索[`@userinfobot`](https://t.me/userinfobot)，点击`START`，它就会给你发送你的信息，记住 Id 即可，是一串 9 位的数字。
 4. 跟你创建的 bot 会话，点击`START`，或者发送`/start`
 5. 将第 2 步获取的 token 放在`AccessToken`中，第 3 步获取的 Id 放到`Secret`中，`Pushmode`设置为 5。
+
+增加telegram bot指令支持
+`/help` 获取帮助
+`/learn` 开始学习
+`/list` 获取账号列表，获取有效的cookie列表，显示过期时间，并显示当天学习积分。
+`/add` 添加新账号，只添加账号，不会立即学习
 
 # 其他说明
 
