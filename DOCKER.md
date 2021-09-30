@@ -62,14 +62,18 @@ techxuexi/techxuexi-amd64:dev53
 注意短横线和冒号的位置。
 
 ```shell
-docker run -e "AccessToken={token}" -e "Secret={密钥}" -d --name={容器名称} techxuexi/techxuexi:{tag}
+docker run -e "AccessToken={token}" -e "Secret={密钥}" -d --name={容器名称} techxuexi/techxuexi-amd64:{tag}
 ```
 
 ```shell
-docker run -e "从Docker.md找到参数1" -e "从Docker.md找到参数2" -e "从Docker.md找到参数3" -d --name={容器名称} techxuexi/techxuexi:{tag}
+docker run -e "从Docker.md找到参数1" -e "从Docker.md找到参数2" -e "从Docker.md找到参数3" -d --name={容器名称} techxuexi/techxuexi-amd64:{tag}
 ```
 
 请不要无脑照搬，需要修改
+
+如果你是 `amd64` 的机器，那么就是 `techxuexi/techxuexi-amd64:{tag}`
+
+如果你是 `arm64` 的机器，那么就是 `techxuexi/techxuexi-arm64v8:{tag}`
 
 参数，输入时不输入`{}`
 

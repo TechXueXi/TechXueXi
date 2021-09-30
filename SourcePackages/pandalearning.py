@@ -161,6 +161,12 @@ def start():
     user_list = user.list_user(printing=False)
     user.refresh_all_cookies() 
     # user_list.append(["","新用户"])
+    if len(user_list)==0:
+        try:
+            _learn= threads.MyThread("新用户开始学xi",start_learn,"","新用户",lock=Single)
+            _learn.start()
+        except:
+            gl.pushprint("学习页面崩溃，学习终止")
     for i in range(len(user_list)):
         try:
             _learn= threads.MyThread(user_list[i][0]+"开始学xi",start_learn,user_list[i][0],user_list[i][1],lock=Single)

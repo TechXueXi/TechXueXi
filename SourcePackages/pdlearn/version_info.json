@@ -1,6 +1,9 @@
 {
     "techxuexi_version": "v20210929",
     "techxuexi_update_log": [{
+        "version": "v20211001",
+        "info": "增加Telegram bot的互动操作"
+    },{
         "version": "v20210929",
         "info": "此版暂无exe文件，win exe 可以不升级。增加telegram bot指令支持，调整bot通知代码与之前统一，增加学xi线程的异常捕获，修复名称获取不全的问题"
     },{
