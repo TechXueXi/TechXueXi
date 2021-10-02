@@ -55,10 +55,6 @@ docker pull techxuexi/techxuexi-amd64:{tag}
 
 # Docker 命令运行
 
-**下方表述不对**，正确写法如下
-
-techxuexi/techxuexi-amd64:dev53
-
 注意短横线和冒号的位置。
 
 ```shell
@@ -69,7 +65,7 @@ docker run -e "AccessToken={token}" -e "Secret={密钥}" -d --name={容器名称
 docker run -e "从Docker.md找到参数1" -e "从Docker.md找到参数2" -e "从Docker.md找到参数3" -d --name={容器名称} techxuexi/techxuexi-amd64:{tag}
 ```
 
-请不要无脑照搬，需要修改
+请不要无脑照搬，需要修改：
 
 如果你是 `amd64` 的机器，那么就是 `techxuexi/techxuexi-amd64:{tag}`
 
@@ -189,7 +185,13 @@ services:
 
 # 其他说明
 
-多账号等其他没有固定下来的用法，请加群了解。
+多账号：
+
+方法一，一个群（钉钉，telegram）里拉多个人，定多个时，启动多次
+
+方法二，多创建几个容器，一个容器一个人，给每个人配置推送登录链接。
+
+其他没有固定下来的用法，请加群了解。
 
 **[交流群地址及说明](https://github.com/TechXueXi/TechXueXi/issues/14)**
 
