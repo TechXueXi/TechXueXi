@@ -300,7 +300,19 @@ class Mydriver:
             print("有可点击的【查看提示】按钮")
         except Exception as e:
             print("没有可点击的【查看提示】按钮")
-            return [], ""
+            try:
+                answer_list=self.driver.find_element_by_css_selector(".answer").text[5:].split(' ')
+                ans_options=self.radio_get_options()
+                answer: List[str] = []
+                for opt in ans_options:
+                    for ans in answer_list:
+                        if ans == opt[0]:
+                            answer.append(opt)
+                print("找到答案解析："+answer)
+                
+                return answer,"" 
+            except:
+                return [], ""
         time.sleep(1)
         try:
             # tips_open = self.driver.find_element_by_xpath('//*[@id="app"]/div/div[2]/div/div[4]/div[1]/div[3]/span')
@@ -349,6 +361,8 @@ class Mydriver:
         html = self.driver.page_source
         soup1 = BeautifulSoup(html, 'lxml')
         content = soup1.find_all('div', attrs={'class': 'choosable'})
+        if len(content)<=0:
+            content = soup1.find_all('div', attrs={'class': 'q-answer'})
         options = []
         for i in content:
             options.append(i.text)

@@ -9,6 +9,7 @@ nohead = False
 accesstoken = ""
 secret=""
 islooplogin=False
+zhuanxiang=False
 ##推送或者显示
 def pushprint(text):
     print(accesstoken,secret)
