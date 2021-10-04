@@ -4,6 +4,7 @@ import time
 import math
 from sys import argv
 from pdlearn import boot
+
 boot.check_environment()
 
 try:
@@ -70,6 +71,8 @@ def get_argv():
             gl.pushmode="0"
     else:
         gl.pushmode=os.getenv('Pushmode')
+    if os.getenv("ZhuanXiang")=="True":
+        gl.zhuanxiang=True
     gl.nohead=nohead
     return nohead, lock, stime,Single
 
@@ -132,7 +135,7 @@ def start_learn(uid,name):
         if TechXueXi_mode in ["2", "3"]:
             print('开始每周答题……')
             weekly(cookies, scores, driver_default=driver_default)
-            if nohead!=True:
+            if nohead!=True or gl.zhuanxiang==True:
                 print('开始专项答题……')
                 zhuanxiang(cookies, scores, driver_default=driver_default)
         try:
