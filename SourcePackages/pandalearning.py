@@ -163,13 +163,8 @@ def start():
     info_shread.start()
     user_list = user.list_user(printing=False)
     user.refresh_all_cookies() 
-    # user_list.append(["","新用户"])
     if len(user_list)==0:
-        try:
-            _learn= threads.MyThread("新用户开始学xi",start_learn,"","新用户",lock=Single)
-            _learn.start()
-        except:
-            gl.pushprint("学习页面崩溃，学习终止")
+        user_list.append(["","新用户"])
     for i in range(len(user_list)):
         try:
             _learn= threads.MyThread(user_list[i][0]+"开始学xi",start_learn,user_list[i][0],user_list[i][1],lock=Single)
@@ -208,6 +203,7 @@ if __name__ == '__main__':
     
     if(cfg['display']['banner'] != False): # banner文本直接硬编码，不要放在conf中
         print("=" * 60 + \
+        '\n    我们的网站，GitHub 等页面已经被中国大陆的浏览器加入黑名单，请用谷歌浏览器 chrome 打开我们的站点。' + \
         '\n    科技强 guo 官方网站：https://techxuexi.js.org' + \
         '\n    Github地址：https://github.com/TechXueXi' + \
         '\n使用本项目，必须接受以下内容，否则请立即退出：' + \

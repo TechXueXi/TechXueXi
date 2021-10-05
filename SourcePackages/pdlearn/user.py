@@ -322,6 +322,6 @@ def shutdown(stime):
             print("\r{}秒后关机".format(stime - i), end="")
             time.sleep(1)
     else:
-        print("无自动关机任务，已释放程序内存，1分钟后窗口将自动关闭")
+        print("无自动关机任务，已释放程序内存，窗口将自动关闭")
         # time.sleep(600)
-        os.system("timeout 60")
+        # os.system("timeout 60")

@@ -32,6 +32,7 @@ import io
 from PIL import Image
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 import base64  # 解码二维码图片
+from selenium.webdriver.common.action_chains import ActionChains
 #from pdlearn.qywx import WeChat  # 使用微信发送二维码图片到手机
 def decode_img(data):
     img_b64decode = base64.b64decode(data[data.index(';base64,')+8:])
@@ -308,7 +309,7 @@ class Mydriver:
                     for ans in answer_list:
                         if ans == opt[0]:
                             answer.append(opt)
-                print("找到答案解析："+answer)
+                print("找到答案解析：",answer)
                 
                 return answer,"" 
             except:
@@ -370,10 +371,14 @@ class Mydriver:
         return options
 
     def radio_check(self, check_options):
+        opts=self.driver.find_elements_by_class_name("choosable")
         for check_option in check_options:
             try:
-                self.driver.find_element_by_xpath(
-                    '//*[@id="app"]/div/div[*]/div/div[*]/div[*]/div[*]/div[contains(text(), "' + check_option + '")]').click()
+                # self.driver.find_element_by_xpath(
+                #     '//*[@id="app"]/div/div[*]/div/div[*]/div[*]/div[*]/div[contains(text(), "' + check_option + '.")]').click()
+                for opt in opts:
+                    if opt.text[0]==check_option:
+                        opt.click()
             except Exception as e:
                 print("点击", check_option, '失败！')
         self.check_delay()
@@ -384,8 +389,45 @@ class Mydriver:
             print("成功点击交卷！")
         else:
             self.click_xpath('//*[@id="app"]/div/div[*]/div/div[*]/div[*]/button')
-            print("点击进入下一题")
-
+            print("点击进入下一题") 
+        time.sleep(1)
+        if self.driver.find_elements_by_class_name("nc-mask-display"):
+            # self.swiper_valid()
+            # print("出现滑块验证。")
+            gl.pushprint("出现滑块验证，本次答题结束")
+            raise Exception("出现滑块验证。")
+            
+    # 滑块验证            
+    def swiper_valid(self):
+        builder=ActionChains(self.driver)
+        builder.reset_actions()
+        track = self.move_mouse(300)
+        builder.move_to_element(self.driver.find_element_by_class_name("btn_slide"))
+        builder.click_and_hold()
+        time.sleep(0.2)
+        for i in track:
+            builder.move_by_offset(xoffset=i, yoffset=0)
+            builder.reset_actions()
+        time.sleep(0.1)
+        # 释放左键，执行for中的操作
+        builder.release().perform()
+        time.sleep(5)
+        self.swiper_valid()
+    # 鼠标移动
+    def move_mouse(self,distance):
+        remaining_dist = distance
+        moves = []
+        a = 0
+        # 加速度，速度越来越快...
+        while remaining_dist > 0:
+            span = random.randint(15, 20)
+            a += span
+            moves.append(a)
+            remaining_dist -= span
+            if sum(moves[:-1]) > 300:
+                print(sum(moves))
+                break
+        return moves
     def blank_get(self):
         html = self.driver.page_source
         soup1 = BeautifulSoup(html, 'lxml')

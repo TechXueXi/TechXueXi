@@ -13,8 +13,8 @@ def exception_catcher(reserve_value=None,reserve_fun=None,fun_args=None,args_pus
         def wrapper(*args,**kwargs):
             try:
                 return func(*args,**kwargs)
-            except:
-                print("An exception occurred on "+func.__module__+"."+func.__name__)
+            except Exception as e:
+                print("An exception occurred on "+func.__module__+"."+func.__name__+":"+str(e))
                 if reserve_fun!=None:
                     if args_push==True:
                         new_args=args if args is not None else None
