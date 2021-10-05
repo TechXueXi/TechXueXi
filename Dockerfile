@@ -3,7 +3,7 @@ FROM python:3.7-slim
 ARG usebranche="dev"
 ENV pullbranche=${usebranche}
 RUN apt-get update
-RUN apt-get install -y wget unzip libzbar0 git cron
+RUN apt-get install -y wget unzip libzbar0 git cron libglib2.0-0 libnss3-tools
 ENV TZ=Asia/Shanghai
 ENV AccessToken=
 ENV Secret=
