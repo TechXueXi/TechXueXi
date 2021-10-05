@@ -33,6 +33,7 @@ docker pull techxuexi/techxuexi-amd64:{tag}
 - Secret 钉钉推送时为钉钉 Secret，Telegram bot 则为管理员数字 Id
 - Nohead 无窗口模式 默认值`True`，Docker 不要修改此参数
 - Pushmode 消息推送模式
+- ZhuanXiang 环境变量，默认False，docker模式下改成True也可以进行专项答题
 
   > 0 不开启
 
@@ -44,7 +45,7 @@ docker pull techxuexi/techxuexi-amd64:{tag}
 
   > 4 pluspush
 
-  > 5 Telegram Bot
+  > 5 Telegram Bot **（支持指令交互，随时可以开始学习）**
 
   **推送消息是为了把登录链接发送给你，现在请每天点击链接登录。**
 
