@@ -173,7 +173,7 @@ services:
 
 1. 在 Tg 中搜索[`@BotFather`](https://t.me/BotFather)，发送指令`/newbot`创建一个 bot
 2. 获取你创建好的 API Token 格式为`123456789:AAaaaa-Uuuuuuuuuuu`,要完整复制**全部内容**
-3. 在 Tg 中搜索[`@userinfobot`](https://t.me/userinfobot)，点击`START`，它就会给你发送你的信息，记住 Id 即可，是一串 9 位的数字。
+3. 在 Tg 中搜索[`@userinfobot`](https://t.me/userinfobot)，点击`START`，它就会给你发送你的信息，记住 Id 即可，是一串数字。
 4. 跟你创建的 bot 会话，点击`START`，或者发送`/start`
 5. 将第 2 步获取的 token 放在`AccessToken`中，第 3 步获取的 Id 放到`Secret`中，`Pushmode`设置为 5。
 
@@ -182,6 +182,10 @@ services:
 `/learn` 开始学习
 `/list` 获取账号列表，获取有效的cookie列表，显示过期时间，并显示当天学习积分。
 `/add` 添加新账号，只添加账号，不会立即学习
+
+**注意，用学习强国官方软件及网页时关闭翻墙软件**。但是telegram推送需要翻墙。
+
+**要做好分流**
 
 # 其他说明
 
