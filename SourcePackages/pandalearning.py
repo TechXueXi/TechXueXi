@@ -203,6 +203,7 @@ if __name__ == '__main__':
     
     if(cfg['display']['banner'] != False): # banner文本直接硬编码，不要放在conf中
         print("=" * 60 + \
+        '\n    我们的网站，GitHub 等页面已经被中国大陆的浏览器加入黑名单，请用谷歌浏览器 chrome 打开我们的站点。' + \
         '\n    科技强 guo 官方网站：https://techxuexi.js.org' + \
         '\n    Github地址：https://github.com/TechXueXi' + \
         '\n使用本项目，必须接受以下内容，否则请立即退出：' + \
