@@ -1,6 +1,9 @@
 {
-    "techxuexi_version": "v20211005",
+    "techxuexi_version": "v20211006",
     "techxuexi_update_log": [{
+        "version": "v20211006",
+        "info": "新增强国题库查询，使用 challengeAnswerBank.py"
+    },{
         "version": "v20211005",
         "info": "优化答题时选项点击方式，多选没有答案时，默认全选，出现滑块验证时跳过答题，防止循环。降低 docker amd64 中浏览器版本（未完成）"
     },{
