@@ -1,29 +1,32 @@
-##是否是无界面模式，一般用在命令行，docker上
+# 是否是无界面模式，一般用在命令行，docker上
 from pdlearn.pluspush import PlusPushHandler
 from pdlearn.fangtang import FangtangHandler
 from pdlearn.dingding import DingDingHandler
 from pdlearn.telegram import TelegarmHandler
 
-pushmode ="1"
+pushmode = "1"  # 0 不开启 1 钉钉 2 微信（并未实现） 3 Server 酱 4 pluspush 5 Telegram Bot
 nohead = False
 accesstoken = ""
-secret=""
-islooplogin=False
-zhuanxiang=False
-##推送或者显示
+secret = ""
+islooplogin = False
+zhuanxiang = False
+scheme = ""
+# 推送或者显示
+
+
 def pushprint(text):
-    print(accesstoken,secret)
-    if nohead==True:
-       if pushmode=="1":
-            push=DingDingHandler(accesstoken,secret)
+    print(accesstoken, secret)
+    if nohead == True:
+        if pushmode == "1":
+            push = DingDingHandler(accesstoken, secret)
             push.ddtextsend(text)
-       elif pushmode=="3":
-            push=FangtangHandler(accesstoken)
+        elif pushmode == "3":
+            push = FangtangHandler(accesstoken)
             push.fttext(text)
-       elif pushmode=="4":
-            push=PlusPushHandler(accesstoken)
+        elif pushmode == "4":
+            push = PlusPushHandler(accesstoken)
             push.fttext(text)
-       elif pushmode=="5":
-            push=TelegarmHandler(accesstoken,secret)
+        elif pushmode == "5":
+            push = TelegarmHandler(accesstoken, secret)
             push.send_message(text)
     print(text)
