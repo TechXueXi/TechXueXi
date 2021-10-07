@@ -221,7 +221,7 @@ class Mydriver:
             push = PlusPushHandler(gl.accesstoken)
             push.ftmsgsend(qcbase64)
 
-        gl.pushprint(gl.scheme+decode_img(qcbase64))
+        gl.pushprint(gl.scheme+quote(decode_img(qcbase64)))
 
     def getQRcode(self):
         try:
