@@ -58,14 +58,24 @@ class DingDingHandler:
         print(res.text)
 
     def ddtextsend(self, text):
+        data={}
         headers = {"Content-Type": "application/json"}  # 定义数据类型
-        data = {
-            "msgtype": "text",
-            "text": {
+        if text.startswith('dtxuexi://appclient/'):
+            data = {
+                "msgtype": "link",
+                "link": {
+                    "text": "请点击重新登录",
+                    "title": "登录失效",
+                    "messageUrl": text,
+                },
+            }
+        else:
+            data = {
+                "msgtype": "text",
+                "text": {
 
-                "content": text,
-            },
-        }
-
+                    "content": text,
+                },
+            }
         res = requests.post(self.get_url(), data=json.dumps(data), headers=headers)  # 发送post请求
         print(res.text)
