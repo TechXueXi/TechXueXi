@@ -20,7 +20,7 @@ import os
 import time
 import requests
 import random
-from urllib.parse import quote
+from urllib.parse import quote, quote_plus
 import re
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -220,8 +220,10 @@ class Mydriver:
         elif gl.pushmode == "4":
             push = PlusPushHandler(gl.accesstoken)
             push.ftmsgsend(qcbase64)
-
-        gl.pushprint(gl.scheme+quote(decode_img(qcbase64)))
+        if gl.scheme:
+            gl.pushprint(gl.scheme+quote_plus(decode_img(qcbase64)))
+        else:
+            gl.pushprint(decode_img(qcbase64))
 
     def getQRcode(self):
         try:
