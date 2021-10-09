@@ -108,6 +108,18 @@ pullbranche=项目分支，默认是dev，后续可能会变为master
 islooplogin=循环参数，当设置为True的时候，如果扫码超时会一直尝试循环获取新的扫码，考虑到微信公众号推送有次数限制，慎用
 ```
 
+```
+single=1 不想并发，单线程
+```
+
+设置了下面这个，点击发送的链接可以直接打开学 x 强 x ，如果用钉钉推送可以如下设置：
+
+```
+Scheme=dtxuexi://appclient/page/study_feeds?url=
+```
+
+其他的设置方法去群里问大佬吧。
+
 # 群晖 Docker 设置
 
 Docker 的安装就不赘述，直接从搜索注册表开始
