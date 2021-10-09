@@ -12,7 +12,7 @@ try:
     from pdlearn import score
     from pdlearn import color
     from pdlearn import threads
-    from pdlearn.config import cfg
+    from pdlearn.config import cfg_get
     from pdlearn.mydriver import Mydriver
     from pdlearn.score import show_score
     from pdlearn.score import show_scorePush
@@ -24,59 +24,22 @@ except ImportError as e:
 
 
 def get_argv():
-    nohead = False
-    lock = False
-    stime = False
-    Single = False
-    if os.getenv('Nohead') == "True":
-        nohead = True
-    if os.getenv('islooplogin') == "True":
-        gl.islooplogin = True
-    if os.getenv('Single') == "True":
-        Single = True
-    if os.getenv("Scheme") != None:
-        gl.scheme = os.getenv("Scheme")
-
-    if len(argv) > 2:
-        if argv[2] == "hidden":
-            nohead = True
-        elif argv[2] == "show":
-            nohead = False
-    if len(argv) > 3:
-        if argv[3] == "single":
-            lock = True
-        elif argv[3] == "multithread":
-            lock = False
-    if len(argv) > 4:
-        if argv[4].isdigit():
-            stime = argv[4]
-
-    if os.getenv('AccessToken') == None:
-        try:
-            gl.accesstoken = cfg["addition"]["token"]
-        except:
-            gl.accesstoken = ""
-    else:
-        gl.accesstoken = os.getenv('AccessToken')
-    if os.getenv('Secret') == None:
-        try:
-            gl.secret = cfg["addition"]["secret"]
-        except:
-            gl.secret = ""
-    else:
-        gl.secret = os.getenv('Secret')
-
-    if os.getenv('Pushmode') == None:
-        try:
-            gl.pushmode = cfg["addition"]["Pushmode"]
-        except:
-            gl.pushmode = "0"
-    else:
-        gl.pushmode = os.getenv('Pushmode')
-    if os.getenv("ZhuanXiang") == "True":
-        gl.zhuanxiang = True
-    gl.nohead = nohead
-    return nohead, lock, stime, Single
+    if gl.is_init != True:
+        gl.init_global()
+        if len(argv) > 2:
+            if argv[2] == "hidden":
+                gl.nohead = True
+            elif argv[2] == "show":
+                gl.nohead = False
+        if len(argv) > 3:
+            if argv[3] == "single":
+                gl.lock = True
+            elif argv[3] == "multithread":
+                gl.lock = False
+        if len(argv) > 4:
+            if argv[4].isdigit():
+                gl.stime = argv[4]
+    return gl.nohead, gl.lock, gl.stime, gl.single
 
 
 def start_learn(uid, name):
@@ -88,23 +51,21 @@ def start_learn(uid, name):
     if nohead == True:
         TechXueXi_mode = "3"
     else:
-        try:
-            if cfg["base"]["ModeType"]:
-                print("默认选择模式：" + str(cfg["base"]
-                      ["ModeType"]) + "\n" + "=" * 60)
-                TechXueXi_mode = str(cfg["base"]["ModeType"])
-        except Exception as e:
-            TechXueXi_mode = "3"
+        TechXueXi_mode = str(cfg_get("base.ModeType", 3))
+        print("当前选择模式：" + TechXueXi_mode + "\n" + "=" * 60)
+
     if not name:
         user_fullname = user.get_fullname(uid)
+        name = user_fullname.split('_', 1)[1]
     else:
         user_fullname = uid+"_"+name
+
     if not cookies or TechXueXi_mode == "0":
         msg = ""
         if name == "新用户":
             msg = "需要增加新用户，请扫码登录，否则请无视"
         else:
-            msg = user_fullname+"登录信息失效，请重新扫码"
+            msg = name+" 登录信息失效，请重新扫码"
         print(msg)
         gl.pushprint(msg)
         driver_login = Mydriver()
@@ -116,8 +77,9 @@ def start_learn(uid, name):
         user.save_cookies(cookies)
         uid = user.get_userId(cookies)
         user_fullname = user.get_fullname(uid)
+        name = user_fullname.split('_', 1)[1]
         user.update_last_user(uid)
-    output = "\n用户：" + user_fullname + "登录正常，开始学习...\n"
+    output = name + " 登录正常，开始学习...\n"
 
     article_index = user.get_article_index(uid)
     video_index = 1  # user.get_video_index(uid)
@@ -138,12 +100,11 @@ def start_learn(uid, name):
         driver_default = Mydriver()
         print('开始每日答题……')
         daily(cookies, scores, driver_default=driver_default)
-        if TechXueXi_mode in ["2", "3"]:
-            print('开始每周答题……')
-            weekly(cookies, scores, driver_default=driver_default)
-            if nohead != True or gl.zhuanxiang == True:
-                print('开始专项答题……')
-                zhuanxiang(cookies, scores, driver_default=driver_default)
+        print('开始每周答题……')
+        weekly(cookies, scores, driver_default=driver_default)
+        if nohead != True or gl.zhuanxiang == True:
+            print('开始专项答题……')
+            zhuanxiang(cookies, scores, driver_default=driver_default)
         try:
             driver_default.quit()
         except Exception as e:
@@ -156,8 +117,8 @@ def start_learn(uid, name):
         user.refresh_all_cookies(live_time=11.90)
 
     seconds_used = int(time.time() - start_time)
-    print("总计用时 " + str(math.floor(seconds_used / 60)) +
-          " 分 " + str(seconds_used % 60) + " 秒")
+    gl.pushprint(name+" 总计用时 " + str(math.floor(seconds_used / 60)) +
+                 " 分 " + str(seconds_used % 60) + " 秒")
     show_scorePush(cookies)
     try:
         user.shutdown(stime)
@@ -211,7 +172,7 @@ def add_user():
 
 
 if __name__ == '__main__':
-    if(cfg['display']['banner'] != False):  # banner文本直接硬编码，不要放在conf中
+    if(cfg_get('display.banner') != False):  # banner文本直接硬编码，不要放在conf中
         print("=" * 60 +
               '\n    我们的网站，GitHub 等页面已经被中国大陆的浏览器加入黑名单，请用谷歌浏览器 chrome 打开我们的站点。' +
               '\n    科技强 guo 官方网站：https://techxuexi.js.org' +
@@ -223,6 +184,6 @@ if __name__ == '__main__':
               '\n另外，我们建议你参与一个维护劳动法的项目：' +
               '\nhttps://996.icu/ 或 https://github.com/996icu/996.ICU/blob/master/README_CN.md')
     print("=" * 60, '''\nTechXueXi 现支持以下模式（答题时请值守电脑旁处理少部分不正常的题目）：''')
-    print(cfg['base']['ModeText'] + '\n' + "=" * 60)
+    print(cfg_get('base.ModeText', "") + '\n' + "=" * 60)
     # 模式提示文字请在 ./config/default_template.conf 处修改。
     start()
