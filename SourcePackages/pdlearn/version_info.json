@@ -1,6 +1,9 @@
 {
-    "techxuexi_version": "v20211006",
+    "techxuexi_version": "v20211009",
     "techxuexi_update_log": [{
+        "version": "v20211009",
+        "info": "优化配置文件读取方式，优化全局变量初始化，增加TG的配置项，优化二维码发送方式，增加tg的二维码发送，优化scheme跳转信息处理，文档优化，"
+    },{
         "version": "v20211006",
         "info": "新增强国题库查询，使用 challengeAnswerBank.py，增加Scheme环境变量，规范部分文件代码格式"
     },{
