@@ -1,5 +1,3 @@
-from pdlearn.pluspush import PlusPushHandler
-from pdlearn.fangtang import FangtangHandler
 from typing import List, Any
 
 import selenium
@@ -214,12 +212,9 @@ class Mydriver:
 
     def sendmsg(self):
         qcbase64 = self.getQRcode()
-        if gl.pushmode == "3":
-            ft = FangtangHandler(gl.accesstoken)
-            ft.ftmsgsend(qcbase64)
-        elif gl.pushmode == "4":
-            push = PlusPushHandler(gl.accesstoken)
-            push.ftmsgsend(qcbase64)
+        # 发送二维码
+        gl.send_qrbase64(qcbase64)
+        # 发送链接
         if gl.scheme:
             gl.pushprint(gl.scheme+quote_plus(decode_img(qcbase64)))
         else:
