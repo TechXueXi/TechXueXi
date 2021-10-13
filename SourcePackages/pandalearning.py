@@ -79,6 +79,7 @@ def start_learn(uid, name):
         user_fullname = user.get_fullname(uid)
         name = user_fullname.split('_', 1)[1]
         user.update_last_user(uid)
+
     output = name + " 登录正常，开始学习...\n"
 
     article_index = user.get_article_index(uid)
@@ -126,7 +127,11 @@ def start_learn(uid, name):
         pass
 
 
-def start():
+def start(uName=""):
+    maxScore = 0
+    if os.getenv("MaxScore"):
+        maxScore = int(os.getenv("MaxScore"))
+
     nohead, lock, stime, Single = get_argv()
     info_shread = threads.MyThread("获取更新信息...", version.up_info)
     info_shread.start()
@@ -136,10 +141,35 @@ def start():
         user_list.append(["", "新用户"])
     for i in range(len(user_list)):
         try:
+            user_id = user_list[i][0]
+            user_name = user_list[i][1]
+            # 查询单个用户
+            if uName != "" and uName != user_name:
+                print(f"@{user_name}  跳过执行")
+                continue
+
+            cookies = user.get_cookie(user_id)
+            # 验证用户是否过期
+            if not cookies:
+                gl.pushprint(f"@{user_name} 登陆过期，跳过执行 !请重新登陆")
+                continue
+
+            # 验证用户是否达到积分标准
+            userId, total, scores, userName = score.get_score(cookies)
+            if maxScore != 0 and maxScore <= scores["today"]:
+                gl.pushprint(f"{user_name}：今日分数{scores['today']}，已经满足条件")
+                continue
+
             _learn = threads.MyThread(
-                user_list[i][0]+"开始学xi", start_learn, user_list[i][0], user_list[i][1], lock=Single)
+                user_id+"开始学xi",
+                start_learn,
+                f"{user_id}",
+                f"{user_name}",
+                lock=Single
+            )
             _learn.start()
-        except:
+        except Exception as e:
+            print(e)
             gl.pushprint("学习页面崩溃，学习终止")
 
 
@@ -184,6 +214,6 @@ if __name__ == '__main__':
               '\n另外，我们建议你参与一个维护劳动法的项目：' +
               '\nhttps://996.icu/ 或 https://github.com/996icu/996.ICU/blob/master/README_CN.md')
     print("=" * 60, '''\nTechXueXi 现支持以下模式（答题时请值守电脑旁处理少部分不正常的题目）：''')
-    print(cfg_get('base.ModeText', "") + '\n' + "=" * 60)
+    # print(cfg_get('base.ModeText', "") + '\n' + "=" * 60)
     # 模式提示文字请在 ./config/default_template.conf 处修改。
     start()
