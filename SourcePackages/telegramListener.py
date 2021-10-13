@@ -31,7 +31,7 @@ def get_help(message):
 @exception_catcher(reserve_fun=bot.reply_to, fun_args=("学习崩溃啦",), args_push=True)
 def learn(event):
     message = event.text
-    params = message.split("&")
+    params = message.split(" ")
     user_name = ""
     if len(params) > 1:
         user_name = params[1]

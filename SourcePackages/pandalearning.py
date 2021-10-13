@@ -139,6 +139,7 @@ def start(uName=""):
     user.refresh_all_cookies()
     if len(user_list) == 0:
         user_list.append(["", "新用户"])
+    print(f"{uName}：学习人")    
     for i in range(len(user_list)):
         try:
             user_id = user_list[i][0]
