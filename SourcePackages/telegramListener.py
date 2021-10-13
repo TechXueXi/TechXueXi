@@ -32,7 +32,7 @@ def get_help(message):
 def learn(event):
     message = event.text
     params = message.split("&")
-    user_name = None
+    user_name = ""
     if len(params) > 1:
         user_name = params[1]
     pdl.start(user_name)
