@@ -29,13 +29,12 @@ def get_help(message):
 
 @bot.message_handler(commands=['learn'], func=authorize)
 @exception_catcher(reserve_fun=bot.reply_to, fun_args=("学习崩溃啦",), args_push=True)
-def learn(message):
-    print(message)
+def learn(event):
+    message = event.text
     params = message.split("&")
     user_name = None
     if len(params) > 1:
         user_name = params[1]
-    print(user_name)
     pdl.start(user_name)
 
 
