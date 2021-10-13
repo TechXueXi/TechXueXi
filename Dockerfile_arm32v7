@@ -8,6 +8,8 @@ ENV pullbranche=${usebranche}
 COPY --from=builder qemu-arm-static /usr/bin  
 RUN apt-get update
 RUN apt-get install -y wget unzip libzbar0 git cron chromium-driver; chromedriver --version; which chromedriver; chromium --version
+RUN apt-get install -y libxml2-dev libxslt1-dev zlib1g-dev python3-pip
+RUN apt-get install libjpeg-dev zlib1g-dev 
 ENV TZ=Asia/Shanghai
 ENV AccessToken=
 ENV Secret=
@@ -19,7 +21,8 @@ ENV CRONTIME="30 9 * * *"
 # RUN rm -f /xuexi/config/*; ls -la
 COPY requirements.txt /xuexi/requirements.txt
 COPY run.sh /xuexi/run.sh 
-COPY start.sh /xuexi/start.sh 
+COPY start.sh /xuexi/start.sh
+# RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pillow
 RUN pip install -r /xuexi/requirements.txt
 WORKDIR /xuexi
 RUN chmod +x ./run.sh
