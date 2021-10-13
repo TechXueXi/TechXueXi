@@ -28,7 +28,6 @@ def get_help(message):
 
 
 @bot.message_handler(commands=['learn'], func=authorize)
-@exception_catcher(reserve_fun=bot.reply_to, fun_args=("学习崩溃啦",), args_push=True)
 def learn(event):
     try:
         message = event.text
@@ -43,7 +42,6 @@ def learn(event):
 
 
 @bot.message_handler(commands=['list'], func=authorize)
-@exception_catcher(reserve_fun=bot.reply_to, fun_args=("Chrome 崩溃啦",), args_push=True)
 def list(message):
     try:
         bot.send_chat_action(master, "typing")
@@ -55,7 +53,6 @@ def list(message):
 
 
 @bot.message_handler(commands=['add'], func=authorize)
-@exception_catcher(reserve_fun=bot.reply_to, fun_args=("Chrome 崩溃啦",), args_push=True)
 def add(message):
     try:
         bot.send_chat_action(master, "typing")
