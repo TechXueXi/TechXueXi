@@ -30,27 +30,39 @@ def get_help(message):
 @bot.message_handler(commands=['learn'], func=authorize)
 @exception_catcher(reserve_fun=bot.reply_to, fun_args=("学习崩溃啦",), args_push=True)
 def learn(event):
-    message = event.text
-    params = message.split(" ")
-    user_name = ""
-    if len(params) > 1:
-        user_name = params[1]
-    pdl.start(user_name)
+    try:
+        message = event.text
+        params = message.split(" ")
+        user_name = ""
+        if len(params) > 1:
+            user_name = params[1]
+        pdl.start(user_name)
+    except Exception as e:
+        print(e)
+        bot.reply_to(message, "程序命令运行错误")
 
 
 @bot.message_handler(commands=['list'], func=authorize)
 @exception_catcher(reserve_fun=bot.reply_to, fun_args=("Chrome 崩溃啦",), args_push=True)
 def list(message):
-    bot.send_chat_action(master, "typing")
-    msg = pdl.get_user_list()
-    bot.reply_to(message, msg)
+    try:
+        bot.send_chat_action(master, "typing")
+        msg = pdl.get_user_list()
+        bot.reply_to(message, msg)
+    except Exception as e:
+        print(e)
+        bot.reply_to(message, "程序命令运行错误")
 
 
 @bot.message_handler(commands=['add'], func=authorize)
 @exception_catcher(reserve_fun=bot.reply_to, fun_args=("Chrome 崩溃啦",), args_push=True)
 def add(message):
-    bot.send_chat_action(master, "typing")
-    pdl.add_user()
+    try:
+        bot.send_chat_action(master, "typing")
+        pdl.add_user()
+    except Exception as e:
+        print(e)
+        bot.reply_to(message, "程序命令运行错误")
 
 
 if __name__ == '__main__':
