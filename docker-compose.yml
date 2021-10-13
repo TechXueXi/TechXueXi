@@ -1,0 +1,17 @@
+version: '3.5'
+services:
+  xuexi:
+    image: xuexi:arm
+    container_name: xuexi
+    restart: unless-stopped
+    volumes:
+       - ./user:/xuexi/user
+    environment:
+      - AccessToken=
+      - Secret=
+      - Pushmode=1
+      - CRONTIME=30 9 * * *
+    build:
+      context: .
+      shm_size: '2gb' 
+    shm_size: '2gb'
