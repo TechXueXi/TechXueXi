@@ -13,12 +13,12 @@ services:
       - AccessToken=
       - Secret=
       - Pushmode=1
-      - CRONTIME=30 0/8 * * *
+      - CRONTIME=30 0-23/8 * * *
     build:
       context: .
       shm_size: '2gb' 
     shm_size: '2gb'
 ```
-由于cookie有效期为12小时，CRONTIME可以设置为 30 0/8 * * * 每8小时30分执行一次
+由于cookie有效期为12小时，CRONTIME可以设置为 30 0-23/8 * * * 每8小时执行一次
 原文参考：
 https://github.com/TechXueXi/TechXueXi
