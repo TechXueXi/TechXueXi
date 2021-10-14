@@ -8,6 +8,22 @@
 
 **警告：如您不熟悉，请使用源码运行的方式**
 
+# 配置文件
+
+由于Docker中的环境变量越来越多，可定义项目也逐渐增多，所以后续增加的部分配置项目移至配置文件。
+
+所有可配置项目及说明，请参见[默认配置文件](https://github.com/npo5tech/TechXueXi/blob/dev/SourcePackages/config/default_template.conf)。
+
+如需修改默认配置，请将虚拟目录`xuexi/user`映射至本地目录，首次运行后会产生`settings.conf`文件。该文件内首行代码不要删除。从第三行开始添加即可。
+
+***请严格遵循书写规范*** 否则将导致程序无法运行。
+
+**变量优先级**
+
+环境变量 > settings.conf > default_template.conf
+
+
+
 # Docker 地址
 
 > 2021 年 9 月 25 日起 arm 和 amd 地址分开，请重新配置 docker
@@ -53,6 +69,7 @@ docker pull techxuexi/techxuexi-amd64:{tag}
 - Sourcepath 项目源，默认是`https://github.com.cnpmjs.org/TechXueXi/TechXueXi.git`
 - pullbranche 项目分支，默认是`dev`，后续可能会变为`master`
 - islooplogin 循环参数，默认`False`，当设置为`True`的时候，如果扫码超时会一直尝试循环获取新的扫码，考虑到微信公众号推送有次数限制，慎用
+- ZhuanXiang 是否进行专项答题，设置`True`则开始答题，如果经常遇到视频题目，或者经常答题失败，建议关闭
 
 # Docker 命令运行
 
@@ -191,10 +208,16 @@ services:
 5. 将第 2 步获取的 token 放在`AccessToken`中，第 3 步获取的 Id 放到`Secret`中，`Pushmode`设置为 5。
 
 增加telegram bot指令支持
+
 `/help` 获取帮助
-`/learn` 开始学习
+
+`/learn` 开始学习，`/learn 张三` 指定账号学习
+
 `/list` 获取账号列表，获取有效的cookie列表，显示过期时间，并显示当天学习积分。
+
 `/add` 添加新账号，只添加账号，不会立即学习
+
+`/update` 更新本地代码
 
 **注意，用学习强国官方软件及网页时关闭翻墙软件**。但是telegram推送需要翻墙。
 

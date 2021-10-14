@@ -126,7 +126,7 @@ def start_learn(uid, name):
         pass
 
 
-def start():
+def start(nick_name=None):
     nohead, lock, stime, Single = get_argv()
     info_shread = threads.MyThread("获取更新信息...", version.up_info)
     info_shread.start()
@@ -136,9 +136,10 @@ def start():
         user_list.append(["", "新用户"])
     for i in range(len(user_list)):
         try:
-            _learn = threads.MyThread(
-                user_list[i][0]+"开始学xi", start_learn, user_list[i][0], user_list[i][1], lock=Single)
-            _learn.start()
+            if nick_name == None or nick_name == user_list[i][1]:
+                _learn = threads.MyThread(
+                    user_list[i][0]+"开始学xi", start_learn, user_list[i][0], user_list[i][1], lock=Single)
+                _learn.start()
         except:
             gl.pushprint("学习页面崩溃，学习终止")
 
@@ -153,6 +154,14 @@ def get_user_list():
     if msg == "":
         msg = "cookie全部过期，请重新登录"
     return msg
+
+
+def get_all_user_name():
+    user_list = user.list_user(printing=False)
+    names = []
+    for i in range(len(user_list)):
+        names.append(user_list[i][1])
+    return names
 
 
 def add_user():
