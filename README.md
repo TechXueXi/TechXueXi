@@ -16,3 +16,5 @@ services:
       - CRONTIME=30 0/8 * * *
 ```
 由于cookie有效期为12小时，CRONTIME可以设置为 30 0/8 * * * 每8小时30分执行一次
+原文参考：
+https://github.com/TechXueXi/TechXueXi
