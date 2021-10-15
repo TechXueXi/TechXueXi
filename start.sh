@@ -5,9 +5,9 @@ if ! git -C /xuexi/code/TechXueXi config pull.ff only; then
 fi
 printenv >> /etc/environment
 touch /var/log/cron.log
-if ["${Pushmode}" = "5"];then
+if [ "${Pushmode}" = "5" ]; then
     # supervisord -c /etc/supervisord.conf
-    nohup /usr/local/bin/python /xuexi/telegramListener.py >> /xuexi/tg_listener.log 2>&1 &
+    nohup /usr/local/bin/python /xuexi/telegramListener.py >> /xuexi/user/tg_listener.log 2>&1 &
 fi
 ./run.sh 2>&1 & 
 echo -e "$CRONTIME $USER /xuexi/run.sh >> /var/log/cron.log 2>&1\n#empty line" > /etc/cron.d/mycron
