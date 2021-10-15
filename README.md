@@ -2,6 +2,8 @@
 
 **[交流群地址及说明（点击查看）](https://github.com/TechXueXi/TechXueXi/issues/14)**
 
+**重要公告**： [公告栏（国内打不开）](https://t.me/s/techxuexi_notice) || [公告栏（国内可以打开）](https://notice.techxuexi.workers.dev)
+
 **我们随时删库跑路，请加交流群防失联。**
 
 > 本项目基于某已终止的项目，请自行搜索后前往star。我们由衷地敬佩这个领域的先锋们。  
@@ -150,7 +152,7 @@ win平台可能提示`无法定位程序输入点ucrtbase.terminate于动态链�
 
 如您参与贡献，请注意：维护计划、路线图中每一条未列至"Done"下时，仅可在 dev 分支改动。
 
-### [👨‍👨‍👦‍👦 直接参与贡献](https://github.com/TechXueXi/TechXueXi/blob/master/CONTRIBUTING.md)(内附提交方法)
+### [👨‍👨‍👦‍👦 直接参与贡献](https://github.com/TechXueXi/TechXueXi/blob/dev/CONTRIBUTING.md)(内附提交方法)
 
 如您开发了其他“科技强国”项目，也可以加入本组织，相互交流，共同维护生态。
 

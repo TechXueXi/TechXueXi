@@ -1,8 +1,29 @@
 {
-    "techxuexi_version": "v20210927",
+    "techxuexi_version": "v20211014",
     "techxuexi_update_log": [{
+        "version": "v20211014",
+        "info": "推送模式的判断，如果使用tgbot推送，才以nohup的方式启动监听,增加supervisor，并设置默认配置，但是未在代码中启用，tgbot 新增指定账号学习,tgbot 新增更新代码指令，增加配置项，防止答题循环100次,修改文档等"
+    },{
+        "version": "v20211009",
+        "info": "优化配置文件读取方式，优化全局变量初始化，增加TG的配置项，优化二维码发送方式，增加tg的二维码发送，优化scheme跳转信息处理，文档优化，"
+    },{
+        "version": "v20211006",
+        "info": "新增强国题库查询，使用 challengeAnswerBank.py，增加Scheme环境变量，规范部分文件代码格式"
+    },{
+        "version": "v20211005",
+        "info": "优化答题时选项点击方式，多选没有答案时，默认全选，出现滑块验证时跳过答题，防止循环。降低 docker amd64 中浏览器版本（未完成）"
+    },{
+        "version": "v20211004",
+        "info": "修复部分题目找不到答案，增加ZhuanXiang环境变量，可以在无头模式下做专项答题，优化文档"
+    },{
+        "version": "v20211001",
+        "info": "增加Telegram bot的互动操作"
+    },{
+        "version": "v20210929",
+        "info": "增加telegram bot指令支持，调整bot通知代码与之前统一，增加学xi线程的异常捕获，修复名称获取不全的问题"
+    },{
         "version": "v20210927",
-        "info": "此版暂无exe文件，win exe 可以不升级。增加Telegram通知；修改为多线程，多账号同时学习；修复通知中的乱码 ；获取用户完整用户名"
+        "info": "增加Telegram通知；修改为多线程，多账号同时学习；修复通知中的乱码 ；获取用户完整用户名"
     },{
         "version": "v20210903",
         "info": "增加docker多用户支持，pip使用镜像加速,修正PushMode应为字符串,更新md说明"

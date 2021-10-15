@@ -11,24 +11,27 @@ from pdlearn import score
 from pdlearn import file
 from pdlearn import color
 from pdlearn.mydriver import Mydriver
+from pdlearn.exp_catch import exception_catcher
 
 
 def get_userId(cookies):
-    userId, total, scores,userName = score.get_score(cookies)
+    userId, total, scores, userName = score.get_score(cookies)
     return userId
 
 
+@exception_catcher(reserve_value="_")
 def get_fullname(userId):
-    fullname = ""
+    fullname = "_"
+    nickname = ""
     status = get_user_status()
     for i in status["userId_mapping"]:
-        nickname = status["userId_mapping"][i]
         if (str(userId) == i):
+            nickname = status["userId_mapping"][i]
             fullname = i + '_' + nickname
             break
-    if (fullname == ""):
-        cookies=get_cookie(userId)
-        userId ,total, scores,userName = score.get_score(cookies)
+    if (nickname == ""):
+        cookies = get_cookie(userId)
+        uid, total, scores, userName = score.get_score(cookies)
         # print("查找 userId: " + str(userId) + " 失败...")
         # pattern = re.compile(u'^[a-zA-Z0-9_\u4e00-\u9fa5]+$')
         # while True:
@@ -40,11 +43,12 @@ def get_fullname(userId):
         #         break
         #     else:
         #         print("输入不符合要求，输入内容只能为：英文字母、数字、下划线、中文。")
-        save_fullname(str(userId) + '_' + userName)
-        return get_fullname(userId)
+        fullname = str(userId) + '_' + userName
+        save_fullname(fullname)
     return fullname
 
 
+@exception_catcher(reserve_value="")
 def get_nickname(userId):
     return get_fullname(userId).split('_', 1)[1]
 
@@ -99,11 +103,11 @@ def save_user_status(status):
 # def save_last_quiz(status):
 #     file.save_json_data("user/last_quiz.json", status)
 
-
 def get_cookie(userId):
     userId = str(userId)
     template_json_str = '''{}'''
-    cookies_json_obj = file.get_json_data("user/cookies.json", template_json_str)
+    cookies_json_obj = file.get_json_data(
+        "user/cookies.json", template_json_str)
     for i in cookies_json_obj:
         if (i == userId):
             cookies_b64 = cookies_json_obj[i]
@@ -123,7 +127,8 @@ def get_cookie(userId):
 def save_cookies(cookies):
     # print(type(cookies), cookies)
     template_json_str = '''{}'''
-    cookies_json_obj = file.get_json_data("user/cookies.json", template_json_str)
+    cookies_json_obj = file.get_json_data(
+        "user/cookies.json", template_json_str)
     userId = get_userId(cookies)
     cookies_bytes = pickle.dumps(cookies)
     cookies_b64 = base64.b64encode(cookies_bytes)
@@ -134,14 +139,16 @@ def save_cookies(cookies):
 
 def remove_cookie(uid):
     template_json_str = '''{}'''
-    cookies_json_obj = file.get_json_data("user/cookies.json", template_json_str)
+    cookies_json_obj = file.get_json_data(
+        "user/cookies.json", template_json_str)
     cookies_json_obj.pop(str(uid))
     file.save_json_data("user/cookies.json", cookies_json_obj)
 
 
 def get_article_video_json():
     template_json_str = '''{"#此文件记录用户的视频和文章的浏览进度":"","article_index":{},"video_index":{}}'''
-    article_video_json = file.get_json_data("user/article_video_index.json", template_json_str)
+    article_video_json = file.get_json_data(
+        "user/article_video_index.json", template_json_str)
     return article_video_json
 
 
@@ -153,7 +160,8 @@ def get_index(userId, index_type):
     else:
         index = 0
         article_video_json[index_type][str(userId)] = index
-        file.save_json_data("user/article_video_index.json", article_video_json)
+        file.save_json_data(
+            "user/article_video_index.json", article_video_json)
     return int(index)
 
 
@@ -197,8 +205,10 @@ def check_default_user_cookie():
     default_userId = get_default_userId()
     default_fullname = get_default_fullname()
     default_nickname = get_default_nickname()
-    print_list = [color.blue(str(default_userId)), color.blue(default_nickname)]
-    print("=" * 60, "\n默认用户ID：{0[0]}，默认用户昵称：{0[1]}".format(print_list), end=" ")
+    print_list = [color.blue(str(default_userId)),
+                  color.blue(default_nickname)]
+    print(
+        "=" * 60, "\n默认用户ID：{0[0]}，默认用户昵称：{0[1]}".format(print_list), end=" ")
     cookies = get_cookie(default_userId)
     if not cookies:
         print(color.red("【无有效cookie信息，需要登录】"))
@@ -210,8 +220,10 @@ def check_default_user_cookie():
 
 # 保活。执行会花费一定时间，全新cookies的有效时间是12h
 def refresh_all_cookies(live_time=8.0, display_score=False):  # cookie有效时间保持在live_time以上
+    msgInfo = {}
     template_json_str = '''{}'''
-    cookies_json_obj = file.get_json_data("user/cookies.json", template_json_str)
+    cookies_json_obj = file.get_json_data(
+        "user/cookies.json", template_json_str)
     need_check = False
     valid_cookies = []
     for uid in cookies_json_obj:
@@ -221,8 +233,10 @@ def refresh_all_cookies(live_time=8.0, display_score=False):  # cookie有效时�
         for d in cookie_list:  # 检查是否过期
             if 'name' in d and 'value' in d and 'expiry' in d and d["name"] == "token":
                 remain_time = (int(d['expiry']) - (int)(time.time())) / 3600
-                print(color.green(
-                    uid + "_" + get_nickname(uid) + "，登录剩余有效时间：" + str(int(remain_time * 1000) / 1000) + " 小时."), end="")
+                msg = get_nickname(uid) + " 登录剩余有效时间：" + \
+                    str(int(remain_time * 10) / 10) + " 小时."
+                print(color.green(msg), end="")
+                msgInfo[uid] = msg
                 if remain_time < 0:
                     print(color.red(" 已过期 需要重新登陆，将自动移除此cookie."))
                     remove_cookie(uid)
@@ -241,9 +255,11 @@ def refresh_all_cookies(live_time=8.0, display_score=False):  # cookie有效时�
                         #                         headers={'Cache-Control': 'no-cache'}).cookies.get_dict()
                         # 浏览器登陆方式更新cookie，速度较慢但可靠
                         driver_login = Mydriver(nohead=False)
-                        driver_login.get_url("https://www.xuexi.cn/notFound.html")
+                        driver_login.get_url(
+                            "https://www.xuexi.cn/notFound.html")
                         driver_login.set_cookies(cookie_list)
-                        driver_login.get_url('https://pc.xuexi.cn/points/my-points.html')
+                        driver_login.get_url(
+                            'https://pc.xuexi.cn/points/my-points.html')
                         new_cookies = driver_login.get_cookies()
                         driver_login.quit()
                         found_token = False
@@ -258,12 +274,15 @@ def refresh_all_cookies(live_time=8.0, display_score=False):  # cookie有效时�
                         print(color.green(" 无需刷新"))
     if need_check:  # 再执行一遍来检查有效情况
         print("再次检查cookies有效时间...")
-        refresh_all_cookies()
+        return refresh_all_cookies(live_time, display_score)
     elif display_score:
         for cookie in valid_cookies:
             user_id = get_userId(cookie)
             print(color.blue(get_fullname(user_id)) + " 的今日得分：")
-            score.show_score(cookie)
+            total, scores = score.show_score(cookie)
+            if str(user_id) in msgInfo:
+                msgInfo[str(user_id)] += " 今日得分："+str(scores["today"])
+    return msgInfo
 
 
 # 如有多用户，打印各个用户信息
@@ -304,7 +323,8 @@ def select_user():
             print("默认用户已切换为：" + color.blue(get_fullname(user_id)))
             update_last_user(user_id)
     else:
-        print("目前你只有一个用户。用户名：", get_default_userId(), "，昵称：", get_default_nickname())
+        print("目前你只有一个用户。用户名：", get_default_userId(),
+              "，昵称：", get_default_nickname())
 
 
 # 仅适用于Windows的关机，有待改进
@@ -316,6 +336,6 @@ def shutdown(stime):
             print("\r{}秒后关机".format(stime - i), end="")
             time.sleep(1)
     else:
-        print("无自动关机任务，已释放程序内存，1分钟后窗口将自动关闭")
+        print("无自动关机任务，已释放程序内存，窗口将自动关闭")
         # time.sleep(600)
-        os.system("timeout 60")
+        # os.system("timeout 60")
