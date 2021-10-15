@@ -8,7 +8,6 @@ import io
 from PIL import Image
 import requests, json  # 导入依赖库
 
-
 from pyzxing import BarCodeReader
 # based on https://github.com/TechXueXi/TechXueXi/issues/108 (thanks to mudapi)
 def decode_img(data):
