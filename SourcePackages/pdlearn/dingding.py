@@ -4,16 +4,20 @@ import hashlib
 import base64
 import urllib.parse
 import io
-from pyzbar import pyzbar
+# from pyzbar import pyzbar
 from PIL import Image
 import requests, json  # 导入依赖库
 
 
+from pyzxing import BarCodeReader
 # based on https://github.com/TechXueXi/TechXueXi/issues/108 (thanks to mudapi)
 def decode_img(data):
     img_b64decode = base64.b64decode(data[data.index(';base64,')+8:])
-    decoded = pyzbar.decode(Image.open(io.BytesIO(img_b64decode)))
-    return decoded[0].data.decode("utf-8")
+    reader = BarCodeReader()
+    barcode = reader.decode(Image.open(io.BytesIO(img_b64decode)))
+    print(barcode.parsed)
+    input()
+    return barcode.parsed
 
 
 class DingDingHandler:

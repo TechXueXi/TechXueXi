@@ -27,16 +27,21 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common import exceptions
 from pdlearn import globalvar as gl
-from pyzbar import pyzbar
+# from pyzbar import pyzbar
 import io
 from PIL import Image
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 import base64  # 解码二维码图片
 #from pdlearn.qywx import WeChat  # 使用微信发送二维码图片到手机
+from pyzxing import BarCodeReader
+# based on https://github.com/TechXueXi/TechXueXi/issues/108 (thanks to mudapi)
 def decode_img(data):
     img_b64decode = base64.b64decode(data[data.index(';base64,')+8:])
-    decoded = pyzbar.decode(Image.open(io.BytesIO(img_b64decode)))
-    return decoded[0].data.decode("utf-8")
+    reader = BarCodeReader()
+    barcode = reader.decode(Image.open(io.BytesIO(img_b64decode)))
+    print(barcode.parsed)
+    input()
+    return barcode.parsed
 
 class title_of_login:
     def __call__(self, driver):
