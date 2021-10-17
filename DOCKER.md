@@ -42,35 +42,6 @@ docker pull techxuexi/techxuexi-amd64:{tag}
 
 目前最新的 tag 请前往 https://hub.docker.com/u/techxuexi/ 查询
 
-# Docker 参数
-
-- TZ 时区设置，默认值`Asia/Shanghai`
-- AccessToken bot 发送指令的 token 具体方法参见下方 bot 指南
-- Secret 钉钉推送时为钉钉 Secret，Telegram bot 则为管理员数字 Id
-- Nohead 无窗口模式 默认值`True`，Docker 不要修改此参数
-- Pushmode 消息推送模式
-- ZhuanXiang 环境变量，默认False，docker模式下改成True也可以进行专项答题
-
-  > 0 不开启
-
-  > 1 钉钉
-
-  > 2 微信（并未实现）
-
-  > 3 Server 酱
-
-  > 4 pluspush
-
-  > 5 Telegram Bot **（支持指令交互，随时可以开始学习）**
-
-  **推送消息是为了把登录链接发送给你，现在请每天点击链接登录。**
-
-- CRONTIME Cron 参数，默认是`30 9 * * *`，即每天早上 9:30 执行 ,可以把 Cron 表达式放到这里去验证 https://crontab.guru/
-- Sourcepath 项目源，默认是`https://github.com.cnpmjs.org/TechXueXi/TechXueXi.git`
-- pullbranche 项目分支，默认是`dev`，后续可能会变为`master`
-- islooplogin 循环参数，默认`False`，当设置为`True`的时候，如果扫码超时会一直尝试循环获取新的扫码，考虑到微信公众号推送有次数限制，慎用
-- ZhuanXiang 是否进行专项答题，设置`True`则开始答题，如果经常遇到视频题目，或者经常答题失败，建议关闭
-
 # Docker 命令运行
 
 注意短横线和冒号的位置。
@@ -79,8 +50,10 @@ docker pull techxuexi/techxuexi-amd64:{tag}
 docker run -e "AccessToken={token}" -e "Secret={密钥}" -d --name={容器名称} techxuexi/techxuexi-amd64:{tag}
 ```
 
+上面命令的解释：
+
 ```shell
-docker run -e "从Docker.md找到参数1" -e "从Docker.md找到参数2" -e "从Docker.md找到参数3" -d --name={容器名称} techxuexi/techxuexi-amd64:{tag}
+docker run -e "从下面参数处找到参数1" -e "从下面参数处找到参数2" -e "从下面参数处找到参数3" -d --name={容器名称} techxuexi/techxuexi-amd64:{tag}
 ```
 
 请不要无脑照搬，需要修改：
@@ -105,9 +78,39 @@ Secret=密码
 Pushmode=1
 ```
 
-表示：钉钉，其他见上方
+表示：钉钉，其他见下方
+
+
+# Docker 参数
+### 必填
+- AccessToken 。bot 发送指令的 token 具体方法参见下方 bot 指南
+- Secret 钉钉推送时为钉钉 Secret，Telegram bot 则为管理员数字 Id
+- Nohead 无窗口模式 默认值`True`，Docker 不要修改此参数
+- Pushmode 消息推送模式：
+
+  > 0 不开启
+
+  > 1 钉钉
+
+  > 2 微信（并未实现）
+
+  > 3 Server 酱
+
+  > 4 pluspush
+
+  > 5 Telegram Bot **（支持指令交互，随时可以开始学习）**
+
+  **推送消息是为了把登录链接发送给你，现在请每天点击链接登录。**
 
 ##### 可选参数
+
+- ZhuanXiang 环境变量，默认False，docker模式下改成True也可以进行专项答题
+- TZ 时区设置，默认值`Asia/Shanghai`
+- CRONTIME Cron 参数，默认是`30 9 * * *`，即每天早上 9:30 执行 ,可以把 Cron 表达式放到这里去验证 https://crontab.guru/
+- Sourcepath 项目源，默认是`https://github.com.cnpmjs.org/TechXueXi/TechXueXi.git`
+- pullbranche 项目分支，默认是`dev`，后续可能会变为`master`
+- islooplogin 循环参数，默认`False`，当设置为`True`的时候，如果扫码超时会一直尝试循环获取新的扫码，考虑到微信公众号推送有次数限制，慎用
+- ZhuanXiang 是否进行专项答题，设置`True`则开始答题，如果经常遇到视频题目，或者经常答题失败，建议关闭
 
 ```
 CRONTIME=Cron参数，默认是30 9 * * *，即每天早上9:30执行  ,可以把Cron表达式放到这里去验证 https://crontab.guru/
