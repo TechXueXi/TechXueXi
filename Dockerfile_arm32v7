@@ -6,8 +6,11 @@ FROM arm32v7/python:3.7-slim
 ARG usebranche="dev"
 ENV pullbranche=${usebranche}
 COPY --from=builder qemu-arm-static /usr/bin  
+# 增加适配玩客云arm7 32位环境 chrome默认安装 90版本
 RUN apt-get update
 RUN apt-get install -y wget unzip libzbar0 git cron chromium-driver; chromedriver --version; which chromedriver; chromium --version
+RUN apt-get install -y libxml2-dev libxslt1-dev zlib1g-dev python3-pip
+RUN apt-get install libjpeg-dev zlib1g-dev 
 ENV TZ=Asia/Shanghai
 ENV AccessToken=
 ENV Secret=
