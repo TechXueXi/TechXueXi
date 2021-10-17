@@ -171,7 +171,7 @@ Docker 的安装就不赘述，直接从搜索注册表开始
 在文件夹中创建`docker-compose.yml`文件、`user`文件夹，
 
 ```
-version: '2.1'
+version: '3.5'
 services:
   xuexi:
     image: techxuexi/techxuexi-amd64:dev53
@@ -184,6 +184,10 @@ services:
       - Secret=
       - Pushmode=
       - CRONTIME=30 9 * * *
+    build:
+      context: .
+      shm_size: '2gb' 
+    shm_size: '2gb'
 ```
 
 根据个人需求修改 yml 文件，然后运行`docker-compose up -d`启动即可
