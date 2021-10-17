@@ -1,0 +1,31 @@
+FROM alpine AS builder
+
+ENV QEMU_URL https://github.com/balena-io/qemu/releases/download/v3.0.0%2Bresin/qemu-3.0.0+resin-arm.tar.gz
+RUN apk add curl && curl -L ${QEMU_URL} | tar zxvf - -C . --strip-components 1
+FROM arm32v7/python:3.7-slim
+ARG usebranche="dev"
+ENV pullbranche=${usebranche}
+COPY --from=builder qemu-arm-static /usr/bin  
+RUN apt-get update
+RUN apt-get install -y wget unzip libzbar0 git cron chromium-driver; chromedriver --version; which chromedriver; chromium --version
+ENV TZ=Asia/Shanghai
+ENV AccessToken=
+ENV Secret=
+ENV Nohead=True
+ENV Pushmode=1
+ENV islooplogin=False
+ENV Sourcepath="https://github.com.cnpmjs.org/TechXueXi/TechXueXi.git"
+ENV CRONTIME="30 9 * * *"
+# RUN rm -f /xuexi/config/*; ls -la
+COPY requirements.txt /xuexi/requirements.txt
+COPY run.sh /xuexi/run.sh 
+COPY start.sh /xuexi/start.sh 
+RUN pip install -r /xuexi/requirements.txt
+WORKDIR /xuexi
+RUN chmod +x ./run.sh
+RUN chmod +x ./start.sh
+RUN mkdir code
+WORKDIR /xuexi/code
+RUN git clone -b ${pullbranche} ${Sourcepath}
+WORKDIR /xuexi
+ENTRYPOINT ["/bin/bash", "./start.sh"]

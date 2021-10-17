@@ -1,6 +1,12 @@
 {
-    "techxuexi_version": "v20211009",
+    "techxuexi_version": "v20211015",
     "techxuexi_update_log": [{
+        "version": "v20211014",
+        "info": "20211014开始，xuexi 官方修改了一些接口，如果继续使用老版本，可能会被封号。请使用 techxuexi-js，或者源码，docker。修复当日积分获取异常，转移tg日志到user目录，方便查看，修复shell中的if判断错误"
+    },{
+        "version": "v20211014",
+        "info": "推送模式的判断，如果使用tgbot推送，才以nohup的方式启动监听,增加supervisor，并设置默认配置，但是未在代码中启用，tgbot 新增指定账号学习,tgbot 新增更新代码指令，增加配置项，防止答题循环100次,修改文档等"
+    },{
         "version": "v20211009",
         "info": "优化配置文件读取方式，优化全局变量初始化，增加TG的配置项，优化二维码发送方式，增加tg的二维码发送，优化scheme跳转信息处理，文档优化，"
     },{

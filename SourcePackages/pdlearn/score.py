@@ -56,38 +56,42 @@ def get_score(cookies):
                                   headers={'Cache-Control': 'no-cache'}).content.decode("utf8")
         total = int(json.loads(total_json)["data"]["score"])
         #userId = json.loads(total_json)["data"]["userId"]
-        user_info=requests.get("https://pc-api.xuexi.cn/open/api/user/info", cookies=jar,
-                                  headers={'Cache-Control': 'no-cache'}).content.decode("utf8")
-        userId=json.loads(user_info)["data"]["uid"]
-        userName=json.loads(user_info)["data"]["nick"]
-        score_json = requests.get("https://pc-api.xuexi.cn/open/api/score/today/queryrate", cookies=jar,
-                                  headers={'Cache-Control': 'no-cache'}).content.decode("utf8")
-        today_json = requests.get("https://pc-api.xuexi.cn/open/api/score/today/query", cookies=jar,
-                                  headers={'Cache-Control': 'no-cache'}).content.decode("utf8")
+        user_info = requests.get("https://pc-api.xuexi.cn/open/api/user/info", cookies=jar,
+                                 headers={'Cache-Control': 'no-cache'}).content.decode("utf8")
+        userId = json.loads(user_info)["data"]["uid"]
+        userName = json.loads(user_info)["data"]["nick"]
+        # score_json = requests.get("https://pc-api.xuexi.cn/open/api/score/today/queryrate", cookies=jar,
+        #                          headers={'Cache-Control': 'no-cache'}).content.decode("utf8")
+        # today_json = requests.get("https://pc-api.xuexi.cn/open/api/score/today/query", cookies=jar,
+        #                          headers={'Cache-Control': 'no-cache'}).content.decode("utf8")
         today = 0
-        today = int(json.loads(today_json)["data"]["score"])
-        dayScoreDtos = json.loads(score_json)["data"]["dayScoreDtos"]
+        # today = int(json.loads(today_json)["data"]["score"])
+        score_json = requests.get("https://pc-proxy-api.xuexi.cn/api/score/days/listScoreProgress?sence=score&deviceType=2", cookies=jar,
+                                  headers={'Cache-Control': 'no-cache'}).content.decode("utf8")
+        dayScoreDtos = json.loads(score_json)["data"]
+        today = dayScoreDtos["totalScore"]
         rule_list = [1, 2, 9, 1002, 1003, 6, 5, 4]
-        score_list= [0, 0, 0, 0   , 0   , 0, 0, 0, 0, 0] # 长度为十
-        for i in dayScoreDtos:
+        score_list = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]  # 长度为十
+        for i in dayScoreDtos["taskProgress"]:
             for j in range(len(rule_list)):
-                if i["ruleId"] == rule_list[j]:
-                    score_list[j] = int(i["currentScore"])
+                if str(rule_list[j]) in i["taskCode"]:
+                    score_list[j] = int(
+                        int(i["currentScore"])/len(i["taskCode"]))
         # 阅读文章，视听学 xi ，登录，文章时长，视听学 xi 时长，每日答题，每周答题，专项答题
         scores = {}
-        scores["article_num"]  = score_list[0] # 0阅读文章
-        scores["video_num"]    = score_list[1] # 1视听学 xi
-        scores["login"]        = score_list[2] # 7登录
-        scores["article_time"] = score_list[3] # 6文章时长
-        scores["video_time"]   = score_list[4] # 5视听学 xi 时长
-        scores["daily"]        = score_list[5] # 2每日答题
-        scores["weekly"]       = score_list[6] # 3每周答题
-        scores["zhuanxiang"]   = score_list[7] # 4专项答题
-        
-        scores["today"]        = today         # 8今日得分
-        return userId ,total, scores,userName
-    except:
+        scores["article_num"] = score_list[0]  # 0阅读文章
+        scores["video_num"] = score_list[1]  # 1视听学 xi
+        scores["login"] = score_list[2]  # 7登录
+        scores["article_time"] = score_list[3]  # 6文章时长
+        scores["video_time"] = score_list[4]  # 5视听学 xi 时长
+        scores["daily"] = score_list[5]  # 2每日答题
+        scores["weekly"] = score_list[6]  # 3每周答题
+        scores["zhuanxiang"] = score_list[7]  # 4专项答题
+
+        scores["today"] = today         # 8今日得分
+        return userId, total, scores, userName
+    except Exception as e:
         print("=" * 60)
-        print("get_score 获取失败")
+        print("get_score 获取失败:"+str(e))
         print("=" * 60)
-        return 0 ,0, 0,""
+        return 0, 0, 0, ""

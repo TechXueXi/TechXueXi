@@ -8,6 +8,22 @@
 
 **警告：如您不熟悉，请使用源码运行的方式**
 
+# 配置文件
+
+由于Docker中的环境变量越来越多，可定义项目也逐渐增多，所以后续增加的部分配置项目移至配置文件。
+
+所有可配置项目及说明，请参见[默认配置文件](https://github.com/npo5tech/TechXueXi/blob/dev/SourcePackages/config/default_template.conf)。
+
+如需修改默认配置，请将虚拟目录`xuexi/user`映射至本地目录，首次运行后会产生`settings.conf`文件。该文件内首行代码不要删除。从第三行开始添加即可。
+
+***请严格遵循书写规范*** 否则将导致程序无法运行。
+
+**变量优先级**
+
+环境变量 > settings.conf > default_template.conf
+
+
+
 # Docker 地址
 
 > 2021 年 9 月 25 日起 arm 和 amd 地址分开，请重新配置 docker
@@ -26,34 +42,6 @@ docker pull techxuexi/techxuexi-amd64:{tag}
 
 目前最新的 tag 请前往 https://hub.docker.com/u/techxuexi/ 查询
 
-# Docker 参数
-
-- TZ 时区设置，默认值`Asia/Shanghai`
-- AccessToken bot 发送指令的 token 具体方法参见下方 bot 指南
-- Secret 钉钉推送时为钉钉 Secret，Telegram bot 则为管理员数字 Id
-- Nohead 无窗口模式 默认值`True`，Docker 不要修改此参数
-- Pushmode 消息推送模式
-- ZhuanXiang 环境变量，默认False，docker模式下改成True也可以进行专项答题
-
-  > 0 不开启
-
-  > 1 钉钉
-
-  > 2 微信（并未实现）
-
-  > 3 Server 酱
-
-  > 4 pluspush
-
-  > 5 Telegram Bot **（支持指令交互，随时可以开始学习）**
-
-  **推送消息是为了把登录链接发送给你，现在请每天点击链接登录。**
-
-- CRONTIME Cron 参数，默认是`30 9 * * *`，即每天早上 9:30 执行 ,可以把 Cron 表达式放到这里去验证 https://crontab.guru/
-- Sourcepath 项目源，默认是`https://github.com.cnpmjs.org/TechXueXi/TechXueXi.git`
-- pullbranche 项目分支，默认是`dev`，后续可能会变为`master`
-- islooplogin 循环参数，默认`False`，当设置为`True`的时候，如果扫码超时会一直尝试循环获取新的扫码，考虑到微信公众号推送有次数限制，慎用
-
 # Docker 命令运行
 
 注意短横线和冒号的位置。
@@ -62,8 +50,10 @@ docker pull techxuexi/techxuexi-amd64:{tag}
 docker run -e "AccessToken={token}" -e "Secret={密钥}" -d --name={容器名称} techxuexi/techxuexi-amd64:{tag}
 ```
 
+上面命令的解释：
+
 ```shell
-docker run -e "从Docker.md找到参数1" -e "从Docker.md找到参数2" -e "从Docker.md找到参数3" -d --name={容器名称} techxuexi/techxuexi-amd64:{tag}
+docker run -e "从下面参数处找到参数1" -e "从下面参数处找到参数2" -e "从下面参数处找到参数3" -d --name={容器名称} techxuexi/techxuexi-amd64:{tag}
 ```
 
 请不要无脑照搬，需要修改：
@@ -88,9 +78,39 @@ Secret=密码
 Pushmode=1
 ```
 
-表示：钉钉，其他见上方
+表示：钉钉，其他见下方
+
+
+# Docker 参数
+### 必填
+- AccessToken 。bot 发送指令的 token 具体方法参见下方 bot 指南
+- Secret 钉钉推送时为钉钉 Secret，Telegram bot 则为管理员数字 Id
+- Nohead 无窗口模式 默认值`True`，Docker 不要修改此参数
+- Pushmode 消息推送模式：
+
+  > 0 不开启
+
+  > 1 钉钉
+
+  > 2 微信（并未实现）
+
+  > 3 Server 酱
+
+  > 4 pluspush
+
+  > 5 Telegram Bot **（支持指令交互，随时可以开始学习）**
+
+  **推送消息是为了把登录链接发送给你，现在请每天点击链接登录。**
 
 ##### 可选参数
+
+- ZhuanXiang 环境变量，默认False，docker模式下改成True也可以进行专项答题
+- TZ 时区设置，默认值`Asia/Shanghai`
+- CRONTIME Cron 参数，默认是`30 9 * * *`，即每天早上 9:30 执行 ,可以把 Cron 表达式放到这里去验证 https://crontab.guru/
+- Sourcepath 项目源，默认是`https://github.com.cnpmjs.org/TechXueXi/TechXueXi.git`
+- pullbranche 项目分支，默认是`dev`，后续可能会变为`master`
+- islooplogin 循环参数，默认`False`，当设置为`True`的时候，如果扫码超时会一直尝试循环获取新的扫码，考虑到微信公众号推送有次数限制，慎用
+- ZhuanXiang 是否进行专项答题，设置`True`则开始答题，如果经常遇到视频题目，或者经常答题失败，建议关闭
 
 ```
 CRONTIME=Cron参数，默认是30 9 * * *，即每天早上9:30执行  ,可以把Cron表达式放到这里去验证 https://crontab.guru/
@@ -191,10 +211,16 @@ services:
 5. 将第 2 步获取的 token 放在`AccessToken`中，第 3 步获取的 Id 放到`Secret`中，`Pushmode`设置为 5。
 
 增加telegram bot指令支持
+
 `/help` 获取帮助
-`/learn` 开始学习
+
+`/learn` 开始学习，`/learn 张三` 指定账号学习
+
 `/list` 获取账号列表，获取有效的cookie列表，显示过期时间，并显示当天学习积分。
+
 `/add` 添加新账号，只添加账号，不会立即学习
+
+`/update` 更新本地代码
 
 **注意，用学习强国官方软件及网页时关闭翻墙软件**。但是telegram推送需要翻墙。
 

@@ -1,15 +1,9 @@
-FROM alpine AS builder
-
-ENV QEMU_URL https://github.com/balena-io/qemu/releases/download/v3.0.0%2Bresin/qemu-3.0.0+resin-arm.tar.gz
-RUN apk add curl && curl -L ${QEMU_URL} | tar zxvf - -C . --strip-components 1
-FROM arm32v7/python:3.7-slim
+  
+FROM python:3.7-slim
 ARG usebranche="dev"
 ENV pullbranche=${usebranche}
-COPY --from=builder qemu-arm-static /usr/bin  
 RUN apt-get update
-RUN apt-get install -y wget unzip libzbar0 git cron chromium-driver; chromedriver --version; which chromedriver; chromium --version
-RUN apt-get install -y libxml2-dev libxslt1-dev zlib1g-dev python3-pip
-RUN apt-get install libjpeg-dev zlib1g-dev 
+RUN apt-get install -y wget unzip libzbar0 git cron supervisor
 ENV TZ=Asia/Shanghai
 ENV AccessToken=
 ENV Secret=
@@ -21,12 +15,16 @@ ENV CRONTIME="30 9 * * *"
 # RUN rm -f /xuexi/config/*; ls -la
 COPY requirements.txt /xuexi/requirements.txt
 COPY run.sh /xuexi/run.sh 
-COPY start.sh /xuexi/start.sh
-# RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pillow
+COPY start.sh /xuexi/start.sh 
+COPY supervisor.sh /xuexi/supervisor.sh
 RUN pip install -r /xuexi/requirements.txt
+RUN cd /xuexi/; wget https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_92.0.4515.159-1_amd64.deb; dpkg -i google-chrome-stable_92.0.4515.159-1_amd64.deb; apt-get -fy install; google-chrome --version; rm -f google-chrome-stable_92.0.4515.159-1_amd64.deb
+RUN cd /xuexi/; wget -O chromedriver_linux64_92.0.4515.107.zip http://npm.taobao.org/mirrors/chromedriver/92.0.4515.107/chromedriver_linux64.zip; unzip chromedriver_linux64_92.0.4515.107.zip; chmod 755 chromedriver; ls -la; ./chromedriver --version
+
 WORKDIR /xuexi
 RUN chmod +x ./run.sh
 RUN chmod +x ./start.sh
+RUN chmod +x ./supervisor.sh;./supervisor.sh
 RUN mkdir code
 WORKDIR /xuexi/code
 RUN git clone -b ${pullbranche} ${Sourcepath}
