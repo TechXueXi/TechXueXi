@@ -77,6 +77,15 @@
 - 编写有关如何使用项目的教程
 - 提供指导另一个贡献者，
 
+## 有疑问？
+遇到问题，请试着按如下步骤解决：
+
+1. 仔细阅读过 `README.md` ， `使用方法-更新方法-下载方式.md` ， `DOCKER.md` 这些说明
+2. 查看/搜索所有已有 issue，无论是open还是close的
+3. 通过搜索引擎搜索，尝试不同的关键词 www.google.com www.baidu.com
+4. 到提供的在线聊天室询问 (聊天室说明： https://github.com/TechXueXi/TechXueXi/issues/14 )
+5. 提新 issue ，关注邮箱有关这个 issue 的提醒。
+
 ## 本地修改操作：
 
 ## Clone（克隆）代码仓库
