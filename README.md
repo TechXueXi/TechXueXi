@@ -9,6 +9,8 @@
 > 本项目基于某已终止的项目，请自行搜索后前往star。我们由衷地敬佩这个领域的先锋们。  
 > 这是全网较好的成熟产品，但已停止，我们于心不忍。本仓库现由“科技强国”组织进行维护。
 
+> **所有问题请到本项目这里提，不要打扰原作者。**
+
 许多IT人员本终日埋头写代码，确实有需求，与其各人重复修改编写浪费生产力不如团队合作维护，
 因此我们还是希望继续维护此生态。具体请详细阅读下文
 <div>
@@ -81,7 +83,14 @@ TechXueXi为python学 xi 交流的开源非营利项目，仅作为程序员之�
 
 <img width=50% src="https://raw.githubusercontent.com/TechXueXi/TechXueXi/master/img_folder/qsjwczlhql.jpg" />
 
+# 有疑问？
+遇到问题，请试着按如下步骤解决：
 
+1. 仔细阅读过 `README.md` ， `使用方法-更新方法-下载方式.md` ， `DOCKER.md` 这些说明
+2. 查看/搜索所有已有 issue，无论是open还是close的
+3. 通过搜索引擎搜索，尝试不同的关键词 www.google.com www.baidu.com
+4. 到提供的在线聊天室询问 (聊天室说明： https://github.com/TechXueXi/TechXueXi/issues/14 )
+5. 提新 issue ，关注邮箱有关这个 issue 的提醒。
 
 # 👍程序特性
 
