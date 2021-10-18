@@ -49,12 +49,6 @@ arm64（树莓派等）
 docker pull techxuexi/techxuexi-arm64v8:{tag}
 ```
 
-arm32v7（玩客云等）
-
-```
-docker pull techxuexi/techxuexi-arm32v7:{tag}
-```
-
 目前最新的 tag 请前往 https://hub.docker.com/u/techxuexi/ 查询
 
 # Docker 命令运行
