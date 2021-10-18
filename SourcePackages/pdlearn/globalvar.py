@@ -21,13 +21,14 @@ scheme = ""
 lock = False
 stime = False
 single = False
+tg_bot = TelegarmHandler
 
 
 def init_global():
     """
     初始化全局变量
     """
-    global nohead, islooplogin, single, scheme, pushmode, accesstoken, secret, zhuanxiang, is_init, lock, stime
+    global nohead, islooplogin, single, scheme, pushmode, accesstoken, secret, zhuanxiang, is_init, lock, stime, tg_bot
     if os.getenv('Nohead') == "True":
         nohead = True
 
@@ -65,6 +66,9 @@ def init_global():
         zhuanxiang = os.getenv("ZhuanXiang") == "True"
     else:
         zhuanxiang = cfg_get("parameter.zhuanxiang_nohead", False)
+    if pushmode == "5":
+        tg_bot = TelegarmHandler(
+            accesstoken, secret, cfg_get("addition.telegram.proxy"))
     is_init = True
 
 
@@ -84,8 +88,7 @@ def pushprint(text):
             push = PlusPushHandler(accesstoken)
             push.fttext(text)
         elif pushmode == "5":
-            push = TelegarmHandler(accesstoken, secret)
-            push.send_message(text)
+            tg_bot.send_message(text)
     print(text)
 
 
@@ -102,5 +105,4 @@ def send_qrbase64(qcbase64):
     elif pushmode == "5" and cfg_get("addition.telegram.send_qrimage", 0) == 1:
         img_b64decode = base64.b64decode(
             qcbase64[qcbase64.index(';base64,')+8:])
-        push = TelegarmHandler(accesstoken, secret)
-        push.send_qrurl(Image.open(io.BytesIO(img_b64decode)))
+        tg_bot.send_qrurl(Image.open(io.BytesIO(img_b64decode)))
