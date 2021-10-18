@@ -1,16 +1,21 @@
 import telebot
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
+from telebot import apihelper
 import os
 import pandalearning as pdl
 from pdlearn.exp_catch import exception_catcher
+from pdlearn.config import cfg_get, get_env_or_cfg
 
-bot = telebot.TeleBot(os.getenv('AccessToken'))
-master = os.getenv('Secret')
-
-# 验证消息人，防止个人信息泄露
+pushmode = get_env_or_cfg("addition.Pushmode", "Pushmode", "0")
+token = get_env_or_cfg("addition.telegram.bot_token", "AccessToken", "")
+master = get_env_or_cfg("addition.telegram.user_id", "Secret", "")
+bot = telebot.TeleBot(token)
 
 
 def authorize(self):
+    """
+    验证消息人，防止个人信息泄露
+    """
     return str(self.from_user.id) == master
 
 
@@ -80,7 +85,8 @@ def add(message):
 @bot.message_handler(commands=['update'], func=authorize)
 @exception_catcher(reserve_fun=bot.reply_to, fun_args=("Chrome 崩溃啦",), args_push=True)
 def rep_update(message):
-    msg = os.popen("git -C /xuexi/code/TechXueXi pull $Sourcepath $pullbranche --rebase").readlines()[-1]
+    msg = os.popen(
+        "git -C /xuexi/code/TechXueXi pull $Sourcepath $pullbranche --rebase").readlines()[-1]
     if "up to date" in msg:
         bot.send_message(message.chat.id, "当前代码已经是最新的了")
     else:
@@ -89,6 +95,17 @@ def rep_update(message):
 
 
 if __name__ == '__main__':
-    if os.getenv('Nohead') == "True" and os.getenv('Pushmode') == "5":
+
+    if os.getenv('Nohead') == "True" and pushmode == "5":
+        proxy = cfg_get("addition.telegram.proxy")
+        if proxy and cfg_get("addition.telegram.use_proxy", False):
+            apihelper.proxy = {'http': proxy, 'https': proxy}
+            apihelper.CONNECT_TIMEOUT = 120
+            try:
+                info = bot.get_me()  # 尝试通过代理获取信息
+                info.full_name
+            except Exception as e:
+                apihelper.proxy = {}
+                print("代理请求异常，已关闭代理:"+str(e))
         bot.send_message(master, "学xi助手上线啦，快来学xi吧")
         bot.polling(non_stop=True, timeout=120)

@@ -1,4 +1,4 @@
-requests==2.22.0
+requests==2.26.0
 lxml==4.6.3
 colorama==0.4.1
 beautifulsoup4==4.9.3
@@ -7,3 +7,6 @@ pyhocon==0.3.58
 pyzbar==0.1.8
 pillow==8.2.0
 pyTelegramBotAPI==4.0.1
+gunicorn==20.1.0
+PySocks==1.7.1
+urllib3==1.26.7
