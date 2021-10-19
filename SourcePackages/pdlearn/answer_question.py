@@ -10,6 +10,8 @@ from pdlearn.const import const
 from pdlearn.log import *
 from pdlearn.config import cfg_get
 from pdlearn.exp_catch import exception_catcher
+from pdlearn.db_helper import search_answer
+import pdlearn.globalvar as gl
 
 
 def generate_tiku_data(quiz_type=None, tip=None, option=None, answer=None, question=None):
@@ -57,7 +59,7 @@ def answer_question(quiz_type, cookies, scores, score_all, quiz_xpath, category_
         uid = user.get_userId(cookies)
     if scores[quiz_type] < score_all:  # 还没有满分，需要答题
         if driver_default is None:
-            driver_ans = Mydriver(nohead=False)
+            driver_ans = Mydriver(nohead=gl.nohead)
             ##### driver_ans = Mydriver(nohead=True)
         else:
             driver_ans = driver_default
@@ -146,6 +148,17 @@ def answer_question(quiz_type, cookies, scores, score_all, quiz_xpath, category_
                 if quiz_type == "daily":
                     log_daily("【提示信息】")
                     log_daily(str(tips)+"\n"+tip_full_text)
+                if not tips:
+                    print("页面未找到提示，尝试从题库搜索答案。\n")
+                    try:
+                        if not q_text:
+                            q_body = driver_ans.driver.find_element_by_css_selector(
+                                ".q-body")
+                            q_html = q_body.get_attribute('innerHTML')
+                            q_text = q_body.text
+                        tips = search_answer(q_text)
+                    except Exception as e:
+                        print("数据搜索答案异常："+str(e))
                 if not tips:
                     print("本题没有提示")
                     max_count += 1
