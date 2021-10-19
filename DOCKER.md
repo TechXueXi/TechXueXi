@@ -236,7 +236,7 @@ services:
 
 `/add` 添加新账号，只添加账号，不会立即学习
 
-`/update` 更新本地代码
+`/update` 更新本地代码， `/update`指令支持参数 如`/update --rebase`
 
 **注意，用学习强国官方软件及网页时关闭翻墙软件**。但是telegram推送需要翻墙。
 

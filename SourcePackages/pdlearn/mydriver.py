@@ -43,8 +43,12 @@ def decode_img(data):
 class title_of_login:
     def __call__(self, driver):
         """ 用来结合webDriverWait判断出现的title """
-        is_title1 = bool(EC.title_is(u'我的学习')(driver))
-        is_title2 = bool(EC.title_is(u'系统维护中')(driver))
+        try:
+            is_title1 = bool(EC.title_is(u'我的学习')(driver))
+            is_title2 = bool(EC.title_is(u'系统维护中')(driver))
+        except Exception as e:
+            print("chrome 开启失败。"+str(e))
+            exit()
         if is_title1 or is_title2:
             return True
         else:
@@ -503,8 +507,13 @@ class Mydriver:
         #             #    '//*[@id="app"]/div/div[2]/div/div[4]/div[1]/div[3]/div/input[' + str(i + 1) + ']').send_keys(answer[i])
         #         continue
         for i in range(0, len(answer)):
-            self.driver.find_element_by_xpath(
-                '//*[@id="app"]/div/div[2]/div/div[4]/div[1]/div[2]/div/input[' + str(i + 1) + ']').send_keys(answer[i])
+            try:
+                input = self.driver.find_element_by_xpath(
+                    '//*[@id="app"]/div/div[2]/div/div[4]/div[1]/div[2]/div/input[' + str(i + 1) + ']')
+            except:  # 视频题，多一个div
+                input = self.driver.find_element_by_xpath(
+                    '//*[@id="app"]/div/div[2]/div/div[4]/div[1]/div[3]/div/input[' + str(i + 1) + ']')
+            input.send_keys(answer[i])
         self.check_delay()
         submit = WebDriverWait(self.driver, 15).until(
             lambda driver: driver.find_element_by_class_name("action-row").find_elements_by_xpath("button"))
