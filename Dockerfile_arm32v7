@@ -2,12 +2,16 @@ FROM alpine AS builder
 
 ENV QEMU_URL https://github.com/balena-io/qemu/releases/download/v3.0.0%2Bresin/qemu-3.0.0+resin-arm.tar.gz
 RUN apk add curl && curl -L ${QEMU_URL} | tar zxvf - -C . --strip-components 1
-FROM arm32v7/python:3.7-slim
+FROM arm32v7/python:bullseye
 ARG usebranche="dev"
 ENV pullbranche=${usebranche}
 COPY --from=builder qemu-arm-static /usr/bin  
 # 增加适配玩客云arm7 32位环境 chrome默认安装 90版本
+RUN ln -s /usr/bin/dpkg-split /usr/sbin/dpkg-split
+RUN ln -s /usr/bin/dpkg-deb /usr/sbin/dpkg-deb
+RUN ln -s /bin/tar /usr/sbin/tar
 RUN apt-get update
+RUN apt-get upgrade
 RUN apt-get install -y wget unzip libzbar0 git cron chromium-driver; chromedriver --version; which chromedriver; chromium --version
 RUN apt-get install -y libxml2-dev libxslt1-dev zlib1g-dev python3-pip
 RUN apt-get install libjpeg-dev zlib1g-dev 
