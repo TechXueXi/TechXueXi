@@ -1,8 +1,8 @@
 {
-    "techxuexi_version": "v20211015",
+    "techxuexi_version": "v20211020",
     "techxuexi_update_log": [{
-        "version": "v20211019",
-        "info": "视频答题，用独立浏览器答题，update 参数，chrome not reachable处理"
+        "version": "v20211020",
+        "info": "windows 打包。"
     },{
         "version": "v20211018",
         "info": "增加tg代理配置项。修复SendLoginQRcode的错误提示。取消自动打包arm32v7 docker（存在问题）。修改requirements.txt"
