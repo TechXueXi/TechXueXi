@@ -68,13 +68,8 @@ class Mydriver:
                     'blink-settings=imagesEnabled=true')  # 不加载图片, 提升速度，但无法显示二维码
             if nohead:
                 self.options.add_argument('--headless')
-                self.options.add_argument('--disable-extensions')
-                self.options.add_argument('--disable-gpu')
-                self.options.add_argument('--no-sandbox')
                 self.options.set_capability(
                     'unhandledPromptBehavior', 'accept')
-                self.options.add_argument(
-                    '--disable-software-rasterizer')  # 解决GL报错问题
                 self.options.add_argument("--window-size=1920,1050")
             else:
                 self.options.add_argument('--window-size=750,450')
@@ -82,6 +77,12 @@ class Mydriver:
                 # self.options.add_argument('--window-size=900,800')
                 # self.options.add_argument("--window-size=1920,1050")
 
+            self.options.add_argument('--disable-dev-shm-usage')  
+            self.options.add_argument(
+                '--disable-software-rasterizer')  # 解决GL报错问题
+            self.options.add_argument('--disable-extensions')
+            self.options.add_argument('--disable-gpu')
+            self.options.add_argument('--no-sandbox')
             self.options.add_argument('--mute-audio')  # 关闭声音
             self.options.add_argument('--window-position=700,0')
             self.options.add_argument('--log-level=3')
