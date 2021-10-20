@@ -123,6 +123,7 @@ def answer_question(quiz_type, cookies, scores, score_all, quiz_xpath, category_
                     print('查找题目类型...查找元素失败！')
                     break
                 print(category)
+                q_text=""
                 if quiz_type == "daily":
                     ans_results = driver_ans.driver.find_elements_by_css_selector(
                         ".practice-result .infos .info")
