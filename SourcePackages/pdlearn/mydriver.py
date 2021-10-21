@@ -252,10 +252,16 @@ class Mydriver:
         try:
             # 解决Chrome 90版本无法运行的问题[https://github.com/TechXueXi/TechXueXi/issues/78]
             for cookie in cookies:
-                if cookie['domain'] == 'pc.xuexi.cn':
+                cookie_domain = cookie["domain"]
+                # fix cookie domain `.pc.xuexi.cn` caused refresh fail
+                if cookie_domain.endswith("pc.xuexi.cn"):
                     self.driver.get("https://pc.xuexi.cn/")
-                if cookie['domain'] == '.xuexi.cn':
+                elif cookie_domain.endswith(".xuexi.cn"):
                     self.driver.get("https://www.xuexi.cn/")
+                else:
+                    print(f"unknown cookie domain {cookie_domain}, skip it")
+                    continue
+
                 # print(f'current cookie: {cookie}')
                 # for expiry error (maybe old version compatibility) add by Sean 20210706
                 if 'expiry' in cookie:
