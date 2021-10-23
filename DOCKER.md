@@ -109,19 +109,18 @@ Pushmode=1
 
   > 4 pluspush
 
-  > 5 Telegram Bot **（支持指令交互，随时可以开始学习）**
+  > 5 Telegram Bot **（支持指令交互，随时可以开始学习，需要翻墙）**
 
   **推送消息是为了把登录链接发送给你，现在请每天点击链接登录。**
 
 ##### 可选参数
 
-- ZhuanXiang 环境变量，默认False，docker模式下改成True也可以进行专项答题
+- ZhuanXiang 环境变量，是否进行专项答题，默认False，docker模式下改成True也可以进行专项答题。设置`True`则开始答题，如果经常遇到视频题目，或者经常答题失败，建议关闭
 - TZ 时区设置，默认值`Asia/Shanghai`
 - CRONTIME Cron 参数，默认是`30 9 * * *`，即每天早上 9:30 执行 ,可以把 Cron 表达式放到这里去验证 https://crontab.guru/
 - Sourcepath 项目源，默认是`https://github.com.cnpmjs.org/TechXueXi/TechXueXi.git`
 - pullbranche 项目分支，默认是`dev`，后续可能会变为`master`
 - islooplogin 循环参数，默认`False`，当设置为`True`的时候，如果扫码超时会一直尝试循环获取新的扫码，考虑到微信公众号推送有次数限制，慎用
-- ZhuanXiang 是否进行专项答题，设置`True`则开始答题，如果经常遇到视频题目，或者经常答题失败，建议关闭
 - MaxScore 达到指定分数停止学习（未实现，开发团队成员可查看 https://github.com/orgs/TechXueXi/projects/2#card-70976956 ）
 - **配置项（不是环境变量）** answer_error_max，默认值100，可以修改找不到答案时尝试的次数，仅Docker中有效
 - **没有找到的环境变量，请查看上方提到过的默认配置文件，可能做成了配置项**
@@ -146,13 +145,23 @@ islooplogin=循环参数，当设置为True的时候，如果扫码超时会一�
 single=1 不想并发，单线程
 ```
 
-设置了下面这个，点击发送的链接可以直接打开学 x 强 x ，如果用钉钉推送可以如下设置：
+设置了下面这个，点击发送的链接可以直接打开学 x 强 x ，如果用钉钉推送可以如下设置（钉钉支持 dtxuexi 协议）：
 
 ```
 Scheme=dtxuexi://appclient/page/study_feeds?url=
 ```
 
-其他的设置方法去群里问大佬吧。
+也可以自己搭建跳板，从网页跳转。公告栏有 php 的跳板可以下载使用。
+
+不会或者不想自己搭建，可以使用我们提供的：
+
+```
+Scheme=https://techxuexi.js.org/jump/techxuexi-20211023.html?
+```
+
+但是不保证稳定。这个地址已经被国内浏览器加进黑名单了，默认浏览器不要用国内的，不然提示危险网页。现在gfw还没墙，只是国产浏览器的黑名单屏蔽。
+
+其他的设置方法去群里问~~大佬~~同志们吧。
 
 # 群晖 Docker 设置
 
@@ -241,6 +250,9 @@ services:
 `/update` 更新本地代码， `/update`指令支持参数 如`/update --rebase`
 
 **注意，用学习强国官方软件及网页时关闭翻墙软件**。但是telegram推送需要翻墙。
+
+**bot使用代理说明：进入容器内找到user/settings.conf，根据本库的default_template.conf文件里addition附加功能-telegram的相关内容复制进去、填写好保存即可。）**
+支持http和socks5两种代理方式
 
 **要做好分流**
 
