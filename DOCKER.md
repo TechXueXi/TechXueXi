@@ -67,13 +67,48 @@ docker run -e "AccessToken={token}" -e "Secret={密钥}" -d --name={容器名称
 docker run -e "从下面参数处找到参数1" -e "从下面参数处找到参数2" -e "从下面参数处找到参数3" -d --name={容器名称} techxuexi/techxuexi-amd64:{tag}
 ```
 
-请不要无脑照搬，需要修改：
+请不要无脑照搬，需要修改。**请阅读本文档所有内容后再操作**
+
+**如何登录** ： 设置推送方式之后， Docker 会发给你一个学习强国链接，用手机接收推送的链接，复制链接到学习#国 app，发给某个人，比如自己，再点击链接。也可以转二维码了扫描。**最简单的方法是设置环境变量 Scheme ，设置之后点击链接就能登录**
 
 如果你是 `amd64` 的机器，那么就是 `techxuexi/techxuexi-amd64:{tag}`
 
 如果你是 `arm64` 的机器，那么就是 `techxuexi/techxuexi-arm64v8:{tag}`
 
 参数，输入时不输入`{}`
+
+参考运行命令：
+
+Docker 参考运行命令：
+
+使用钉钉推送：
+
+```
+docker run \
+-e "AccessToken=***" \
+-e "Secret=***" \
+-e "ZhuanXiang=True" \
+-e "Pushmode=1" \
+-e "Scheme=dtxuexi://appclient/page/study_feeds?url=" \
+-v /volume1/docker/xuexi/user:/xuexi/user:rw \
+-d --name=techxuexi --shm-size="2g" techxuexi/techxuexi-amd64:latest
+```
+
+使用 Telegram 推送 （推荐，但是需要翻墙）:
+
+```
+docker run \
+-e "AccessToken=***" \
+-e "Secret=***" \
+-e "ZhuanXiang=True" \
+-e "Pushmode=5" \
+-e "Scheme=https://techxuexi.js.org/jump/techxuexi-20211023.html?" \
+-v /volume1/docker/xuexi/user:/xuexi/user:rw \
+-d --name=techxuexi --shm-size="2g" techxuexi/techxuexi-amd64:latest
+```
+
+
+# Docker 参数
 
 参数  
 tag=如果你是 amd64 的机器，那么就是 amd64，如果是 arm64 那么就是 arm64，然后后面跟版本号
@@ -91,8 +126,6 @@ Pushmode=1
 
 表示：钉钉，其他见下方
 
-
-# Docker 参数
 ### 必填
 - AccessToken 。bot 发送指令的 token 具体方法参见下方 bot 指南
 - Secret 钉钉推送时为钉钉 Secret，Telegram bot 则为管理员数字 Id
@@ -109,7 +142,7 @@ Pushmode=1
 
   > 4 pluspush
 
-  > 5 Telegram Bot **（支持指令交互，随时可以开始学习，需要翻墙）**
+  > 5 Telegram Bot **（推荐，支持指令交互，随时可以开始学习，需要翻墙）**
 
   **推送消息是为了把登录链接发送给你，现在请每天点击链接登录。**
 
@@ -145,7 +178,7 @@ islooplogin=循环参数，当设置为True的时候，如果扫码超时会一�
 single=1 不想并发，单线程
 ```
 
-设置了下面这个，点击发送的链接可以直接打开学 x 强 x ，如果用钉钉推送可以如下设置（钉钉支持 dtxuexi 协议）：
+**设置了下面这个，点击发送的链接可以直接打开学习强国** 。如果用钉钉推送可以如下设置（钉钉支持 dtxuexi 协议）：
 
 ```
 Scheme=dtxuexi://appclient/page/study_feeds?url=
@@ -159,7 +192,7 @@ Scheme=dtxuexi://appclient/page/study_feeds?url=
 Scheme=https://techxuexi.js.org/jump/techxuexi-20211023.html?
 ```
 
-但是不保证稳定。这个地址已经被国内浏览器加进黑名单了，默认浏览器不要用国内的，不然提示危险网页。现在gfw还没墙，只是国产浏览器的黑名单屏蔽。
+但是不保证稳定。 ~~techxuexi太好用了~~ ， https://techxuexi.js.org 这个地址已经被国内浏览器加进黑名单了 ~~中国大陆官方认证~~ ，默认浏览器不要用国内的，不然提示危险网页。现在 gfw 还没墙，只是国产浏览器的黑名单屏蔽。
 
 其他的设置方法去群里问~~大佬~~同志们吧。
 
@@ -269,3 +302,16 @@ services:
 **[交流群地址及说明](https://github.com/TechXueXi/TechXueXi/issues/14)**
 
 ## Docker 如果发给你一个学习强国链接，不是让你下载，是让你登录，复制链接到学习#国 app，发给某个人，比如自己，再点击链接
+
+
+退出登录，多个不同用户使用，删掉 user/cookie.json 文件
+
+chrome crash 的原因是 docker 虚拟机共享内存不足,创建 docker 时设置 --shm-size="2g"
+
+可参考 https://github.com/TechXueXi/TechXueXi/issues/82
+
+https://stackoverflow.com/questions/30210362/how-to-increase-the-size-of-the-dev-shm-in-docker-container
+
+也可以参考 https://t.me/techxuexi_notice/49
+
+
