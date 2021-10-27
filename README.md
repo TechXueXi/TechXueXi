@@ -1,10 +1,14 @@
 # 前言
 
+官方网站： https://techxuexi.js.org/
+
 **[交流群地址及说明（点击查看）](https://github.com/TechXueXi/TechXueXi/issues/14)**
 
 **重要公告**： [公告栏（国内打不开）](https://t.me/s/techxuexi_notice) || [公告栏（国内可以打开）](https://notice.techxuexi.workers.dev)
 
 **我们随时删库跑路，请加交流群防失联。**
+
+可以点击右上角 watch 接收关于本项目的通知邮件，新版本提醒等。
 
 > 本项目基于某已终止的项目，请自行搜索后前往star。我们由衷地敬佩这个领域的先锋们。  
 > 这是全网较好的成熟产品，但已停止，我们于心不忍。本仓库现由“科技强国”组织进行维护。

@@ -1,6 +1,12 @@
 {
-    "techxuexi_version": "v20211015",
+    "techxuexi_version": "v20211025",
     "techxuexi_update_log": [{
+        "version": "v20211025",
+        "info": "Docker enable supervisor，修改文档"
+    },{
+        "version": "v20211022",
+        "info": "fix refresh cookie error，修复q_text 使用异常，修改 mydriver.py 初始化参数，同步更新tgbot监听功能，更新上传题目地址"
+    },{
         "version": "v20211018",
         "info": "增加tg代理配置项。修复SendLoginQRcode的错误提示。取消自动打包arm32v7 docker（存在问题）。修改requirements.txt"
     },{

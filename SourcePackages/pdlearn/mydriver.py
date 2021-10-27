@@ -68,13 +68,8 @@ class Mydriver:
                     'blink-settings=imagesEnabled=true')  # 不加载图片, 提升速度，但无法显示二维码
             if nohead:
                 self.options.add_argument('--headless')
-                self.options.add_argument('--disable-extensions')
-                self.options.add_argument('--disable-gpu')
-                self.options.add_argument('--no-sandbox')
                 self.options.set_capability(
                     'unhandledPromptBehavior', 'accept')
-                self.options.add_argument(
-                    '--disable-software-rasterizer')  # 解决GL报错问题
                 self.options.add_argument("--window-size=1920,1050")
             else:
                 self.options.add_argument('--window-size=750,450')
@@ -82,6 +77,12 @@ class Mydriver:
                 # self.options.add_argument('--window-size=900,800')
                 # self.options.add_argument("--window-size=1920,1050")
 
+            self.options.add_argument('--disable-dev-shm-usage')  
+            self.options.add_argument(
+                '--disable-software-rasterizer')  # 解决GL报错问题
+            self.options.add_argument('--disable-extensions')
+            self.options.add_argument('--disable-gpu')
+            self.options.add_argument('--no-sandbox')
             self.options.add_argument('--mute-audio')  # 关闭声音
             self.options.add_argument('--window-position=700,0')
             self.options.add_argument('--log-level=3')
@@ -251,10 +252,16 @@ class Mydriver:
         try:
             # 解决Chrome 90版本无法运行的问题[https://github.com/TechXueXi/TechXueXi/issues/78]
             for cookie in cookies:
-                if cookie['domain'] == 'pc.xuexi.cn':
+                cookie_domain = cookie["domain"]
+                # fix cookie domain `.pc.xuexi.cn` caused refresh fail
+                if cookie_domain.endswith("pc.xuexi.cn"):
                     self.driver.get("https://pc.xuexi.cn/")
-                if cookie['domain'] == '.xuexi.cn':
+                elif cookie_domain.endswith(".xuexi.cn"):
                     self.driver.get("https://www.xuexi.cn/")
+                else:
+                    print(f"unknown cookie domain {cookie_domain}, skip it")
+                    continue
+
                 # print(f'current cookie: {cookie}')
                 # for expiry error (maybe old version compatibility) add by Sean 20210706
                 if 'expiry' in cookie:
