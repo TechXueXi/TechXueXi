@@ -43,8 +43,12 @@ def decode_img(data):
 class title_of_login:
     def __call__(self, driver):
         """ 用来结合webDriverWait判断出现的title """
-        is_title1 = bool(EC.title_is(u'我的学习')(driver))
-        is_title2 = bool(EC.title_is(u'系统维护中')(driver))
+        try:
+            is_title1 = bool(EC.title_is(u'我的学习')(driver))
+            is_title2 = bool(EC.title_is(u'系统维护中')(driver))
+        except Exception as e:
+            print("chrome 开启失败。"+str(e))
+            exit()
         if is_title1 or is_title2:
             return True
         else:
@@ -64,13 +68,8 @@ class Mydriver:
                     'blink-settings=imagesEnabled=true')  # 不加载图片, 提升速度，但无法显示二维码
             if nohead:
                 self.options.add_argument('--headless')
-                self.options.add_argument('--disable-extensions')
-                self.options.add_argument('--disable-gpu')
-                self.options.add_argument('--no-sandbox')
                 self.options.set_capability(
                     'unhandledPromptBehavior', 'accept')
-                self.options.add_argument(
-                    '--disable-software-rasterizer')  # 解决GL报错问题
                 self.options.add_argument("--window-size=1920,1050")
             else:
                 self.options.add_argument('--window-size=750,450')
@@ -78,6 +77,12 @@ class Mydriver:
                 # self.options.add_argument('--window-size=900,800')
                 # self.options.add_argument("--window-size=1920,1050")
 
+            self.options.add_argument('--disable-dev-shm-usage')  
+            self.options.add_argument(
+                '--disable-software-rasterizer')  # 解决GL报错问题
+            self.options.add_argument('--disable-extensions')
+            self.options.add_argument('--disable-gpu')
+            self.options.add_argument('--no-sandbox')
             self.options.add_argument('--mute-audio')  # 关闭声音
             self.options.add_argument('--window-position=700,0')
             self.options.add_argument('--log-level=3')
@@ -247,10 +252,16 @@ class Mydriver:
         try:
             # 解决Chrome 90版本无法运行的问题[https://github.com/TechXueXi/TechXueXi/issues/78]
             for cookie in cookies:
-                if cookie['domain'] == 'pc.xuexi.cn':
+                cookie_domain = cookie["domain"]
+                # fix cookie domain `.pc.xuexi.cn` caused refresh fail
+                if cookie_domain.endswith("pc.xuexi.cn"):
                     self.driver.get("https://pc.xuexi.cn/")
-                if cookie['domain'] == '.xuexi.cn':
+                elif cookie_domain.endswith(".xuexi.cn"):
                     self.driver.get("https://www.xuexi.cn/")
+                else:
+                    print(f"unknown cookie domain {cookie_domain}, skip it")
+                    continue
+
                 # print(f'current cookie: {cookie}')
                 # for expiry error (maybe old version compatibility) add by Sean 20210706
                 if 'expiry' in cookie:
@@ -503,8 +514,13 @@ class Mydriver:
         #             #    '//*[@id="app"]/div/div[2]/div/div[4]/div[1]/div[3]/div/input[' + str(i + 1) + ']').send_keys(answer[i])
         #         continue
         for i in range(0, len(answer)):
-            self.driver.find_element_by_xpath(
-                '//*[@id="app"]/div/div[2]/div/div[4]/div[1]/div[2]/div/input[' + str(i + 1) + ']').send_keys(answer[i])
+            try:
+                input = self.driver.find_element_by_xpath(
+                    '//*[@id="app"]/div/div[2]/div/div[4]/div[1]/div[2]/div/input[' + str(i + 1) + ']')
+            except:  # 视频题，多一个div
+                input = self.driver.find_element_by_xpath(
+                    '//*[@id="app"]/div/div[2]/div/div[4]/div[1]/div[3]/div/input[' + str(i + 1) + ']')
+            input.send_keys(answer[i])
         self.check_delay()
         submit = WebDriverWait(self.driver, 15).until(
             lambda driver: driver.find_element_by_class_name("action-row").find_elements_by_xpath("button"))

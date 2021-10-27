@@ -10,6 +10,8 @@ from pdlearn.const import const
 from pdlearn.log import *
 from pdlearn.config import cfg_get
 from pdlearn.exp_catch import exception_catcher
+from pdlearn.db_helper import search_answer
+import pdlearn.globalvar as gl
 
 
 def generate_tiku_data(quiz_type=None, tip=None, option=None, answer=None, question=None):
@@ -57,7 +59,7 @@ def answer_question(quiz_type, cookies, scores, score_all, quiz_xpath, category_
         uid = user.get_userId(cookies)
     if scores[quiz_type] < score_all:  # 还没有满分，需要答题
         if driver_default is None:
-            driver_ans = Mydriver(nohead=False)
+            driver_ans = Mydriver(nohead=gl.nohead)
             ##### driver_ans = Mydriver(nohead=True)
         else:
             driver_ans = driver_default
@@ -121,6 +123,7 @@ def answer_question(quiz_type, cookies, scores, score_all, quiz_xpath, category_
                     print('查找题目类型...查找元素失败！')
                     break
                 print(category)
+                q_text=""
                 if quiz_type == "daily":
                     ans_results = driver_ans.driver.find_elements_by_css_selector(
                         ".practice-result .infos .info")
@@ -147,6 +150,17 @@ def answer_question(quiz_type, cookies, scores, score_all, quiz_xpath, category_
                     log_daily("【提示信息】")
                     log_daily(str(tips)+"\n"+tip_full_text)
                 if not tips:
+                    print("页面未找到提示，尝试从题库搜索答案。\n")
+                    try:
+                        if not q_text:
+                            q_body = driver_ans.driver.find_element_by_css_selector(
+                                ".q-body")
+                            q_html = q_body.get_attribute('innerHTML')
+                            q_text = q_body.text
+                        tips = search_answer(q_text)
+                    except Exception as e:
+                        print("数据搜索答案异常："+str(e))
+                if not tips:
                     print("本题没有提示")
                     max_count += 1
                     pass_count += 1
@@ -156,7 +170,7 @@ def answer_question(quiz_type, cookies, scores, score_all, quiz_xpath, category_
                         break
                     if pass_count >= 5:
                         print(
-                            "暂时略过已达到 5 次，【 建议您将此题目的题干、提示、选项信息提交到github问题收集issue：https://github.com/TechXueXi/TechXueXi/issues/29 】")
+                            "暂时略过已达到 5 次，【 建议您将此题目的题干、提示、选项信息提交到github问题收集issue：https://github.com/TechXueXi/techxuexi-tiku/issues/1 】")
                         auto.prompt("等待用户手动答题...完成后请在此按回车...")
                         pass_count = 0
                         continue
@@ -424,7 +438,7 @@ def answer_question(quiz_type, cookies, scores, score_all, quiz_xpath, category_
             if scores[quiz_type] >= score_all:
                 print("检测到"+quiz_zh_CN[quiz_type]+"答题分数已满,退出学 xi ")
             else:
-                print("！！！！！没拿到满分，请收集日志反馈错误题目！！！！！")
+                print("！！！！！没拿到满分，请收集日志反馈错误题目！！！！！https://github.com/TechXueXi/techxuexi-tiku/issues/1")
                 auto.prompt("完成后（或懒得弄）请在此按回车...")
                 # log_daily("！！！！！没拿到满分！！！！！")
         if driver_default == None:

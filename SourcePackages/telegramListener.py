@@ -85,8 +85,11 @@ def add(message):
 @bot.message_handler(commands=['update'], func=authorize)
 @exception_catcher(reserve_fun=bot.reply_to, fun_args=("Chrome 崩溃啦",), args_push=True)
 def rep_update(message):
-    msg = os.popen(
-        "git -C /xuexi/code/TechXueXi pull $Sourcepath $pullbranche --rebase").readlines()[-1]
+    shell = "git -C /xuexi/code/TechXueXi pull $Sourcepath $pullbranche "
+    params = message.text.split(" ")
+    if len(params) > 1:
+        shell += params[1]
+    msg = os.popen(shell).readlines()[-1]
     if "up to date" in msg:
         bot.send_message(message.chat.id, "当前代码已经是最新的了")
     else:
