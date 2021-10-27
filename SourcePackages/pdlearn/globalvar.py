@@ -22,6 +22,7 @@ lock = False
 stime = False
 single = False
 tg_bot = TelegarmHandler
+push_msg = ""
 
 
 def init_global():
@@ -76,7 +77,12 @@ def pushprint(text):
     """
     推送或者显示
     """
+    global push_msg
     if nohead == True:
+        # 如果存在全局消息，追加该消息，同时发送，并清空该消息
+        if push_msg:
+            text = push_msg+"\n"+text
+            push_msg = ''
         print(accesstoken, secret)
         if pushmode == "1":
             push = DingDingHandler(accesstoken, secret)

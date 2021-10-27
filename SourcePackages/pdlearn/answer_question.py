@@ -80,7 +80,11 @@ def answer_question(quiz_type, cookies, scores, score_all, quiz_xpath, category_
         pass_count = 0
         # 最大值，用于nohead模式退出
         max_count = 0
+        # 从数据库获取答案
+        answer_from_db = False
         answer_error_max = cfg_get("parameter.answer_error_max", 100)
+        # 是否开启错题收集
+        answer_error_collect = cfg_get("parameter.answer_error_collect", True)
         if scores[quiz_type] < score_all:
             letters = list("ABCDEFGHIJKLMN")
             driver_ans.get_url('https://pc.xuexi.cn/points/my-points.html')
@@ -122,8 +126,15 @@ def answer_question(quiz_type, cookies, scores, score_all, quiz_xpath, category_
                 except Exception as e:
                     print('查找题目类型...查找元素失败！')
                     break
+                # 全局出错次数
+                if max_count >= answer_error_max and globalvar.nohead == True:
+                    print("略过次数已经超过"+str(answer_error_max) +
+                          "次，且出于Nohead模式，退出答题")
+                    break
                 print(category)
-                q_text=""
+                q_text = ""
+                tips = []
+                tip_full_text = ""
                 if quiz_type == "daily":
                     ans_results = driver_ans.driver.find_elements_by_css_selector(
                         ".practice-result .infos .info")
@@ -137,6 +148,7 @@ def answer_question(quiz_type, cookies, scores, score_all, quiz_xpath, category_
                         break
                     log_daily("\n====================")
                     log_daily(log_timestamp())
+                try:
                     log_daily("【"+category+"】")
                     log_daily("【题干】")
                     q_body = driver_ans.driver.find_element_by_css_selector(
@@ -145,13 +157,30 @@ def answer_question(quiz_type, cookies, scores, score_all, quiz_xpath, category_
                     q_text = q_body.text
                     print(q_text)
                     log_daily(q_html)
-                tips, tip_full_text = driver_ans._view_tips()
+                except Exception as e:
+                    print("获取题干出错"+str(e))
+                # 上次出错，则采用数据库答题
+                if answer_from_db:
+                    answer_from_db = False  # 下次从页面获取提示
+                    try:
+                        if not q_text:
+                            q_body = driver_ans.driver.find_element_by_css_selector(
+                                ".q-body")
+                            q_html = q_body.get_attribute('innerHTML')
+                            q_text = q_body.text
+                        tips = search_answer(q_text)
+                    except Exception as e:
+                        print("数据搜索答案异常："+str(e))
+                else:
+                    tips, tip_full_text = driver_ans._view_tips()
+
                 if quiz_type == "daily":
                     log_daily("【提示信息】")
                     log_daily(str(tips)+"\n"+tip_full_text)
                 if not tips:
                     print("页面未找到提示，尝试从题库搜索答案。\n")
                     try:
+                        answer_from_db = False  # 下次从页面获取提示
                         if not q_text:
                             q_body = driver_ans.driver.find_element_by_css_selector(
                                 ".q-body")
@@ -164,37 +193,41 @@ def answer_question(quiz_type, cookies, scores, score_all, quiz_xpath, category_
                     print("本题没有提示")
                     max_count += 1
                     pass_count += 1
-                    if max_count >= answer_error_max and globalvar.nohead == True:
-                        print("略过次数已经超过"+str(answer_error_max) +
-                              "次，且出于Nohead模式，退出答题")
-                        break
+
                     if pass_count >= 5:
                         print(
                             "暂时略过已达到 5 次，【 建议您将此题目的题干、提示、选项信息提交到github问题收集issue：https://github.com/TechXueXi/techxuexi-tiku/issues/1 】")
                         auto.prompt("等待用户手动答题...完成后请在此按回车...")
                         pass_count = 0
                         continue
-                    if quiz_type == "daily":
-                        log_daily("！！！！！本题没有找到提示，暂时略过！！！！！")
-                        auto.prompt("等待用户手动答题...完成后请在此按回车...")
-                        time.sleep(1)
-                        continue
+                    # if quiz_type == "daily":
+                    #     log_daily("！！！！！本题没有找到提示，暂时略过！！！！！")
+                    #     auto.prompt("等待用户手动答题...完成后请在此按回车...")
+                    #     time.sleep(1)
+                    #     continue
                     if "填空题" in category:
                         print('没有找到提示，暂时略过')
                         # print('使用默认答案  好 ')   #如无填空答案，使用默认答案 好 字 by Sean
                         ##### tips = ['好']
+                        if gl.nohead and answer_error_collect:
+                            gl.push_msg += "[题干]"+q_text+'\n'
                         continue
                     elif "多选题" in category:
                         print('没有找到提示，多选题默认全选')
                         # print('使用默认答案 全选')    #by Sean
                         ## continue  #####
                         tips = driver_daily.radio_get_options()
+                        if gl.nohead and answer_error_collect:
+                            gl.push_msg += f"[题干]{q_text}\n[选项]{str(tips)}\n"
                     elif "单选题" in category:
                         print('没有找到提示，单选题默认选A')  # 如无单选答案，使用默认答案
                         # print('使用默认答案 B')   #by Sean
                         # continue  #####
                         # return driver_daily._search(driver_daily.content, driver_daily.options, driver_daily.excludes)
-                        tips = [driver_daily.radio_get_options()[0]]
+                        ops = driver_daily.radio_get_options()
+                        tips = [ops[0]]
+                        if gl.nohead and answer_error_collect:
+                            gl.push_msg += f"[题干]{q_text}\n[选项]{str(ops)}\n"
                     else:
                         print("题目类型非法")
                         if quiz_type == "daily":
@@ -236,13 +269,16 @@ def answer_question(quiz_type, cookies, scores, score_all, quiz_xpath, category_
                                 driver_daily.radio_check(radio_out_tips)
                             # return driver_daily._search(content, options, excludes)
                             else:
-                                print('无法根据提示判断，请自行答题……')
+                                max_count += 1
+                                answer_from_db = True
+                                print('无法根据提示判断，将在数据库中查询答案……')
                                 log_daily("！！！！！无法根据提示判断，请自行答题……！！！！！")
                                 # print('将使用默认全选答题')     #by Sean
                                 ##### len_option = len(options)
                                 ##### radio_in_tips = letters[:len_option]
                                 # driver_daily.radio_check(radio_in_tips)
-                                auto.prompt("等待用户手动答题...完成后请在此按回车...")
+                                if not gl.nohead:
+                                    auto.prompt("等待用户手动答题...完成后请在此按回车...")
                         elif quiz_type == "weekly":
                             options = driver_weekly.radio_get_options()
                             radio_in_tips, radio_out_tips = "", ""
@@ -265,12 +301,15 @@ def answer_question(quiz_type, cookies, scores, score_all, quiz_xpath, category_
                                 driver_weekly.radio_check(radio_out_tips)
                             # return driver_weekly._search(content, options, excludes)
                             else:
-                                print('无法根据提示判断，请自行准备搜索……')
+                                max_count += 1
+                                answer_from_db = True
+                                print('无法根据提示判断，将在数据库中查询答案……')
                                 # print('将使用默认全选答题')     #by Sean
                                 ##### len_option = len(options)
                                 ##### radio_in_tips = letters[:len_option]
                                 # driver_weekly.radio_check(radio_in_tips)
-                                auto.prompt("等待用户手动答题...完成后请在此按回车...")
+                                if not gl.nohead:
+                                    auto.prompt("等待用户手动答题...完成后请在此按回车...")
                         elif quiz_type == "zhuanxiang":
                             options = driver_zhuanxiang.radio_get_options()
                             radio_in_tips, radio_out_tips = "", ""
@@ -293,12 +332,15 @@ def answer_question(quiz_type, cookies, scores, score_all, quiz_xpath, category_
                                 driver_zhuanxiang.radio_check(radio_out_tips)
                             # return driver_zhuanxiang._search(content, options, excludes)
                             else:
-                                print('无法根据提示判断，请自行准备搜索……')
+                                max_count += 1
+                                answer_from_db = True
+                                print('无法根据提示判断，将在数据库中查询答案……')
                                 # print('将使用默认全选答题')     #by Sean
                                 ##### len_option = len(options)
                                 ##### radio_in_tips = letters[:len_option]
                                 # driver_zhuanxiang.radio_check(radio_in_tips)
-                                auto.prompt("等待用户手动答题...完成后请在此按回车...")
+                                if not gl.nohead:
+                                    auto.prompt("等待用户手动答题...完成后请在此按回车...")
                     elif "单选题" in category:
                         if quiz_type == "daily":
                             options = driver_daily.radio_get_options()
@@ -340,12 +382,15 @@ def answer_question(quiz_type, cookies, scores, score_all, quiz_xpath, category_
                                     driver_daily.radio_check(radio_out_tips)
                                 # return driver_daily._search(content, options, excludes)
                                 else:
-                                    print('无法根据提示判断，请自行答题……')
+                                    max_count += 1
+                                    answer_from_db = True
+                                    print('无法根据提示判断，将在数据库中查询答案……')
                                     log_daily("！！！！！无法根据提示判断，请自行答题……！！！！！")
                                     # print('将使用默认选 B')     #by Sean
                                     ##### radio_in_tips = "B"
                                     # driver_daily.radio_check(radio_in_tips)
-                                    auto.prompt("等待用户手动答题...完成后请在此按回车...")
+                                    if not gl.nohead:
+                                        auto.prompt("等待用户手动答题...完成后请在此按回车...")
                         elif quiz_type == "weekly":
                             options = driver_weekly.radio_get_options()
                             if '因此本题选' in tips:
@@ -381,11 +426,14 @@ def answer_question(quiz_type, cookies, scores, score_all, quiz_xpath, category_
                                     driver_weekly.radio_check(radio_out_tips)
                                 # return driver_weekly._search(content, options, excludes)
                                 else:
-                                    print('无法根据提示判断，请自行准备搜索……')
+                                    max_count += 1
+                                    answer_from_db = True
+                                    print('无法根据提示判断，将在数据库中查询答案……')
                                     # print('将使用默认选 B')     #by Sean
                                     ##### radio_in_tips = "B"
                                     # driver_weekly.radio_check(radio_in_tips)
-                                    auto.prompt("等待用户手动答题...完成后请在此按回车...")
+                                    if not gl.nohead:
+                                        auto.prompt("等待用户手动答题...完成后请在此按回车...")
                         elif quiz_type == "zhuanxiang":
                             options = driver_zhuanxiang.radio_get_options()
                             if '因此本题选' in tips:
@@ -423,11 +471,14 @@ def answer_question(quiz_type, cookies, scores, score_all, quiz_xpath, category_
                                         radio_out_tips)
                                 # return driver_zhuanxiang._search(content, options, excludes)
                                 else:
-                                    print('无法根据提示判断，请自行准备搜索……')
+                                    max_count += 1
+                                    answer_from_db = True
+                                    print('无法根据提示判断，将在数据库中查询答案……')
                                     # print('将使用默认选 B')     #by Sean
                                     ##### radio_in_tips = "B"
                                     # driver_zhuanxiang.radio_check(radio_in_tips)
-                                    auto.prompt("等待用户手动答题...完成后请在此按回车...")
+                                    if not gl.nohead:
+                                        auto.prompt("等待用户手动答题...完成后请在此按回车...")
                     else:
                         print("题目类型非法")
                         if quiz_type == "daily":
@@ -435,10 +486,14 @@ def answer_question(quiz_type, cookies, scores, score_all, quiz_xpath, category_
                         break
                     time.sleep(1)
             total, scores = show_score(cookies)
+            # 答题完成，并存在全局错题，进行推送
+            if gl.nohead and answer_error_collect and gl.push_msg:
+                gl.pushprint('')
             if scores[quiz_type] >= score_all:
                 print("检测到"+quiz_zh_CN[quiz_type]+"答题分数已满,退出学 xi ")
             else:
-                print("！！！！！没拿到满分，请收集日志反馈错误题目！！！！！https://github.com/TechXueXi/techxuexi-tiku/issues/1")
+                print(
+                    "！！！！！没拿到满分，请收集日志反馈错误题目！！！！！https://github.com/TechXueXi/techxuexi-tiku/issues/1")
                 auto.prompt("完成后（或懒得弄）请在此按回车...")
                 # log_daily("！！！！！没拿到满分！！！！！")
         if driver_default == None:
