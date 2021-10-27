@@ -279,11 +279,6 @@ def answer_question(quiz_type, cookies, scores, score_all, quiz_xpath, category_
                                 # driver_daily.radio_check(radio_in_tips)
                                 if not gl.nohead:
                                     auto.prompt("等待用户手动答题...完成后请在此按回车...")
-                                elif q_text:
-                                    erm = f"[题干]{q_text}\n[选项]{str(options)}\n"
-                                    print("请提交如下题目到数据库:\n"+erm)
-                                    if gl.nohead and answer_error_collect:
-                                        gl.push_msg += erm
                         elif quiz_type == "weekly":
                             options = driver_weekly.radio_get_options()
                             radio_in_tips, radio_out_tips = "", ""
@@ -315,11 +310,6 @@ def answer_question(quiz_type, cookies, scores, score_all, quiz_xpath, category_
                                 # driver_weekly.radio_check(radio_in_tips)
                                 if not gl.nohead:
                                     auto.prompt("等待用户手动答题...完成后请在此按回车...")
-                                elif q_text:
-                                    erm = f"[题干]{q_text}\n[选项]{str(options)}\n"
-                                    print("请提交如下题目到数据库:\n"+erm)
-                                    if gl.nohead and answer_error_collect:
-                                        gl.push_msg += erm
                         elif quiz_type == "zhuanxiang":
                             options = driver_zhuanxiang.radio_get_options()
                             radio_in_tips, radio_out_tips = "", ""
@@ -351,11 +341,6 @@ def answer_question(quiz_type, cookies, scores, score_all, quiz_xpath, category_
                                 # driver_zhuanxiang.radio_check(radio_in_tips)
                                 if not gl.nohead:
                                     auto.prompt("等待用户手动答题...完成后请在此按回车...")
-                                elif q_text:
-                                    erm = f"[题干]{q_text}\n[选项]{str(options)}\n"
-                                    print("请提交如下题目到数据库:\n"+erm)
-                                    if gl.nohead and answer_error_collect:
-                                        gl.push_msg += erm
                     elif "单选题" in category:
                         if quiz_type == "daily":
                             options = driver_daily.radio_get_options()
@@ -406,11 +391,6 @@ def answer_question(quiz_type, cookies, scores, score_all, quiz_xpath, category_
                                     # driver_daily.radio_check(radio_in_tips)
                                     if not gl.nohead:
                                         auto.prompt("等待用户手动答题...完成后请在此按回车...")
-                                    elif q_text:
-                                        erm = f"[题干]{q_text}\n[选项]{str(options)}\n"
-                                        print("请提交如下题目到数据库:\n"+erm)
-                                        if gl.nohead and answer_error_collect:
-                                            gl.push_msg += erm
                         elif quiz_type == "weekly":
                             options = driver_weekly.radio_get_options()
                             if '因此本题选' in tips:
@@ -454,11 +434,6 @@ def answer_question(quiz_type, cookies, scores, score_all, quiz_xpath, category_
                                     # driver_weekly.radio_check(radio_in_tips)
                                     if not gl.nohead:
                                         auto.prompt("等待用户手动答题...完成后请在此按回车...")
-                                    elif q_text:
-                                        erm = f"[题干]{q_text}\n[选项]{str(options)}\n"
-                                        print("请提交如下题目到数据库:\n"+erm)
-                                        if gl.nohead and answer_error_collect:
-                                            gl.push_msg += erm
                         elif quiz_type == "zhuanxiang":
                             options = driver_zhuanxiang.radio_get_options()
                             if '因此本题选' in tips:
@@ -504,11 +479,6 @@ def answer_question(quiz_type, cookies, scores, score_all, quiz_xpath, category_
                                     # driver_zhuanxiang.radio_check(radio_in_tips)
                                     if not gl.nohead:
                                         auto.prompt("等待用户手动答题...完成后请在此按回车...")
-                                    elif q_text:
-                                        erm = f"[题干]{q_text}\n[选项]{str(options)}\n"
-                                        print("请提交如下题目到数据库:\n"+erm)
-                                        if gl.nohead and answer_error_collect:
-                                            gl.push_msg += erm
                     else:
                         print("题目类型非法")
                         if quiz_type == "daily":
