@@ -97,8 +97,18 @@ def rep_update(message):
         bot.send_message(message.chat.id, "代码更新完成"+msg)
 
 
-if __name__ == '__main__':
+def polling():
+    try:
+        bot.polling(non_stop=True, timeout=120)
+    except Exception as e:
+        if 'ConnectionError' in str(e.__class__):
+            print("telegtram listener reconnecting...")
+            polling()
+        else:
+            print(str(e))
 
+
+if __name__ == '__main__':
     if os.getenv('Nohead') == "True" and pushmode == "5":
         proxy = cfg_get("addition.telegram.proxy")
         if proxy and cfg_get("addition.telegram.use_proxy", False):
@@ -111,4 +121,4 @@ if __name__ == '__main__':
                 apihelper.proxy = {}
                 print("代理请求异常，已关闭代理:"+str(e))
         bot.send_message(master, "学xi助手上线啦，快来学xi吧")
-        bot.polling(non_stop=True, timeout=120)
+        polling()
