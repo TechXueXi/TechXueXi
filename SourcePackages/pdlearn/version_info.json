@@ -1,6 +1,9 @@
 {
     "techxuexi_version": "v20211025",
     "techxuexi_update_log": [{
+        "version": "v20211027",
+        "info": "增加收集题库配置项，修复提示异常，增加全局消息"
+    },{
         "version": "v20211025",
         "info": "Docker enable supervisor，修改文档"
     },{
