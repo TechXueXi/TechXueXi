@@ -1,0 +1,44 @@
+version: "3"
+
+services:
+    techxuexi-web:
+        image: techxuexi/techxuexi-amd64
+        container_name: techxuexi-web
+        restart: unless-stopped
+        volumes:
+            - ./techxuexi/users/web:/xuexi/user
+        environment:
+            - CRONTIME=5 21,0,8,14 * * *
+            - Pushmode=6
+            - ZhuanXiang=True
+            - Scheme=https://techxuexi.zctmdc.cc/jump.php?url=
+        build:
+            context: .
+            shm_size: "2gb"
+        shm_size: "2gb"
+
+    frpc:
+        image: zctmdc/frp:Alpha
+        hostname: xuexi
+        container_name: frpc
+        restart: always
+        # network_mode: host
+        environment:
+            - SUBDOMAIN_HOST=frp.zctmdc.cc
+            - BIND_PORT=7001
+            - TOKEN=zctmdc303x
+            - ADMIN_USER=admin
+            - ADMIN_PWD=admin~!@#
+            - ADMIN_PORT=7500
+            - VHOST_HTTP_PORT=3080
+            - SK=zctmdc303X
+        # volumes:
+        #   - conf-frp:/etc/frp/
+        healthcheck:
+            test: "/opt/healthcheck/healthcheck-frpc.sh"
+            interval: 30s
+            timeout: 10s
+            retries: 3
+        command: ["/usr/sbin/frpc", "-c", "/etc/frp/frpc.ini"]
+        external_links:
+            - techxuexi-web:techxuexi-web
