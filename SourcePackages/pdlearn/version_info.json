@@ -1,6 +1,9 @@
 {
-    "techxuexi_version": "v20211028",
+    "techxuexi_version": "v20211029",
     "techxuexi_update_log": [{
+        "version": "v20211029",
+        "info": "docker增加了web 推送支持。"
+    },{
         "version": "v20211028",
         "info": "docker增加了一个自循环方法，如果出现连接超时问题，就自己再次启动连接。"
     },{

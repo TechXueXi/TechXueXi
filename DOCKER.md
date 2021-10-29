@@ -53,6 +53,12 @@ docker pull techxuexi/techxuexi-arm64v8:{tag}
 
 目前最新的 tag 请前往 https://hub.docker.com/u/techxuexi/ 查询
 
+### 版本说明
+
+分为开发版：tag含有dev，
+
+稳定版： tag为 latest
+
 # Docker 命令运行
 
 注意短横线和冒号的位置。
@@ -317,8 +323,8 @@ docker run \
   -e "Scheme=https://techxuexi.js.org/jump/techxuexi-20211023.html?" \
   -v /volume1/docker/xuexi/user:/xuexi/user:rw \
   -d --name=techxuexi --shm-size="2g" \
-  -p 9980:80
-   techxuexi/techxuexi-amd64:latest
+  -p 9980:80 \
+  techxuexi/techxuexi-amd64:latest
    
 ```
 docker-config.yaml配置
