@@ -83,22 +83,36 @@ def add(message):
 
 
 @bot.message_handler(commands=['update'], func=authorize)
-@exception_catcher(reserve_fun=bot.reply_to, fun_args=("Chrome 崩溃啦",), args_push=True)
 def rep_update(message):
-    shell = "git -C /xuexi/code/TechXueXi pull $Sourcepath $pullbranche "
-    params = message.text.split(" ")
-    if len(params) > 1:
-        shell += params[1]
-    msg = os.popen(shell).readlines()[-1]
-    if "up to date" in msg:
-        bot.send_message(message.chat.id, "当前代码已经是最新的了")
-    else:
-        os.popen("cp -r /xuexi/code/TechXueXi/SourcePackages/* /xuexi")
-        bot.send_message(message.chat.id, "代码更新完成"+msg)
+    try:
+        shell = "git -C /xuexi/code/TechXueXi pull $Sourcepath $pullbranche "
+        params = message.text.split(" ")
+        if len(params) > 1:
+            shell += params[1]
+        msg = os.popen(shell).readlines()[-1]
+        if "up to date" in msg:
+            bot.send_message(message.chat.id, "当前代码已经是最新的了")
+        else:
+            os.popen("cp -r /xuexi/code/TechXueXi/SourcePackages/* /xuexi")
+            bot.send_message(message.chat.id, "代码更新完成"+msg)
+    except Exception as e:
+        bot.send_message(message.chat.id, "更新失败："+str(e))
+
+
+@bot.message_handler(commands=['v'], func=authorize)
+def rep_update(message):
+    bot.reply_to(message, "当前版本：v0.10.29")
+
+
+def polling():
+    try:
+        bot.polling(non_stop=True, timeout=120)
+    except Exception as e:
+        print("telegtram listener reconnecting...")
+        polling()
 
 
 if __name__ == '__main__':
-
     if os.getenv('Nohead') == "True" and pushmode == "5":
         proxy = cfg_get("addition.telegram.proxy")
         if proxy and cfg_get("addition.telegram.use_proxy", False):
@@ -111,4 +125,4 @@ if __name__ == '__main__':
                 apihelper.proxy = {}
                 print("代理请求异常，已关闭代理:"+str(e))
         bot.send_message(master, "学xi助手上线啦，快来学xi吧")
-        bot.polling(non_stop=True, timeout=120)
+        polling()

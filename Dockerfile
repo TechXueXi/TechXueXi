@@ -29,4 +29,5 @@ RUN mkdir code
 WORKDIR /xuexi/code
 RUN git clone -b ${pullbranche} ${Sourcepath}
 WORKDIR /xuexi
+EXPOSE 80
 ENTRYPOINT ["/bin/bash", "./start.sh"]

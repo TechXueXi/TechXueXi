@@ -15,7 +15,7 @@ on:
       techxuexi_text:
         description: ''
         required: true
-        default: '交流群： https://github.com/TechXueXi/TechXueXi/issues/14 ，使用方法：https://github.com/TechXueXi/TechXueXi/blob/dev/%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95-%E6%9B%B4%E6%96%B0%E6%96%B9%E6%B3%95-%E4%B8%8B%E8%BD%BD%E6%96%B9%E5%BC%8F.md'
+        default: '这个版本主要更新docker，其他用户可以不更新。交流群： https://github.com/TechXueXi/TechXueXi/issues/14 ，使用方法：https://github.com/TechXueXi/TechXueXi/blob/dev/%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95-%E6%9B%B4%E6%96%B0%E6%96%B9%E6%B3%95-%E4%B8%8B%E8%BD%BD%E6%96%B9%E5%BC%8F.md'
   
 
 jobs:
@@ -94,11 +94,11 @@ jobs:
           UPDATE_1: ${{ secrets.UPDATE_1 }}
         run: |
           wget ${{ secrets.UPDATE_1 }}
-      - name: Delete Workflow Runs
-        uses: Mattraks/delete-workflow-runs@main
-        with:
-          token: ${{ github.token }}
-          repository: ${{ github.repository }}
-          retain_days: 1
-          keep_minimum_runs: 0
+      #- name: Delete Workflow Runs
+      #  uses: Mattraks/delete-workflow-runs@main
+      #  with:
+      #    token: ${{ github.token }}
+      #    repository: ${{ github.repository }}
+      #    retain_days: 1
+      #    keep_minimum_runs: 0
 

@@ -53,6 +53,12 @@ docker pull techxuexi/techxuexi-arm64v8:{tag}
 
 目前最新的 tag 请前往 https://hub.docker.com/u/techxuexi/ 查询
 
+### 版本说明
+
+分为开发版：tag含有dev，
+
+稳定版： tag为 latest
+
 # Docker 命令运行
 
 注意短横线和冒号的位置。
@@ -143,6 +149,8 @@ Pushmode=1
   > 4 pluspush
 
   > 5 Telegram Bot **（推荐，支持指令交互，随时可以开始学习，需要翻墙）**
+
+  > 6 WebPage
 
   **推送消息是为了把登录链接发送给你，现在请每天点击链接登录。**
 
@@ -298,6 +306,51 @@ services:
 方法二，多创建几个容器，一个容器一个人，给每个人配置推送登录链接。
 
 其他没有固定下来的用法，请加群了解。
+
+# Web网页控制台
+
+参考 telegram 需要打开端口映射
+
+docker指令
+```sh
+
+
+docker run \
+  -e "AccessToken=***" \
+  -e "Secret=***" \
+  -e "ZhuanXiang=True" \
+  -e "Pushmode=1" \
+  -e "Scheme=https://techxuexi.js.org/jump/techxuexi-20211023.html?" \
+  -v /volume1/docker/xuexi/user:/xuexi/user:rw \
+  -d --name=techxuexi --shm-size="2g" \
+  -p 9980:80 \
+  techxuexi/techxuexi-amd64:latest
+   
+```
+docker-config.yaml配置
+```yaml
+version: '3.5'
+services:
+  xuexi:
+    image: techxuexi/techxuexi-amd64
+    container_name: xuexi
+    restart: unless-stopped
+    ports:
+      - 9980:80/tcp
+    volumes:
+       - ./user:/xuexi/user
+    environment:
+      - Scheme=https://techxuexi.js.org/jump/techxuexi-20211023.html?
+      - ZhuanXiang=True
+      - Pushmode=6
+      - CRONTIME=30 9 * * *
+    build:
+      context: .
+      shm_size: '2gb' 
+    shm_size: '2gb'
+
+```
+
 
 **[交流群地址及说明](https://github.com/TechXueXi/TechXueXi/issues/14)**
 

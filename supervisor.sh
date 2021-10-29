@@ -18,4 +18,11 @@ command=/usr/local/bin/python telegramListener.py
 autostart=true
 autorestart=true
 
+[program:xuexiweb]
+directory=/xuexi
+user=root
+command=/usr/local/bin/python webserverListener.py
+autostart=true
+autorestart=true
+
 EOF

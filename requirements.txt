@@ -10,3 +10,7 @@ pyTelegramBotAPI==4.0.1
 gunicorn==20.1.0
 PySocks==1.7.1
 urllib3==1.26.7
+
+Flask==1.1.2
+Flask_SQLAlchemy==2.5.1
+Flask_Cors==3.0.8

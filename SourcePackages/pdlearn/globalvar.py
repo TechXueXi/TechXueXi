@@ -3,6 +3,7 @@ from pdlearn.pluspush import PlusPushHandler
 from pdlearn.fangtang import FangtangHandler
 from pdlearn.dingding import DingDingHandler
 from pdlearn.telegram import TelegarmHandler
+from pdlearn.web import WebHandler
 import io
 from PIL import Image
 from pdlearn.config import cfg_get
@@ -22,6 +23,7 @@ lock = False
 stime = False
 single = False
 tg_bot = TelegarmHandler
+web = WebHandler()
 push_msg = ""
 
 
@@ -71,7 +73,7 @@ def init_global():
         tg_bot = TelegarmHandler(
             accesstoken, secret, cfg_get("addition.telegram.proxy"))
     is_init = True
-
+    nohead = True
 
 def pushprint(text):
     """
@@ -95,6 +97,8 @@ def pushprint(text):
             push.fttext(text)
         elif pushmode == "5":
             tg_bot.send_message(text)
+        elif pushmode == "6":
+            web.add_message(text)
     print(text)
 
 
@@ -112,3 +116,5 @@ def send_qrbase64(qcbase64):
         img_b64decode = base64.b64decode(
             qcbase64[qcbase64.index(';base64,')+8:])
         tg_bot.send_qrurl(Image.open(io.BytesIO(img_b64decode)))
+    elif pushmode == "6":
+        web.add_qrurl(qcbase64)
