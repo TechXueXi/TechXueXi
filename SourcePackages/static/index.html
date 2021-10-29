@@ -20,7 +20,7 @@
             $('#message tr:first').nextAll().remove()
             for (const message of messages) {
                 if (-1 != message.text.indexOf('login.xuexi.cn')) {
-                    jump_url = 'https://techxuexi.zctmdc.cc/jump.php?url=' + message.text
+                    jump_url = 'jump.html?' + encodeURIComponent(message.text)
 
                     $('#message table tr:first').after(
                         '<tr>' +
@@ -28,7 +28,7 @@
                                 '<span>' + message.timestamp + '</span>' +
                             '</td>' +
                             '<td>' +
-                                '<a href="' + jump_url + '">' + jump_url + '</a>' +
+                                '<a href="' + jump_url + '">' +  jump_url + '</a>' +
                             '</td>' +
                         '</tr>'
 
@@ -59,7 +59,7 @@
                         '</td>' +
                         '<td>' +
                             '<img src="' + qrurl.url + '"/>' +
-                        +'</td>' +
+                        '</td>' +
                     '</tr>'
                 )
             }

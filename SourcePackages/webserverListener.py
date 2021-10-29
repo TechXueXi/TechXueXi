@@ -122,6 +122,10 @@ def resp_err(resp_msg=None):
 def hello_world():
     return redirect('/static/index.html', code=302)
 
+@app.route('/jump')
+def hello_world():
+    return redirect('/static/index.html', code=302)
+
 
 @app.route('/api/sleep/<sleep_time>')
 def sleep(sleep_time):
@@ -157,6 +161,9 @@ def list():
 @app.route('/api/refresh_all_cookies')
 def refresh_all_cookies():
     user_status = user.refresh_all_cookies(display_score=True)
+    user_infos=UserInfo.query.all()
+    for user_info in user_infos:
+        db.session.delete(user_info)
     for (uid, status) in user_status.items():
         db.session.add(UserInfo(uid, status))
     db.session.commit()
@@ -210,7 +217,7 @@ def list_qrurls():
     for qrurl in qrurls:
         # print('--------------------------------\n秒：{}\n--------------------------------'.format(
         #     (datetime.now() - qrurl.timestamp).seconds))
-        if (datetime.now() - qrurl.timestamp).seconds /60 > 5 :
+        if (datetime.now() - qrurl.timestamp).seconds > 300:
             db.session.delete(qrurl)
     db.session.commit()
     return resp_models_ok(qrurls)
@@ -222,10 +229,11 @@ def list_messages():
     for message in messages:
         # print('--------------------------------\n分：{}\n--------------------------------'.format(
         #     (datetime.now() - message.timestamp).seconds/60))
-        if (datetime.now() - message.timestamp).seconds/60 > 5:
+        if (datetime.now() - message.timestamp).seconds > 300:
             db.session.delete(message)
     db.session.commit()
     return resp_models_ok(messages)
+
 
 
 if __name__ == "__main__":

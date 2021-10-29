@@ -15,14 +15,18 @@ cat >> /etc/supervisord.conf <<EOF
 directory=/xuexi
 user=root
 command=/usr/local/bin/python telegramListener.py
-autostart=true
+autostart=false
 autorestart=true
+
+EOF
+
+cat >> /etc/supervisord.conf <<EOF
 
 [program:xuexiweb]
 directory=/xuexi
 user=root
 command=/usr/local/bin/python webserverListener.py
-autostart=true
+autostart=false
 autorestart=true
 
 EOF
