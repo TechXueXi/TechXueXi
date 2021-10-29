@@ -99,15 +99,17 @@ def rep_update(message):
         bot.send_message(message.chat.id, "更新失败："+str(e))
 
 
+@bot.message_handler(commands=['v'], func=authorize)
+def rep_update(message):
+    bot.reply_to(message, "当前版本：v0.10.29")
+
+
 def polling():
     try:
         bot.polling(non_stop=True, timeout=120)
     except Exception as e:
-        if 'ConnectionError' in str(e.__class__):
-            print("telegtram listener reconnecting...")
-            polling()
-        else:
-            print(str(e))
+        print("telegtram listener reconnecting...")
+        polling()
 
 
 if __name__ == '__main__':
