@@ -12,7 +12,7 @@ import base64  # 解码二维码图片
 
 # 全局变量是否已经初始化
 is_init = False
-pushmode = "1"  # 0 不开启 1 钉钉 2 微信（并未实现） 3 Server 酱 4 pluspush 5 Telegram Bot
+pushmode = "0"  # 0 不开启 1 钉钉 2 微信（并未实现） 3 Server 酱 4 pluspush 5 Telegram Bot 6 Web Dashboard
 nohead = False
 accesstoken = ""
 secret = ""
@@ -34,7 +34,9 @@ def init_global():
     global nohead, islooplogin, single, scheme, pushmode, accesstoken, secret, zhuanxiang, is_init, lock, stime, tg_bot
     if os.getenv('Nohead') == "True":
         nohead = True
-
+    else:
+        nohead = cfg_get("addition.Nohead", False)
+        
     if os.getenv('islooplogin') == "True":
         islooplogin = True
 
@@ -73,7 +75,6 @@ def init_global():
         tg_bot = TelegarmHandler(
             accesstoken, secret, cfg_get("addition.telegram.proxy"))
     is_init = True
-    nohead = True
 
 def pushprint(text):
     """
