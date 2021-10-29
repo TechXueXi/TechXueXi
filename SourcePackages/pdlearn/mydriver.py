@@ -32,7 +32,11 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 import base64  # 解码二维码图片
 from selenium.webdriver.common.action_chains import ActionChains
 # from pdlearn.qywx import WeChat  # 使用微信发送二维码图片到手机
+<<<<<<< HEAD
 from webServerConf import web_db, WebQrUrl, WebMessage
+=======
+from webserverListener import db, QrUrl, Message
+>>>>>>> 88e55c5 (增加网页控制台)
 
 
 def decode_img(data):
@@ -190,6 +194,21 @@ class Mydriver:
         # print(' ----------------------------------------------------------------')
         # print(web_msg)
         # print(web_db.session.query(WebMessage).all())
+
+        # 扫码登录后删除二维码和登录链接 准备
+        qcbase64 = self.getQRcode()
+        qrurl = QrUrl.query.filter_by(url=qcbase64).first()
+        
+        if gl.scheme:
+            url = gl.scheme+quote_plus(decode_img(qcbase64))
+        else:
+            url = decode_img(qcbase64)
+        msg_url = Message.query.filter_by(text=url).first()
+            
+        # print(' ----------------------------------------------------------------')
+        # print(qrurl)
+        # print(' ----------------------------------------------------------------')
+        # print(msg_url)
 
         # try:
         #     # 取出iframe中二维码，并发往方糖，拿到的base64没办法直接发钉钉，所以发方糖
