@@ -81,9 +81,10 @@ jobs:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           disable_web_page_preview: true
-          disable_notification: false
+          disable_notification: true
+          format: markdown
           message: |
-            #python稳定版发布通知
+            #python测试版发布通知
             仓库: ${{ github.repository }}
             docker 测试版已经发布， docker tag 为 `${GITHUB_REF##*/}${{ github.run_number }}`。
             [点击查看docker amd64（一般电脑，服务器等）](https://hub.docker.com/r/techxuexi/techxuexi-amd64/tags?page=1&ordering=last_updated)
