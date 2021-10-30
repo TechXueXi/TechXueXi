@@ -10,7 +10,7 @@ from PIL import Image
 from pdlearn.config import cfg_get
 import os
 import base64  # 解码二维码图片
-os.environ["Nohead"] = "True"
+
 # 全局变量是否已经初始化
 is_init = False
 pushmode = "0"  # 0 不开启 1 钉钉 2 微信（并未实现） 3 Server 酱 4 pluspush 5 Telegram Bot 6 Web Dashboard
