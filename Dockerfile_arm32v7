@@ -11,7 +11,7 @@ RUN ln -s /usr/bin/dpkg-split /usr/sbin/dpkg-split
 RUN ln -s /usr/bin/dpkg-deb /usr/sbin/dpkg-deb
 RUN ln -s /bin/tar /usr/sbin/tar
 RUN apt-get update
-RUN apt-get upgrade
+#RUN apt-get upgrade
 RUN apt-get install -y wget unzip libzbar0 git cron supervisor chromium-driver; chromedriver --version; which chromedriver; chromium --version
 RUN apt-get install -y libxml2-dev libxslt1-dev zlib1g-dev python3-pip
 RUN apt-get install libjpeg-dev zlib1g-dev 
@@ -38,4 +38,5 @@ RUN mkdir code
 WORKDIR /xuexi/code
 RUN git clone -b ${pullbranche} ${Sourcepath}
 WORKDIR /xuexi
+EXPOSE 80
 ENTRYPOINT ["/bin/bash", "./start.sh"]

@@ -194,7 +194,7 @@ Scheme=dtxuexi://appclient/page/study_feeds?url=
 
 也可以自己搭建跳板，从网页跳转。公告栏有 php 的跳板可以下载使用。
 
-不会或者不想自己搭建，可以使用我们提供的：
+不会或者不想自己搭建，可以使用我们提供的（20211030 之后 telegram 默认开启）：
 
 ```
 Scheme=https://techxuexi.js.org/jump/techxuexi-20211023.html?
