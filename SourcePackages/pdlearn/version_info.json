@@ -1,6 +1,9 @@
 {
-    "techxuexi_version": "v20211029",
+    "techxuexi_version": "v20211030",
     "techxuexi_update_log": [{
+        "version": "v20211030",
+        "info": "优化参数配置 修复了无窗模式默认开启的问题，优化v指令"
+    },{
         "version": "v20211029",
         "info": "docker增加了web 推送支持。"
     },{
