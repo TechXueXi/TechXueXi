@@ -32,11 +32,7 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 import base64  # 解码二维码图片
 from selenium.webdriver.common.action_chains import ActionChains
 # from pdlearn.qywx import WeChat  # 使用微信发送二维码图片到手机
-<<<<<<< HEAD
 from webServerConf import web_db, WebQrUrl, WebMessage
-=======
-from webserverListener import db, QrUrl, Message
->>>>>>> 88e55c5 (增加网页控制台)
 
 
 def decode_img(data):
