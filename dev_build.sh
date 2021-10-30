@@ -19,14 +19,14 @@ init_proxy_server() {
 }
 
 PROXY_SERVER=$HTTP_PROXY_SERVER
-Sourcepath=https://github.com/TechXueXi/TechXueXi.git
+usesource='https://github.com/TechXueXi/TechXueXi.git'
 usebranche='dev'
 
 init_proxy_server
-
+set -x
 docker build \
     ${build_use_proxy:-} \
-    --build-arg Sourcepath=${Sourcepath} \
+    --build-arg usesource=${usesource} \
     --build-arg usebranche=${usebranche} \
     --tag techxuexi/techxuexi-amd64:${usebranche} \
     ${Sourcepath}
