@@ -264,7 +264,7 @@ services:
    addition {
       Pushmode="2"
       wechat{
-          appid = "第2步中获取的appid",
+          appid = "第2步中获取的appid"
           appsecret = "第2步中获取的appsecret"
           openid = "第4步中获取的微信号"
       }
