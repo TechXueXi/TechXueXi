@@ -88,7 +88,6 @@ jobs:
             仓库: ${{ github.repository }}
             docker 测试版已经发布， docker tag 为 `dev${{ github.run_number }}`。
             [点击查看docker](https://hub.docker.com/u/techxuexi/)
-            [点击查看更新记录](https://github.com/TechXueXi/TechXueXi/blob/dev/SourcePackages/pdlearn/version_info.json)
 
       #- name: Sleep for 30 seconds 
       #  uses: jakejarvis/wait-action@master         
