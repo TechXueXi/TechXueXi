@@ -71,7 +71,7 @@ jobs:
                       -t techxuexi/techxuexi-arm64v8:${GITHUB_REF##*/}${{ github.run_number }} \
                       --push \
                       -f ./Dockerfile_arm64v8 .
-              #docker buildx build --platform linux/arm/v7 \
+              docker buildx build --platform linux/arm/v7 \
                       -t techxuexi/techxuexi-arm32v7:${GITHUB_REF##*/}${{ github.run_number }} \
                       --push \
                       -f ./Dockerfile_arm32v7 .
