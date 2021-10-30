@@ -11,35 +11,34 @@
 **警告：如您不熟悉，请使用源码运行的方式**
 
 ## 有疑问？
+
 遇到问题，请试着按如下步骤解决：
 
 1. 仔细阅读过 `README.md` ， `使用方法-更新方法-下载方式.md` ， `DOCKER.md` 这些说明
-2. 查看/搜索所有已有 issue，无论是open还是close的
+2. 查看/搜索所有已有 issue，无论是 open 还是 close 的
 3. 通过搜索引擎搜索，尝试不同的关键词 www.google.com www.baidu.com
 4. 到提供的在线聊天室询问 (聊天室说明： https://github.com/TechXueXi/TechXueXi/issues/14 )
 5. 提新 issue ，关注邮箱有关这个 issue 的提醒。
 
 # 配置文件
 
-由于Docker中的环境变量越来越多，可定义项目也逐渐增多，所以后续增加的部分配置项目移至配置文件。
+由于 Docker 中的环境变量越来越多，可定义项目也逐渐增多，所以后续增加的部分配置项目移至配置文件。
 
 所有可配置项目及说明，请参见[默认配置文件](https://github.com/npo5tech/TechXueXi/blob/dev/SourcePackages/config/default_template.conf)。
 
 如需修改默认配置，请将虚拟目录`xuexi/user`映射至本地目录，首次运行后会产生`settings.conf`文件。该文件内首行代码不要删除。从第三行开始添加即可。
 
-***请严格遵循书写规范*** 否则将导致程序无法运行。
+**_请严格遵循书写规范_** 否则将导致程序无法运行。
 
 **变量优先级**
 
 环境变量 > settings.conf > default_template.conf
 
-
-
 # Docker 地址
 
 > 2021 年 9 月 25 日起 arm 和 amd 地址分开，请重新配置 docker
 
-amd64（一般64位电脑，服务器）
+amd64（一般 64 位电脑，服务器）
 
 ```
 docker pull techxuexi/techxuexi-amd64:{tag}
@@ -107,7 +106,6 @@ docker run \
 -d --name=techxuexi --shm-size="2g" techxuexi/techxuexi-amd64:latest
 ```
 
-
 # Docker 参数
 
 参数  
@@ -127,6 +125,7 @@ Pushmode=1
 表示：钉钉，其他见下方
 
 ### 必填
+
 - AccessToken 。bot 发送指令的 token 具体方法参见下方 bot 指南
 - Secret 钉钉推送时为钉钉 Secret，Telegram bot 则为管理员数字 Id
 - Nohead 无窗口模式 默认值`True`，Docker 不要修改此参数
@@ -136,7 +135,7 @@ Pushmode=1
 
   > 1 钉钉
 
-  > 2 微信（并未实现， https://github.com/orgs/TechXueXi/projects/2#card-66789077 ）
+  > 2 微信
 
   > 3 Server 酱
 
@@ -148,14 +147,14 @@ Pushmode=1
 
 ##### 可选参数
 
-- ZhuanXiang 环境变量，是否进行专项答题，默认False，docker模式下改成True也可以进行专项答题。设置`True`则开始答题，如果经常遇到视频题目，或者经常答题失败，建议关闭
+- ZhuanXiang 环境变量，是否进行专项答题，默认 False，docker 模式下改成 True 也可以进行专项答题。设置`True`则开始答题，如果经常遇到视频题目，或者经常答题失败，建议关闭
 - TZ 时区设置，默认值`Asia/Shanghai`
 - CRONTIME Cron 参数，默认是`30 9 * * *`，即每天早上 9:30 执行 ,可以把 Cron 表达式放到这里去验证 https://crontab.guru/
 - Sourcepath 项目源，默认是`https://github.com.cnpmjs.org/TechXueXi/TechXueXi.git`
 - pullbranche 项目分支，默认是`dev`，后续可能会变为`master`
 - islooplogin 循环参数，默认`False`，当设置为`True`的时候，如果扫码超时会一直尝试循环获取新的扫码，考虑到微信公众号推送有次数限制，慎用
 - MaxScore 达到指定分数停止学习（未实现，开发团队成员可查看 https://github.com/orgs/TechXueXi/projects/2#card-70976956 ）
-- **配置项（不是环境变量）** answer_error_max，默认值100，可以修改找不到答案时尝试的次数，仅Docker中有效
+- **配置项（不是环境变量）** answer_error_max，默认值 100，可以修改找不到答案时尝试的次数，仅 Docker 中有效
 - **没有找到的环境变量，请查看上方提到过的默认配置文件，可能做成了配置项**
 
 ```
@@ -192,7 +191,7 @@ Scheme=dtxuexi://appclient/page/study_feeds?url=
 Scheme=https://techxuexi.js.org/jump/techxuexi-20211023.html?
 ```
 
-但是不保证稳定。 ~~techxuexi太好用了~~ ， https://techxuexi.js.org 这个地址已经被国内浏览器加进黑名单了 ~~中国大陆官方认证~~ ，默认浏览器不要用国内的，不然提示危险网页。现在 gfw 还没墙，只是国产浏览器的黑名单屏蔽。
+但是不保证稳定。 ~~techxuexi 太好用了~~ ， https://techxuexi.js.org 这个地址已经被国内浏览器加进黑名单了 ~~中国大陆官方认证~~ ，默认浏览器不要用国内的，不然提示危险网页。现在 gfw 还没墙，只是国产浏览器的黑名单屏蔽。
 
 其他的设置方法去群里问~~大佬~~同志们吧。
 
@@ -242,7 +241,7 @@ services:
       - CRONTIME=30 9 * * *
     build:
       context: .
-      shm_size: '2gb' 
+      shm_size: '2gb'
     shm_size: '2gb'
 ```
 
@@ -253,6 +252,25 @@ services:
 ## 钉钉机器人
 
 接入方式请参考 https://developers.dingtalk.com/document/app/custom-robot-access/title-72m-8ag-pqw
+
+## 微信公众号（测试版）
+
+1. 微信登录[微信公众号号测试账号申请](https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login)
+2. 扫码登陆后，系统将会分配一个测试公众号，如下图![image](https://user-images.githubusercontent.com/91232777/139524259-5ec2fedf-6857-4c9c-ad68-cca23e5db299.png)
+3. 下拉到`测试号二维码`，扫码关注公众号，**并给公众号发任意消息**
+4. 成功后将看到你的微信号![image](https://user-images.githubusercontent.com/91232777/139524350-f99d6754-080d-4d93-8879-48868da3ee06.png)
+5. 在`/xuexi/user/settings.conf`中添加微信配置
+   ```
+   addition {
+      Pushmode="2"
+      wechat{
+          appid = "第2步中获取的appid",
+          appsecret = "第2步中获取的appsecret"
+          openid = "第4步中获取的微信号"
+      }
+   }
+   ```
+   _后续 **可能** 会增加`账号绑定`功能，允许多用户关注并绑定学 xi 账号，进行消息分发_
 
 ## Server 酱
 
@@ -270,22 +288,22 @@ services:
 4. 跟你创建的 bot 会话，点击`START`，或者发送`/start`
 5. 将第 2 步获取的 token 放在`AccessToken`中，第 3 步获取的 Id 放到`Secret`中，`Pushmode`设置为 5。
 
-增加telegram bot指令支持
+增加 telegram bot 指令支持
 
 `/help` 获取帮助
 
 `/learn` 开始学习，`/learn 张三` 指定账号学习
 
-`/list` 获取账号列表，获取有效的cookie列表，显示过期时间，并显示当天学习积分。
+`/list` 获取账号列表，获取有效的 cookie 列表，显示过期时间，并显示当天学习积分。
 
 `/add` 添加新账号，只添加账号，不会立即学习
 
 `/update` 更新本地代码， `/update`指令支持参数 如`/update --rebase`
 
-**注意，用学习强国官方软件及网页时关闭翻墙软件**。但是telegram推送需要翻墙。
+**注意，用学习强国官方软件及网页时关闭翻墙软件**。但是 telegram 推送需要翻墙。
 
-**bot使用代理说明：进入容器内找到user/settings.conf，根据本库的default_template.conf文件里addition附加功能-telegram的相关内容复制进去、填写好保存即可。）**
-支持http和socks5两种代理方式
+**bot 使用代理说明：进入容器内找到 user/settings.conf，根据本库的 default_template.conf 文件里 addition 附加功能-telegram 的相关内容复制进去、填写好保存即可。）**
+支持 http 和 socks5 两种代理方式
 
 **要做好分流**
 
@@ -303,7 +321,6 @@ services:
 
 ## Docker 如果发给你一个学习强国链接，不是让你下载，是让你登录，复制链接到学习#国 app，发给某个人，比如自己，再点击链接
 
-
 退出登录，多个不同用户使用，删掉 user/cookie.json 文件
 
 chrome crash 的原因是 docker 虚拟机共享内存不足,创建 docker 时设置 --shm-size="2g"
@@ -313,5 +330,3 @@ chrome crash 的原因是 docker 虚拟机共享内存不足,创建 docker 时�
 https://stackoverflow.com/questions/30210362/how-to-increase-the-size-of-the-dev-shm-in-docker-container
 
 也可以参考 https://t.me/techxuexi_notice/49
-
-
