@@ -106,10 +106,10 @@ def rep_update(message):
 @bot.message_handler(commands=['v'], func=authorize)
 def rep_update(message):
     bot.reply_to(message, "当前版本：v0.10.29")
-    try:
-        native_info = version.get_native_json()
-        native_version = str(native_info["techxuexi_version"])
-        bot.reply_to(message, "版本："+native_version)
+    #try:
+    #    native_info = version.get_native_json()
+    #    native_version = str(native_info["techxuexi_version"])
+    #    bot.reply_to(message, "版本："+native_version)
 
 
 def polling():
