@@ -2,7 +2,7 @@ version: "3.6"
 
 services:
     techxuexi:
-        image: techxuexi/techxuexi-amd64
+        image: techxuexi/techxuexi-amd64:dev
         container_name: techxuexi
         restart: unless-stopped
         volumes:
@@ -13,13 +13,14 @@ services:
             - CRONTIME=5 21,0,8,14 * * *
             - Pushmode=6
             - ZhuanXiang=True
-            # - Scheme=https://techxuexi.js.org/jump/techxuexi-20211023.html?
-            - Sourcepath=https://github.com/nineja5340/TechXueXi.git
-            - pullbranche=dev
-        build:
-            context: .
-            shm_size: "2gb"
+            - Sourcepath="https://github.com/TechXueXi/TechXueXi.git"
         shm_size: "2gb"
+        build:
+            context: "https://github.com/TechXueXi/TechXueXi.git"
+            shm_size: "2gb"
+            args:
+                - usesource='https://github.com/TechXueXi/TechXueXi.git'
+                - usebranche=dev
 
     frpc:
         image: zctmdc/frp:Alpha
@@ -47,7 +48,6 @@ services:
             - techxuexi:techxuexi
         depends_on:
             - techxuexi
-
 # 打开docker所在 IP:7500 或者指定 hostname 再打开$hostname.frp.zctmdc.cc
 # 用上面的 ADMIN_PWD/ADMIN_PWD登录
 # 点击configure 粘贴以下代码(请取消注释)  即可使用~
