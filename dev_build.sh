@@ -1,8 +1,8 @@
-PROXY_SERVER="HTTP://192.168.168.121:21086"
+PROXY_SERVER="http://192.168.168.121:21086"
 
 if [[ -z ${PROXY_SERVER} ]]; then
     echo "未设置代理服务 \${PROXY_SERVER}"
-elif curl -k -sS -x ${PROXY_SERVER} --connect-timeout 5 https://github.com; then
+elif curl -o /dev/null -k -s -S -x ${PROXY_SERVER} --connect-timeout 5 https://github.com; then
     echo "使用代理服务器 \${PROXY_SERVER}:${PROXY_SERVER}"
     build_cmd="--build-arg ALL_PROXY=${PROXY_SERVER} \
       --build-arg HTTP_PROXY=${PROXY_SERVER} \
@@ -21,6 +21,6 @@ fi
 TAG='Alpha'
 
 docker build \
-    \ # --platform=linux/amd64,linux/arm64,linux/arm/v7
     ${build_cmd:-} \
-    --tag techxuexi/techxuexi-amd64${TAG:-:TAG}
+    --tag techxuexi/techxuexi-amd64:${TAG:-'dev'} \
+    https://github.com/nineja5340/TechXueXi.git
