@@ -15,7 +15,7 @@ on:
       techxuexi_text:
         description: ''
         required: true
-        default: '这个版本主要更新docker，其他用户可以不更新。交流群： https://github.com/TechXueXi/TechXueXi/issues/14 ，使用方法：https://github.com/TechXueXi/TechXueXi/blob/dev/%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95-%E6%9B%B4%E6%96%B0%E6%96%B9%E6%B3%95-%E4%B8%8B%E8%BD%BD%E6%96%B9%E5%BC%8F.md'
+        default: '这个版本主要更新docker，其他用户可以不更新。交流群： https://github.com/TechXueXi/TechXueXi/issues/14 ，使用方法：https://github.com/TechXueXi/TechXueXi/blob/dev/%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95-%E6%9B%B4%E6%96%B0%E6%96%B9%E6%B3%95-%E4%B8%8B%E8%BD%BD%E6%96%B9%E5%BC%8F.md 。这下面只是下载源码包，不能直接运行，请阅读说明。'
   
 
 jobs:
@@ -94,6 +94,22 @@ jobs:
           UPDATE_1: ${{ secrets.UPDATE_1 }}
         run: |
           wget ${{ secrets.UPDATE_1 }}
+      - name: send telegram message on push
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          disable_web_page_preview: true
+          disable_notification: false
+          format: markdown
+          message: |
+            #python稳定版发布通知
+            仓库: ${{ github.repository }}
+            `${{ github.event.inputs.version_tag }}` 版本的稳定版已经发布， docker tag 为 `latest`。
+            [点击查看这个Github release的详细信息](https://github.com/${{ github.repository }}/releases/tag/${{ github.event.inputs.version_tag }})
+            [点击查看docker amd64（一般电脑，服务器等）](https://hub.docker.com/r/techxuexi/techxuexi-amd64/tags?page=1&ordering=last_updated)
+            [点击查看docker arm64v8（树莓派等）](https://hub.docker.com/r/techxuexi/techxuexi-arm64v8/tags?page=1&ordering=last_updated)
+            [点击查看更新记录](https://github.com/TechXueXi/TechXueXi/blob/master/SourcePackages/pdlearn/version_info.json)
       #- name: Delete Workflow Runs
       #  uses: Mattraks/delete-workflow-runs@main
       #  with:

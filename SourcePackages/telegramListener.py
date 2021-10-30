@@ -5,6 +5,10 @@ import os
 import pandalearning as pdl
 from pdlearn.exp_catch import exception_catcher
 from pdlearn.config import cfg_get, get_env_or_cfg
+try:
+    # 在此处导入所有 pdlearn 内的模块
+    from pdlearn import version
+    import json
 
 pushmode = get_env_or_cfg("addition.Pushmode", "Pushmode", "0")
 token = get_env_or_cfg("addition.telegram.bot_token", "AccessToken", "")
@@ -102,6 +106,10 @@ def rep_update(message):
 @bot.message_handler(commands=['v'], func=authorize)
 def rep_update(message):
     bot.reply_to(message, "当前版本：v0.10.29")
+    try:
+        native_info = version.get_native_json()
+        native_version = str(native_info["techxuexi_version"])
+        bot.reply_to(message, "版本："+native_version)
 
 
 def polling():
