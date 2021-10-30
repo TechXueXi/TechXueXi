@@ -10,6 +10,13 @@ jobs:
     buildx:
         runs-on: ubuntu-latest
         steps:
+            - name: Check REGISTRY_URL
+              run: |
+                  if [[ -z ${{secrets.REGISTRY_URL}} ]]; then
+                      echo "请设置 secrets.REGISTRY_URL " && exit -1
+                  fi
+
+
             - name: Checkout
               uses: actions/checkout@v2
 
@@ -63,7 +70,7 @@ jobs:
                   docker buildx build \
                     --cache-from "type=local,src=/tmp/.buildx-cache" \
                     --cache-to "type=local,dest=/tmp/.buildx-cache" \
-                    --output "type=image,push=false" \
+                    --output "type=image,push=true" \
                     --push \
                     --shm-size "2g"\
                     ${{ steps.prepare.outputs.buildx_args }}
