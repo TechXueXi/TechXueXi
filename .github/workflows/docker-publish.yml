@@ -72,9 +72,9 @@ jobs:
                       --push \
                       -f ./Dockerfile_arm64v8 .
               #docker buildx build --platform linux/arm/v7 \
-              #        -t techxuexi/techxuexi-arm32v7:${GITHUB_REF##*/}${{ github.run_number }} \
-              #        --push \
-              #        -f ./Dockerfile_arm32v7 .
+                      -t techxuexi/techxuexi-arm32v7:${GITHUB_REF##*/}${{ github.run_number }} \
+                      --push \
+                      -f ./Dockerfile_arm32v7 .
       - name: send telegram message on push
         uses: appleboy/telegram-action@master
         with:
