@@ -20,12 +20,15 @@ jobs:
           # DOCKER_PLATFORMS=linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/386,linux/ppc64le,linux/s390x
           DOCKER_PLATFORMS=linux/amd64
           BRANCHE=edge
-
           if [[ $GITHUB_REF == refs/tags/* ]]; then
             BRANCHE=${GITHUB_REF#refs/tags/}
           fi
 
           TAGS="--tag ${DOCKER_IMAGE}:${BRANCHE}"
+
+          if [[ ${{REGISTRY_URL}} ]]; then
+              TAGS="--tag ${{REGISTRY_URL}}:${DOCKER_IMAGE}:${BRANCHE}"
+          fi
 
           echo ::set-output name=docker_image::${DOCKER_IMAGE}
           echo ::set-output name=BRANCHE::${BRANCHE}
@@ -59,5 +62,6 @@ jobs:
             --cache-from "type=local,src=/tmp/.buildx-cache" \
             --cache-to "type=local,dest=/tmp/.buildx-cache" \
             --output "type=image,push=false" \
+            --push \
             --shm-size "2g"\
             ${{ steps.prepare.outputs.buildx_args }}
