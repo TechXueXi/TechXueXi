@@ -71,10 +71,24 @@ jobs:
                       -t techxuexi/techxuexi-arm64v8:${GITHUB_REF##*/}${{ github.run_number }} \
                       --push \
                       -f ./Dockerfile_arm64v8 .
-              #docker buildx build --platform linux/arm/v7 \
-              #        -t techxuexi/techxuexi-arm32v7:${GITHUB_REF##*/}${{ github.run_number }} \
-              #        --push \
-              #        -f ./Dockerfile_arm32v7 .
+              docker buildx build --platform linux/arm/v7 \
+                      -t techxuexi/techxuexi-arm32v7:${GITHUB_REF##*/}${{ github.run_number }} \
+                      --push \
+                      -f ./Dockerfile_arm32v7 .
+      - name: send telegram message on push
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          disable_web_page_preview: true
+          disable_notification: true
+          format: markdown
+          message: |
+            #python测试版发布通知
+            仓库: ${{ github.repository }}
+            docker 测试版已经发布， docker tag 为 `dev${{ github.run_number }}`。
+            [点击查看docker](https://hub.docker.com/u/techxuexi/)
+            [点击查看更新记录](https://github.com/TechXueXi/TechXueXi/blob/dev/SourcePackages/pdlearn/version_info.json)
 
       #- name: Sleep for 30 seconds 
       #  uses: jakejarvis/wait-action@master         
