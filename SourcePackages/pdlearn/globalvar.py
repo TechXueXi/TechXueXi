@@ -3,13 +3,14 @@ from pdlearn.pluspush import PlusPushHandler
 from pdlearn.fangtang import FangtangHandler
 from pdlearn.dingding import DingDingHandler
 from pdlearn.telegram import TelegarmHandler
+from pdlearn.wechat import WechatHandler
 from pdlearn.web import WebHandler
 import io
 from PIL import Image
 from pdlearn.config import cfg_get
 import os
 import base64  # 解码二维码图片
-
+os.environ["Nohead"] = "True"
 # 全局变量是否已经初始化
 is_init = False
 pushmode = "0"  # 0 不开启 1 钉钉 2 微信（并未实现） 3 Server 酱 4 pluspush 5 Telegram Bot 6 Web Dashboard
@@ -23,6 +24,7 @@ lock = False
 stime = False
 single = False
 tg_bot = TelegarmHandler
+wechat = WechatHandler
 web = WebHandler()
 push_msg = ""
 
@@ -31,7 +33,7 @@ def init_global():
     """
     初始化全局变量
     """
-    global nohead, islooplogin, single, scheme, pushmode, accesstoken, secret, zhuanxiang, is_init, lock, stime, tg_bot
+    global nohead, islooplogin, single, scheme, pushmode, accesstoken, secret, zhuanxiang, is_init, lock, stime, tg_bot, wechat
     if os.getenv('Nohead') == "True":
         nohead = True
     else:
@@ -76,6 +78,8 @@ def init_global():
     if pushmode == "5":
         tg_bot = TelegarmHandler(
             accesstoken, secret, cfg_get("addition.telegram.proxy"))
+    if pushmode == "2":
+        wechat = WechatHandler()
     is_init = True
 
 def pushprint(text):
@@ -92,6 +96,8 @@ def pushprint(text):
         if pushmode == "1":
             push = DingDingHandler(accesstoken, secret)
             push.ddtextsend(text)
+        elif pushmode == "2":
+            wechat.send_text(text)
         elif pushmode == "3":
             push = FangtangHandler(accesstoken)
             push.fttext(text)
