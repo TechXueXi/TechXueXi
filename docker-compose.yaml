@@ -14,13 +14,14 @@ services:
             - Pushmode=6
             - ZhuanXiang=True
             - Sourcepath=https://github.com/TechXueXi/TechXueXi.git
+            - pullbranche=developing
         shm_size: 2gb
         build:
             context: https://github.com/TechXueXi/TechXueXi.git
             shm_size: 2gb
             args:
                 - usesource=https://github.com/TechXueXi/TechXueXi.git
-                - usebranche=dev
+                - usebranche=developing
 
     frpc:
         image: zctmdc/frp:Alpha
