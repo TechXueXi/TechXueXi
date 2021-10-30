@@ -36,6 +36,9 @@ from webserverListener import db, QrUrl, Message
 
 
 def decode_img(data):
+    if None == data:
+        raise Exception('未获取到二维码,请检查网络并重试') 
+        
     img_b64decode = base64.b64decode(data[data.index(';base64,')+8:])
     decoded = pyzbar.decode(Image.open(io.BytesIO(img_b64decode)))
     return decoded[0].data.decode("utf-8")
