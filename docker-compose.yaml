@@ -14,6 +14,8 @@ services:
             - Pushmode=6
             - ZhuanXiang=True
             # - Scheme=https://techxuexi.js.org/jump/techxuexi-20211023.html?
+            - Sourcepath=https://github.com/nineja5340/TechXueXi.git
+            - pullbranche=dev
         build:
             context: .
             shm_size: "2gb"

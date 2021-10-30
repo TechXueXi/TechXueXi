@@ -16,11 +16,11 @@ else
     echo "请检查代理服务 \${PROXY_SERVER}:${PROXY_SERVER}"
 fi
 
-TAG='Alpha'
-Sourcepath=https://github.com/nineja5340/TechXueXi.git
+Sourcepath=https://github.com/TechXueXi/TechXueXi.git
+usebranche='dev'
 docker build \
     ${build_use_proxy:-} \
     --build-arg Sourcepath=${Sourcepath} \
-    --shm-size 2g \
-    --tag techxuexi/techxuexi-amd64:${TAG:-'dev'} \
-    https://github.com/nineja5340/TechXueXi.git
+    --build-arg usebranche=${usebranche} \
+    --tag techxuexi/techxuexi-amd64:${usebranche} \
+    ${Sourcepath}
