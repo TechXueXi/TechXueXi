@@ -13,13 +13,13 @@ services:
             - CRONTIME=5 21,0,8,14 * * *
             - Pushmode=6
             - ZhuanXiang=True
-            - Sourcepath="https://github.com/TechXueXi/TechXueXi.git"
-        shm_size: "2gb"
+            - Sourcepath=https://github.com/TechXueXi/TechXueXi.git
+        shm_size: 2gb
         build:
-            context: "https://github.com/TechXueXi/TechXueXi.git"
-            shm_size: "2gb"
+            context: https://github.com/TechXueXi/TechXueXi.git
+            shm_size: 2gb
             args:
-                - usesource='https://github.com/TechXueXi/TechXueXi.git'
+                - usesource=https://github.com/TechXueXi/TechXueXi.git
                 - usebranche=dev
 
     frpc:
