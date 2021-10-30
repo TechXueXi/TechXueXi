@@ -18,6 +18,7 @@ services:
         shm_size: 2gb
         build:
             context: https://github.com/TechXueXi/TechXueXi.git
+            dockerfile: Dockerfile.dev
             shm_size: 2gb
             args:
                 - usesource=https://github.com/TechXueXi/TechXueXi.git
