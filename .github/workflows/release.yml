@@ -108,7 +108,6 @@ jobs:
             `${{ github.event.inputs.version_tag }}` 版本的稳定版已经发布， docker tag 为 `latest`。
             [点击查看这个Github release的详细信息](https://github.com/${{ github.repository }}/releases/tag/${{ github.event.inputs.version_tag }})
             [点击查看docker](https://hub.docker.com/u/techxuexi/)
-            [点击查看更新记录](https://github.com/TechXueXi/TechXueXi/blob/master/SourcePackages/pdlearn/version_info.json)
       #- name: Delete Workflow Runs
       #  uses: Mattraks/delete-workflow-runs@main
       #  with:
