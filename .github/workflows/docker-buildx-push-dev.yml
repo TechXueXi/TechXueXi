@@ -1,67 +1,69 @@
 name: docker-buildx-push-dev
 
 on:
-  push:
-    branches: [alpha]
-  pull_request:
-    branches: [alpha]
+    push:
+        branches: [alpha]
+    pull_request:
+        branches: [alpha]
 
 jobs:
-  buildx:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+    buildx:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
 
-      - name: Prepare
-        id: prepare
-        run: |
-          DOCKER_IMAGE=techxuexi-amd64
-          # DOCKER_PLATFORMS=linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/386,linux/ppc64le,linux/s390x
-          DOCKER_PLATFORMS=linux/amd64
-          BRANCHE=edge
-          if [[ $GITHUB_REF == refs/tags/* ]]; then
-            BRANCHE=${GITHUB_REF#refs/tags/}
-          fi
+            - name: Prepare
+              id: prepare
+              run: |
+                  DOCKER_IMAGE=techxuexi/techxuexi-amd64
+                  BRANCHE=alpha
+                  # DOCKER_PLATFORMS=linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/386,linux/ppc64le,linux/s390x
+                  DOCKER_PLATFORMS=linux/amd64
 
-          TAGS="--tag techxuexi/${DOCKER_IMAGE}:${BRANCHE}"
 
-          if [[ ${{secrets.REGISTRY_URL}} ]]; then
-              TAGS="--tag ${{secrets.REGISTRY_URL}}:${DOCKER_IMAGE}:${BRANCHE}"
-          fi
+                  echo "GITHUB_REF: ${GITHUB_REF}"
+                  if [[ $GITHUB_REF == refs/tags/* ]]; then
+                    BRANCHE=${GITHUB_REF#refs/tags/}
+                  fi
 
-          echo ::set-output name=docker_image::${DOCKER_IMAGE}
-          echo ::set-output name=BRANCHE::${BRANCHE}
-          echo ::set-output name=buildx_args::--platform ${DOCKER_PLATFORMS} \
-            --build-arg VCS_REF=${GITHUB_SHA::8} \
-            ${TAGS} \
-            --file Dockerfile .
+                  if [[ ${{secrets.REGISTRY_URL}} ]]; then
+                      DOCKER_IMAGE=${{secrets.REGISTRY_URL}}/techxuexi-amd64
+                  fi
 
-      - name: Set up Docker Buildx
-        id: buildx
-        uses: crazy-max/ghaction-docker-buildx@v3
-        with:
-          buildx-version: latest
-          qemu-version: latest
+                  TAGS="--tag ${DOCKER_IMAGE}:${BRANCHE}"
+                  echo ::set-output name=docker_image::${DOCKER_IMAGE}
+                  echo ::set-output name=BRANCHE::${BRANCHE}
+                  echo ::set-output name=buildx_args::--platform ${DOCKER_PLATFORMS} \
+                    --build-arg VCS_REF=${GITHUB_SHA::8} \
+                    ${TAGS} \
+                    --file Dockerfile .
 
-      - name: Cache Docker layers
-        id: cache
-        uses: actions/cache@v2
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
+            - name: Set up Docker Buildx
+              id: buildx
+              uses: crazy-max/ghaction-docker-buildx@v3
+              with:
+                  buildx-version: latest
+                  qemu-version: latest
 
-      - name: Available platforms
-        run: echo ${{ steps.buildx.outputs.platforms }}
+            - name: Cache Docker layers
+              id: cache
+              uses: actions/cache@v2
+              with:
+                  path: /tmp/.buildx-cache
+                  key: ${{ runner.os }}-buildx-${{ github.sha }}
+                  restore-keys: |
+                      ${{ runner.os }}-buildx-
 
-      - name: Docker Buildx (build)
-        run: |
-          docker buildx build \
-            --cache-from "type=local,src=/tmp/.buildx-cache" \
-            --cache-to "type=local,dest=/tmp/.buildx-cache" \
-            --output "type=image,push=false" \
-            --push \
-            --shm-size "2g"\
-            ${{ steps.prepare.outputs.buildx_args }}
+            - name: Available platforms
+              run: echo ${{ steps.buildx.outputs.platforms }}
+
+            - name: Docker Buildx (build)
+              run: |
+                  docker buildx build \
+                    --cache-from "type=local,src=/tmp/.buildx-cache" \
+                    --cache-to "type=local,dest=/tmp/.buildx-cache" \
+                    --output "type=image,push=false" \
+                    --push \
+                    --shm-size "2g"\
+                    ${{ steps.prepare.outputs.buildx_args }}
