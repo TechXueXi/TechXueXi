@@ -1,8 +1,9 @@
   
 FROM python:3.7-slim
-ARG usesource="https://github.com/TechXueXi/TechXueXi.git"
+ARG usesource="https://github.com.cnpmjs.org/TechXueXi/TechXueXi.git"
 ARG usebranche="dev"
 ENV pullbranche=${usebranche}
+ENV Sourcepath=${usesource}
 RUN apt-get update
 RUN apt-get install -y wget unzip libzbar0 git cron supervisor
 ENV TZ=Asia/Shanghai
@@ -11,7 +12,6 @@ ENV Secret=
 ENV Nohead=True
 ENV Pushmode=1
 ENV islooplogin=False
-ENV Sourcepath="https://github.com.cnpmjs.org/TechXueXi/TechXueXi.git"
 ENV CRONTIME="30 9 * * *"
 # RUN rm -f /xuexi/config/*; ls -la
 COPY requirements.txt /xuexi/requirements.txt
