@@ -48,6 +48,9 @@ services:
             - techxuexi:techxuexi
         depends_on:
             - techxuexi
+
+
+            
 # 打开docker所在 IP:7500 或者指定 hostname 再打开$hostname.frp.zctmdc.cc
 # 用上面的 ADMIN_PWD/ADMIN_PWD登录
 # 点击configure 粘贴以下代码(请取消注释)  即可使用~
