@@ -26,8 +26,8 @@ jobs:
 
           TAGS="--tag ${DOCKER_IMAGE}:${BRANCHE}"
 
-          if [[ ${{REGISTRY_URL}} ]]; then
-              TAGS="--tag ${{REGISTRY_URL}}:${DOCKER_IMAGE}:${BRANCHE}"
+          if [[ ${{secrets.REGISTRY_URL}} ]]; then
+              TAGS="--tag ${{secrets.REGISTRY_URL}}:${DOCKER_IMAGE}:${BRANCHE}"
           fi
 
           echo ::set-output name=docker_image::${DOCKER_IMAGE}
