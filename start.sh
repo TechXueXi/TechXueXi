@@ -8,11 +8,13 @@ touch /var/log/cron.log
 if [ "${Pushmode}" = "5" ]; then
     supervisord -c /etc/supervisord.conf
     # nohup /usr/local/bin/python /xuexi/telegramListener.py >> /xuexi/user/tg_listener.log 2>&1 &
+    sleep 1
     supervisorctl start xuexitg
 fi
 if [ "${Pushmode}" = "6" ]; then
     supervisord -c /etc/supervisord.conf
     # nohup /usr/local/bin/python /xuexi/telegramListener.py >> /xuexi/user/tg_listener.log 2>&1 &
+    sleep 1
     supervisorctl start xuexiweb
 fi
 ./run.sh 2>&1 &
