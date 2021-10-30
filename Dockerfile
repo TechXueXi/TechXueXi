@@ -1,5 +1,6 @@
   
 FROM python:3.7-slim
+ARG usesource="https://github.com/TechXueXi/TechXueXi.git"
 ARG usebranche="dev"
 ENV pullbranche=${usebranche}
 RUN apt-get update
@@ -38,7 +39,7 @@ RUN chmod +x ./start.sh
 RUN chmod +x ./supervisor.sh;./supervisor.sh
 RUN mkdir code
 WORKDIR /xuexi/code
-RUN git clone -b ${pullbranche} ${Sourcepath}
+RUN git clone -b ${usebranche} ${usesource}
 WORKDIR /xuexi
 EXPOSE 80
 ENTRYPOINT ["/bin/bash", "./start.sh"]
