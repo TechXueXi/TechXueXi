@@ -50,8 +50,8 @@ def init_global():
 
     if os.getenv("Scheme") != None:
         scheme = os.getenv("Scheme")
-    elif pushmode in ["5"]: # telegram 默认开启我们提供的
-        scheme = 'https://techxuexi.js.org/jump/techxuexi-20211023.html?'
+    #elif pushmode in ["5"]: # telegram 默认开启我们提供的
+    #    scheme = 'https://techxuexi.js.org/jump/techxuexi-20211023.html?'
 
     if os.getenv('AccessToken'):
         accesstoken = os.getenv('AccessToken')
