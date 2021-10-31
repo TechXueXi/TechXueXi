@@ -11,17 +11,18 @@ class WechatHandler:
         self.token = self.get_access_token()
         self.openid = cfg_get("addition.wechat.openid", "")
 
-    def get_access_token(self):
-        # 检查变量
-        if self.token and self.token[1] > time.time():
-            return self.token
-        # 检查文件
-        template_json_str = '''[]'''
-        token_json_obj = file.get_json_data(
-            "user/wechat_token.json", template_json_str)
-        if token_json_obj and token_json_obj[1] > time.time():
-            self.token = token_json_obj
-            return self.token
+    def get_access_token(self, refresh=False):
+        if not refresh:
+            # 检查变量
+            if self.token and self.token[1] > time.time():
+                return self.token
+            # 检查文件
+            template_json_str = '''[]'''
+            token_json_obj = file.get_json_data(
+                "user/wechat_token.json", template_json_str)
+            if token_json_obj and token_json_obj[1] > time.time():
+                self.token = token_json_obj
+                return self.token
         # 获取新token
         appid = cfg_get("addition.wechat.appid", "")
         appsecret = cfg_get("addition.wechat.appsecret", "")
@@ -49,9 +50,13 @@ class WechatHandler:
                 "content": text
             }
         }
-        requests.post(url=url_msg, params={
+        res = requests.post(url=url_msg, params={
             'access_token': token
-        }, data=json.dumps(body, ensure_ascii=False).encode('utf-8'))
+        }, data=json.dumps(body, ensure_ascii=False).encode('utf-8')).json()
+        print(res)
+        if res["errcode"] == 40001:
+            self.get_access_token(True)
+            self.send_text(text, uid)
 
     def get_opendid_by_uid(self, uid):
         """
