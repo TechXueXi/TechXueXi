@@ -9,6 +9,9 @@ if [ "${Pushmode}" = "5" ]; then
     supervisord -c /etc/supervisord.conf
     # nohup /usr/local/bin/python /xuexi/telegramListener.py >> /xuexi/user/tg_listener.log 2>&1 &
 fi
+if [ "${Pushmode}" = "2" ]; then
+    nohup /usr/local/bin/python /xuexi/wechatListener.py >> /xuexi/user/wechat_listener.log 2>&1 &
+fi
 ./run.sh 2>&1 & 
 echo -e "$CRONTIME $USER /xuexi/run.sh >> /var/log/cron.log 2>&1\n#empty line" > /etc/cron.d/mycron
 crontab /etc/cron.d/mycron

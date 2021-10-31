@@ -9,7 +9,7 @@
 -->
 ### 清单
 
-- [ ] 我已经仔细阅读过 README.md  (https://github.com/TechXueXi/TechXueXi/blob/master/README.md)
+- [ ] 我已经仔细阅读过 README.md  ( https://github.com/TechXueXi/TechXueXi/blob/developing/README.md )
 - [ ] 我已经查看/搜索过所有已有 issue，无论是open还是close的
 - [ ] 我已经通过搜索引擎搜索   www.google.com  www.baidu.com
 - [ ] 我已经到提供的在线聊天室询问过  (聊天室说明：https://github.com/TechXueXi/TechXueXi/issues/14)
@@ -60,7 +60,7 @@
 
 许多IT人员本终日埋头写代码，对我们这类软件确实有需求，
 与其各人重复修改编写浪费生产力不如团队合作维护，因此我们希望长期维护此生态。
-有意愿加入本组织者，请https://techxuexi.github.io/
+有意愿加入本组织者，请 https://techxuexi.js.org/
 
 我们不接受任何捐赠。远离非法牟利。
 -->

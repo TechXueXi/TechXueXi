@@ -38,7 +38,7 @@ def init_global():
         nohead = True
     else:
         nohead = cfg_get("addition.Nohead", False)
-        
+
     if os.getenv('islooplogin') == "True":
         islooplogin = True
 
@@ -52,7 +52,7 @@ def init_global():
 
     if os.getenv("Scheme") != None:
         scheme = os.getenv("Scheme")
-    #elif pushmode in ["5"]: # telegram 默认开启我们提供的
+    # elif pushmode in ["5"]: # telegram 默认开启我们提供的
     #    scheme = 'https://techxuexi.js.org/jump/techxuexi-20211023.html?'
 
     if os.getenv('AccessToken'):
@@ -82,7 +82,8 @@ def init_global():
         wechat = WechatHandler()
     is_init = True
 
-def pushprint(text):
+
+def pushprint(text, chat_id=None):
     """
     推送或者显示
     """
@@ -97,7 +98,9 @@ def pushprint(text):
             push = DingDingHandler(accesstoken, secret)
             push.ddtextsend(text)
         elif pushmode == "2":
-            wechat.send_text(text)
+            if chat_id:
+                chat_id = wechat.get_opendid_by_uid(chat_id)
+            wechat.send_text(text, uid=chat_id)
         elif pushmode == "3":
             push = FangtangHandler(accesstoken)
             push.fttext(text)
