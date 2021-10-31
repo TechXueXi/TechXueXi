@@ -87,8 +87,8 @@ def hello_world():
 
 
 @app.route('/jump')
-def hello_world():
-    return redirect('/static/index.html', code=302)
+def jump():
+    return redirect('/static/jump.html', code=302)
 
 
 @app.route('/jump')

@@ -54,21 +54,12 @@
             $('#qrurl tr:first').nextAll().remove()
             for (const qrurl of qrurls) {
                 $('#qrurl tr:first').after('<tr>' +
-<<<<<<< HEAD
                     '<td>' +
                     '<span>' + qrurl.timestamp + '</span>' +
                     '</td>' +
                     '<td>' +
                     '<img src="' + qrurl.url + '"/>' +
                     '</td>' +
-=======
-                        '<td>' +
-                            '<span>' + qrurl.timestamp + '</span>' +
-                        '</td>' +
-                        '<td>' +
-                            '<img src="' + qrurl.url + '"/>' +
-                        '</td>' +
->>>>>>> 88e55c5 (增加网页控制台)
                     '</tr>'
                 )
             }
