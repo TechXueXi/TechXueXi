@@ -218,14 +218,18 @@ class Mydriver:
             cookies = self.get_cookies()
             user.save_cookies(cookies)
             # 扫码登录后删除二维码和登录链接
+            print('扫码登录后删除二维码和登录链接')
+            self.web_log('扫码登录后删除二维码和登录链接')
             web_db.session.delete(qrurl)
             web_db.session.delete(msg_url)
             web_db.session.commit()
             return cookies
         except Exception as e:
             print("扫描二维码超时... 错误信息：" + str(e))
+            self.web_log("扫描二维码超时... 错误信息：" + str(e))
             if(gl.islooplogin == True):
                 print("循环模式开启，即将重新获取二维码")
+                self.web_log("循环模式开启，即将重新获取二维码")
                 time.sleep(3)
                 return self.get_cookie_from_network()
             self.quit()
@@ -233,12 +237,16 @@ class Mydriver:
             if str(e).find("check_hostname") > -1 and str(e).find("server_hostname") > -1:
                 print("针对“check_hostname requires server_hostname”问题：")
                 print("您的网络连接存在问题，请检查您与xuexi.cn的网络连接并关闭“某些”软件")
-                web_db.session.add(WebMessage(
-                    "针对“check_hostname requires server_hostname”问题："))
-                web_db.session.add(WebMessage(
-                    "您的网络连接存在问题，请检查您与xuexi.cn的网络连接并关闭“某些”软件"))
+                self.web_log(
+                    "针对“check_hostname requires server_hostname”问题：")
+                self.web_log(
+                    "您的网络连接存在问题，请检查您与xuexi.cn的网络连接并关闭“某些”软件")
             auto.prompt("按回车键退出程序. ")
             exit()
+
+    def web_log(self, send_log):
+        web_db.session.add(WebMessage(send_log))
+        web_db.session.commit()
 
     def sendmsg(self):
         qcbase64 = self.getQRcode()

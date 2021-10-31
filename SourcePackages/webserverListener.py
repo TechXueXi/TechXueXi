@@ -88,6 +88,11 @@ def sleep(sleep_time):
     return resp_ok(resp_data)
 
 
+@app.route('/api/now')
+def now():
+    return resp_ok(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+
+
 @app.route('/api/update')
 def update():
     try:
@@ -126,17 +131,24 @@ def refresh_all_cookies():
 @app.route('/api/add')
 def add():
     pdl.add_user()
-    return resp_ok('登录成功')
+    return resp_ok('登录成功，首次登录请手动开始学习')
 
 
 @app.route('/api/learn')
 def learn():
     ''' 新线程无法操控内存数据库'''
+    # web_db.session.add(WebMessage('新线程无法操控内存数据库'))
+    # web_db.session.commit()
+    # return resp_models_ok(WebMessage('新线程无法操控内存数据库'))
     names = pdl.get_all_user_name()
     if len(names) <= 1:
+        web_db.session.add(WebMessage('请添加用户'))
+        web_db.session.commit()
         return resp_ok('请添加用户')
     else:
         pdl.start(None)
+        web_db.session.add(WebMessage('全部账号开始学习：{}'.format(names)))
+        web_db.session.commit()
         return resp_ok('全部账号开始学习：{}'.format(names))
 
 
@@ -164,13 +176,31 @@ def list_user():
     return resp_ok(user.list_user(printing=False))
 
 
+@app.route('/api/remove_cookie/<uid>')
+def remove_cookie(uid):
+    user_name = user.get_fullname(uid)
+    msg = 'uid: {}  ,username: {} 状态清除成功'.format(uid, user_name)
+    user.remove_cookie(uid)
+    web_db.session.add(WebMessage(msg))
+    return resp_models_ok(WebMessage(msg))
+
+
+def web_log(send_log):
+    print(send_log)
+    web_db.session.add(WebMessage(send_log))
+    web_db.session.commit()
+
+
 @app.route('/api/list_qrurls')
 def list_qrurls():
     qrurls = WebQrUrl.query.all()
+    # print(
+    #     '二维码:', [((datetime.now() - qrurl.timestamp).seconds, qrurl.timestamp) for qrurl in qrurls])
     for qrurl in qrurls:
         # print('--------------------------------\n秒：{}\n--------------------------------'.format(
         #     (datetime.now() - qrurl.timestamp).seconds))
-        if (datetime.now() - qrurl.timestamp).seconds > 300:
+        if (datetime.now() - qrurl.timestamp).seconds > 30:
+            web_log('超时，二维码已被移除: {}'.format(qrurl.id))
             web_db.session.delete(qrurl)
     web_db.session.commit()
     return resp_models_ok(qrurls)
@@ -179,10 +209,13 @@ def list_qrurls():
 @app.route('/api/list_messages')
 def list_messages():
     messages = WebMessage.query.all()
+    # print(
+    #     '消息:', [(datetime.now() - message.timestamp).seconds for message in messages])
     for message in messages:
         # print('--------------------------------\n分：{}\n--------------------------------'.format(
         #     (datetime.now() - message.timestamp).seconds/60))
-        if (datetime.now() - message.timestamp).seconds > 300:
+        if (datetime.now() - message.timestamp).seconds > 30:
+            # web_log('超时，消息已被移除: {} - {}'.format(message.id, message.timestamp))
             web_db.session.delete(message)
     web_db.session.commit()
     return resp_models_ok(messages)

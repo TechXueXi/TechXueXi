@@ -17,6 +17,7 @@ class WebHandler:
             web_db.session.add(msg)
             web_db.session.commit()
         except Exception as e:
+            web_db.session.rollback()
             pass
 
     def add_qrurl(self, url):
@@ -25,4 +26,5 @@ class WebHandler:
             web_db.session.add(qrurl, datetime.now())
             web_db.session.commit()
         except Exception as e:
+            web_db.session.rollback()
             pass

@@ -16,11 +16,10 @@ web_db = SQLAlchemy(app)
 class WebMessage(web_db.Model):
     id = web_db.Column(web_db.Integer, primary_key=True)
     text = web_db.Column(web_db.String())
-    timestamp = web_db.Column(web_db.DateTime, default=datetime.now())
+    timestamp = web_db.Column(web_db.DateTime, default=datetime.now)
 
-    def __init__(self, text, timestamp=datetime.now()):
+    def __init__(self, text):
         self.text = text
-        self.timestamp = timestamp
 
     def __repr__(self):
         return '<Message: %r>' % self.text
@@ -29,11 +28,10 @@ class WebMessage(web_db.Model):
 class WebQrUrl(web_db.Model):
     id = web_db.Column(web_db.Integer, primary_key=True)
     url = web_db.Column(web_db.String())
-    timestamp = web_db.Column(web_db.DateTime, default=datetime.now())
+    timestamp = web_db.Column(web_db.DateTime, default=datetime.now)
 
-    def __init__(self, url, timestamp=datetime.now()):
+    def __init__(self, url):
         self.url = url
-        self.timestamp = timestamp
 
     def __repr__(self):
         return '<QrUrl: %r>' % self.url
@@ -43,7 +41,7 @@ class UserInfo(web_db.Model):
     id = web_db.Column(web_db.Integer, primary_key=True)
     uid = web_db.Column(web_db.String())
     status = web_db.Column(web_db.String())
-    timestamp = web_db.Column(web_db.DateTime, default=datetime.now())
+    timestamp = web_db.Column(web_db.DateTime, default=datetime.now)
 
     def __init__(self, uid, status):
         self.uid = uid
