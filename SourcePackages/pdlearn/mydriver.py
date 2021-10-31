@@ -32,9 +32,13 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 import base64  # 解码二维码图片
 from selenium.webdriver.common.action_chains import ActionChains
 # from pdlearn.qywx import WeChat  # 使用微信发送二维码图片到手机
+from webServerConf import web_db, WebQrUrl, WebMessage
 
 
 def decode_img(data):
+    if None == data:
+        raise Exception('未获取到二维码,请检查网络并重试')
+
     img_b64decode = base64.b64decode(data[data.index(';base64,')+8:])
     decoded = pyzbar.decode(Image.open(io.BytesIO(img_b64decode)))
     return decoded[0].data.decode("utf-8")
@@ -77,7 +81,7 @@ class Mydriver:
                 # self.options.add_argument('--window-size=900,800')
                 # self.options.add_argument("--window-size=1920,1050")
 
-            self.options.add_argument('--disable-dev-shm-usage')  
+            self.options.add_argument('--disable-dev-shm-usage')
             self.options.add_argument(
                 '--disable-software-rasterizer')  # 解决GL报错问题
             self.options.add_argument('--disable-extensions')
@@ -143,6 +147,7 @@ class Mydriver:
 
     def get_cookie_from_network(self):
         print("正在打开二维码登陆界面,请稍后")
+        web_db.session.add(WebMessage('正在打开二维码登陆界面,请稍后'))
         self.driver.get("https://pc.xuexi.cn/points/login.html")
         try:
             remover = WebDriverWait(self.driver, 30, 0.2).until(
@@ -167,11 +172,24 @@ class Mydriver:
             self.driver.execute_script('arguments[0].remove()', remover)
             self.driver.execute_script(
                 'window.scrollTo(document.body.scrollWidth/2 - 200 , 0)')
-
+        qrurl = ''
+        qcbase64 = ''
         # 取出iframe中二维码，并发往钉钉
         if gl.nohead == True or cfg_get("addition.SendLoginQRcode", 0) == 1:
             print("二维码将发往机器人...\n" + "=" * 60)
-            self.sendmsg()
+            qrurl, qcbase64 = self.sendmsg()
+
+        # 扫码登录后删除二维码和登录链接 准备
+        web_qr_url = web_db.session.query(
+            WebQrUrl).filter_by(url=qcbase64).first()
+        web_msg = web_db.session.query(
+            WebMessage).filter_by(text=qrurl).first()
+
+        # print(' ----------------------------------------------------------------')
+        # print(web_qr_url)
+        # print(' ----------------------------------------------------------------')
+        # print(web_msg)
+        # print(web_db.session.query(WebMessage).all())
 
         # try:
         #     # 取出iframe中二维码，并发往方糖，拿到的base64没办法直接发钉钉，所以发方糖
@@ -197,11 +215,19 @@ class Mydriver:
             WebDriverWait(self.driver, 270).until(title_of_login())
             cookies = self.get_cookies()
             user.save_cookies(cookies)
+            # 扫码登录后删除二维码和登录链接
+            # print('扫码登录后删除二维码和登录链接 {} - {}'.format(web_msg, web_qr_url))
+            self.web_log('扫码登录后删除二维码和登录链接')
+            web_qr_url and web_db.session.delete(web_qr_url)
+            web_msg and web_db.session.delete(web_msg)
+            web_db.session.commit()
             return cookies
         except Exception as e:
             print("扫描二维码超时... 错误信息：" + str(e))
+            self.web_log("扫描二维码超时... 错误信息：" + str(e))
             if(gl.islooplogin == True):
                 print("循环模式开启，即将重新获取二维码")
+                self.web_log("循环模式开启，即将重新获取二维码")
                 time.sleep(3)
                 return self.get_cookie_from_network()
             self.quit()
@@ -209,18 +235,29 @@ class Mydriver:
             if str(e).find("check_hostname") > -1 and str(e).find("server_hostname") > -1:
                 print("针对“check_hostname requires server_hostname”问题：")
                 print("您的网络连接存在问题，请检查您与xuexi.cn的网络连接并关闭“某些”软件")
+                self.web_log(
+                    "针对“check_hostname requires server_hostname”问题：")
+                self.web_log(
+                    "您的网络连接存在问题，请检查您与xuexi.cn的网络连接并关闭“某些”软件")
             auto.prompt("按回车键退出程序. ")
             exit()
+
+    def web_log(self, send_log):
+        web_db.session.add(WebMessage(send_log))
+        web_db.session.commit()
 
     def sendmsg(self):
         qcbase64 = self.getQRcode()
         # 发送二维码
         gl.send_qrbase64(qcbase64)
         # 发送链接
+        qrurl = ''
         if gl.scheme:
-            gl.pushprint(gl.scheme+quote_plus(decode_img(qcbase64)))
+            qrurl = gl.scheme+quote_plus(decode_img(qcbase64))
         else:
-            gl.pushprint(decode_img(qcbase64))
+            qrurl = decode_img(qcbase64)
+        gl.pushprint(qrurl)
+        return qrurl, qcbase64
 
     def getQRcode(self):
         try:

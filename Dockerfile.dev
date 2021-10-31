@@ -18,7 +18,15 @@ COPY requirements.txt /xuexi/requirements.txt
 COPY run.sh /xuexi/run.sh 
 COPY start.sh /xuexi/start.sh 
 COPY supervisor.sh /xuexi/supervisor.sh
+RUN | \
+  sed -i 's/snapshot.debian.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list ;\
+  sed -i 's/security.debian.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list ;\
+  sed -i 's/deb.debian.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list ;
 
+RUN | \
+  mkdir ~/.pip ;\
+  echo -e "\n[global]\ntrusted-host=mirrors.aliyun.com\nindex-url=https://mirrors.aliyun.com/pypi/simple/" > ~/.pip/pip.conf
+  
 RUN pip install -r /xuexi/requirements.txt
 RUN cd /xuexi/; \
   wget https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_92.0.4515.159-1_amd64.deb; \
