@@ -6,6 +6,7 @@ fi
 printenv >>/etc/environment
 touch /var/log/cron.log
 if [ "${Pushmode}" = "5" ]; then
+    echo "当前模式为网页控制台模式，即将启动守护 --  xuexitg"
     sleep 1
     supervisord -c /etc/supervisord.conf
     # nohup /usr/local/bin/python /xuexi/telegramListener.py >> /xuexi/user/tg_listener.log 2>&1 &
@@ -13,6 +14,7 @@ if [ "${Pushmode}" = "5" ]; then
     supervisorctl start xuexitg
 fi
 if [ "${Pushmode}" = "6" ]; then
+    echo "当前模式为网页控制台模式，即将启动守护 --  xuexiweb"
     sleep 1
     supervisord -c /etc/supervisord.conf
     sleep 1
