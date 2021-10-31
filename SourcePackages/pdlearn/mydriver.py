@@ -218,10 +218,10 @@ class Mydriver:
             cookies = self.get_cookies()
             user.save_cookies(cookies)
             # 扫码登录后删除二维码和登录链接
-            print('扫码登录后删除二维码和登录链接')
+            # print('扫码登录后删除二维码和登录链接 {} - {}'.format(msg_url, qrurl))
             self.web_log('扫码登录后删除二维码和登录链接')
-            web_db.session.delete(qrurl)
-            web_db.session.delete(msg_url)
+            qrurl and web_db.session.delete(qrurl)
+            msg_url and web_db.session.delete(msg_url)
             web_db.session.commit()
             return cookies
         except Exception as e:

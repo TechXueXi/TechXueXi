@@ -39,6 +39,11 @@ def resp_ok(resp_data=dict()):
     return resp
 
 
+def web_log_and_resp_ok(resp_data=dict()):
+    web_log(resp_data)
+    return resp_ok(resp_data)
+
+
 def resp_db_ok(res_rows=None):
     resp = {'code': 200, 'data': [
         dict(zip(result.keys(), result)) for result in res_rows], 'status': "success"}
@@ -68,6 +73,12 @@ def resp_not_found(resp_msg=None):
 def resp_err(resp_msg=None):
     resp = {'code': 500, 'msg': resp_msg, 'status': "ERRO"}
     return resp, 500
+
+
+def web_log(send_log):
+    print(send_log)
+    web_db.session.add(WebMessage(send_log))
+    web_db.session.commit()
 
 
 @app.route('/')
@@ -103,10 +114,12 @@ def update():
             shell += params[1]
         msg = os.popen(shell).readlines()[-1]
         if "up to date" in msg:
-            return resp_ok("当前代码已经是最新的了")
+            msg += "当前代码已经是最新的了"
+            return web_log_and_resp_ok("当前代码已经是最新的了")
         else:
+
             os.popen("cp -r /xuexi/code/TechXueXi/SourcePackages/* /xuexi")
-            return resp_ok("代码更新完成"+msg)
+            return web_log_and_resp_ok("代码更新完成"+msg)
     except Exception as e:
         return resp_err("更新失败："+str(e))
 
@@ -131,7 +144,7 @@ def refresh_all_cookies():
 @app.route('/api/add')
 def add():
     pdl.add_user()
-    return resp_ok('登录成功，首次登录请手动开始学习')
+    return web_log_and_resp_ok('ヾ(o◕∀◕)ﾉヾ登录成功，首次登录请手动开始学习ヾ(≧O≦)〃嗷~')
 
 
 @app.route('/api/learn')
@@ -142,33 +155,29 @@ def learn():
     # return resp_models_ok(WebMessage('新线程无法操控内存数据库'))
     names = pdl.get_all_user_name()
     if len(names) <= 1:
-        web_db.session.add(WebMessage('请添加用户'))
-        web_db.session.commit()
-        return resp_ok('请添加用户')
+        return web_log_and_resp_ok('请添加用户')
     else:
         pdl.start(None)
-        web_db.session.add(WebMessage('全部账号开始学习：{}'.format(names)))
-        web_db.session.commit()
-        return resp_ok('全部账号开始学习：{}'.format(names))
+        return web_log_and_resp_ok('全部账号开始学习：{}'.format(names))
 
 
 @app.route('/api/learn_by_nick_name/<nick_name>')
 def learn_by_nick_name(nick_name):
     names = pdl.get_all_user_name()
     if len(names) <= 1:
-        return resp_ok('请添加用户')
+        return web_log_and_resp_ok('请添加用户')
     else:
         names = pdl.get_all_user_name()
         for name in names:
             if nick_name == name:
                 pdl.start(nick_name)
-                return resp_ok('开始学习：{}'.format(nick_name))
+                return web_log_and_resp_ok('开始学习：{}'.format(nick_name))
 
 
 @app.route('/api/learn_by_uid/<uid>')
 def learn_by_uid(uid):
     pdl.start_learn(uid, None)
-    return resp_ok('开始学习：{}'.format(user.get_fullname(uid)))
+    return web_log_and_resp_ok('开始学习：{}'.format(user.get_fullname(uid)))
 
 
 @app.route('/api/list_user')
@@ -181,14 +190,8 @@ def remove_cookie(uid):
     user_name = user.get_fullname(uid)
     msg = 'uid: {}  ,username: {} 状态清除成功'.format(uid, user_name)
     user.remove_cookie(uid)
-    web_db.session.add(WebMessage(msg))
+    web_log(msg)
     return resp_models_ok(WebMessage(msg))
-
-
-def web_log(send_log):
-    print(send_log)
-    web_db.session.add(WebMessage(send_log))
-    web_db.session.commit()
 
 
 @app.route('/api/list_qrurls')

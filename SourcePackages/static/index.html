@@ -70,7 +70,7 @@
             for (const u_info of users_status) {
                 $('#user-status table').append(
                     '<tr>' +
-                    '<td onclick="evn_learn(this)">' + JSON.stringify(u_info.uid) + '</td>' +
+                    '<td><button onclick="learn(\'' + u_info.uid + '\')">' + JSON.stringify(u_info.uid) + '</button></td>' +
                     '<td>' + JSON.stringify(u_info.status) + '</td>' +
                     '<td><button onclick="remove_cookie(\'' + u_info.uid + '\')">' + '退出' + '</button></td>' +
                     '</tr>'
@@ -90,14 +90,13 @@
                 $('#tips table').append('<tr><td>' + JSON.stringify(message) + '</td></tr>')
             }
         }
-        function evn_learn(e) {
-            uid = $(e).text()
+        function learn(uid) {
             $.ajax({
                 type: "GET",
                 url: "/api/learn_by_uid/" + uid,
                 dataType: "JSON",
                 success: function (response) {
-                    add_msg(response.data)
+                    add_tips(response.data)
                 }
             });
             console.log(uid);
@@ -139,7 +138,7 @@
                 url: "/api/now",
                 dataType: "JSON",
                 success: function (response) {
-                    $('#timestamp').text('服务器时间: '+response.data)
+                    $('#timestamp').text('服务器时间: ' + response.data)
                 }
             });
         }
