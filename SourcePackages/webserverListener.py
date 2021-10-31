@@ -4,68 +4,21 @@ import time
 from datetime import date, datetime
 from typing import List
 
-from flask import Flask, redirect, request
+from flask import redirect, request
 from flask_cors import CORS
-from flask_sqlalchemy import SQLAlchemy
+
+from webServerConf import app, web_db
 
 import pandalearning as pdl
-from pdlearn import user
-
-app = Flask(__name__)
-
-SQLOTE_MEMORY = 'sqlite:///:memory:'
-
-app.config['SQLALCHEMY_DATABASE_URI'] = SQLOTE_MEMORY
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
-db = SQLAlchemy(app)
-
-
-class Message(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    text = db.Column(db.String())
-    timestamp = db.Column(db.DateTime, default=datetime.now())
-
-    def __init__(self, text, timestamp=datetime.now()):
-        self.text = text
-        self.timestamp = timestamp
-
-    def __repr__(self):
-        return '<Message: %r>' % self.text
-
-
-class QrUrl(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    url = db.Column(db.String())
-    timestamp = db.Column(db.DateTime, default=datetime.now())
-
-    def __init__(self, url, timestamp=datetime.now()):
-        self.url = url
-        self.timestamp = timestamp
-
-    def __repr__(self):
-        return '<QrUrl: %r>' % self.url
-
-
-class UserInfo(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    uid = db.Column(db.String())
-    status = db.Column(db.String())
-    timestamp = db.Column(db.DateTime, default=datetime.now())
-
-    def __init__(self, uid, status):
-        self.uid = uid
-        self.status = status
-
-    def __repr__(self):
-        return '<QrUrl: %r %r>' % (self.uid, self.status)
+from pdlearn import user, WebMessage, WebQrUrl, UserInfo
 
 
 @app.before_first_request
 def create_db():
     '创建表格、插入数据'
     # Recreate database each time for demo
-    db.drop_all()
-    db.create_all()
+    web_db.drop_all()
+    web_db.create_all()
 
 
 def request_parse(req_data):
@@ -122,6 +75,7 @@ def resp_err(resp_msg=None):
 def hello_world():
     return redirect('/static/index.html', code=302)
 
+
 @app.route('/jump')
 def hello_world():
     return redirect('/static/index.html', code=302)
@@ -161,12 +115,12 @@ def list():
 @app.route('/api/refresh_all_cookies')
 def refresh_all_cookies():
     user_status = user.refresh_all_cookies(display_score=True)
-    user_infos=UserInfo.query.all()
+    user_infos = UserInfo.query.all()
     for user_info in user_infos:
-        db.session.delete(user_info)
+        web_db.session.delete(user_info)
     for (uid, status) in user_status.items():
-        db.session.add(UserInfo(uid, status))
-    db.session.commit()
+        web_db.session.add(UserInfo(uid, status))
+    web_db.session.commit()
     return list()
 
 
@@ -213,27 +167,26 @@ def list_user():
 
 @app.route('/api/list_qrurls')
 def list_qrurls():
-    qrurls = QrUrl.query.all()
+    qrurls = WebQrUrl.query.all()
     for qrurl in qrurls:
         # print('--------------------------------\n秒：{}\n--------------------------------'.format(
         #     (datetime.now() - qrurl.timestamp).seconds))
         if (datetime.now() - qrurl.timestamp).seconds > 300:
-            db.session.delete(qrurl)
-    db.session.commit()
+            web_db.session.delete(qrurl)
+    web_db.session.commit()
     return resp_models_ok(qrurls)
 
 
 @app.route('/api/list_messages')
 def list_messages():
-    messages = Message.query.all()
+    messages = WebMessage.query.all()
     for message in messages:
         # print('--------------------------------\n分：{}\n--------------------------------'.format(
         #     (datetime.now() - message.timestamp).seconds/60))
         if (datetime.now() - message.timestamp).seconds > 300:
-            db.session.delete(message)
-    db.session.commit()
+            web_db.session.delete(message)
+    web_db.session.commit()
     return resp_models_ok(messages)
-
 
 
 if __name__ == "__main__":

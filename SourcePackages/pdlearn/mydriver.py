@@ -32,7 +32,7 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 import base64  # 解码二维码图片
 from selenium.webdriver.common.action_chains import ActionChains
 # from pdlearn.qywx import WeChat  # 使用微信发送二维码图片到手机
-from webserverListener import db, QrUrl, Message
+from webServerConf import web_db, WebQrUrl, WebMessage
 
 
 def decode_img(data):
@@ -179,13 +179,13 @@ class Mydriver:
 
         # 扫码登录后删除二维码和登录链接 准备
         qcbase64 = self.getQRcode()
-        qrurl = QrUrl.query.filter_by(url=qcbase64).first()
+        qrurl = WebQrUrl.query.filter_by(url=qcbase64).first()
         
         if gl.scheme:
             url = gl.scheme+quote_plus(decode_img(qcbase64))
         else:
             url = decode_img(qcbase64)
-        msg_url = Message.query.filter_by(text=url).first()
+        msg_url = WebMessage.query.filter_by(text=url).first()
             
         # print(' ----------------------------------------------------------------')
         # print(qrurl)
@@ -217,9 +217,9 @@ class Mydriver:
             cookies = self.get_cookies()
             user.save_cookies(cookies)
             # 扫码登录后删除二维码和登录链接
-            db.session.delete(qrurl)
-            db.session.delete(msg_url)
-            db.session.commit()
+            web_db.session.delete(qrurl)
+            web_db.session.delete(msg_url)
+            web_db.session.commit()
             return cookies
         except Exception as e:
             print("扫描二维码超时... 错误信息：" + str(e))
