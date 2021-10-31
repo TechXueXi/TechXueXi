@@ -172,26 +172,24 @@ class Mydriver:
             self.driver.execute_script('arguments[0].remove()', remover)
             self.driver.execute_script(
                 'window.scrollTo(document.body.scrollWidth/2 - 200 , 0)')
-
+        qrurl = ''
+        qcbase64 = ''
         # 取出iframe中二维码，并发往钉钉
         if gl.nohead == True or cfg_get("addition.SendLoginQRcode", 0) == 1:
             print("二维码将发往机器人...\n" + "=" * 60)
-            self.sendmsg()
+            qrurl, qcbase64 = self.sendmsg()
 
         # 扫码登录后删除二维码和登录链接 准备
-        qcbase64 = self.getQRcode()
-        qrurl = WebQrUrl.query.filter_by(url=qcbase64).first()
-
-        if gl.scheme:
-            url = gl.scheme+quote_plus(decode_img(qcbase64))
-        else:
-            url = decode_img(qcbase64)
-        msg_url = WebMessage.query.filter_by(text=url).first()
+        web_qr_url = web_db.session.query(
+            WebQrUrl).filter_by(url=qcbase64).first()
+        web_msg = web_db.session.query(
+            WebMessage).filter_by(text=qrurl).first()
 
         # print(' ----------------------------------------------------------------')
-        # print(qrurl)
+        # print(web_qr_url)
         # print(' ----------------------------------------------------------------')
-        # print(msg_url)
+        # print(web_msg)
+        # print(web_db.session.query(WebMessage).all())
 
         # try:
         #     # 取出iframe中二维码，并发往方糖，拿到的base64没办法直接发钉钉，所以发方糖
@@ -218,10 +216,10 @@ class Mydriver:
             cookies = self.get_cookies()
             user.save_cookies(cookies)
             # 扫码登录后删除二维码和登录链接
-            # print('扫码登录后删除二维码和登录链接 {} - {}'.format(msg_url, qrurl))
+            # print('扫码登录后删除二维码和登录链接 {} - {}'.format(web_msg, web_qr_url))
             self.web_log('扫码登录后删除二维码和登录链接')
-            qrurl and web_db.session.delete(qrurl)
-            msg_url and web_db.session.delete(msg_url)
+            web_qr_url and web_db.session.delete(web_qr_url)
+            web_msg and web_db.session.delete(web_msg)
             web_db.session.commit()
             return cookies
         except Exception as e:
@@ -253,10 +251,13 @@ class Mydriver:
         # 发送二维码
         gl.send_qrbase64(qcbase64)
         # 发送链接
+        qrurl = ''
         if gl.scheme:
-            gl.pushprint(gl.scheme+quote_plus(decode_img(qcbase64)))
+            qrurl = gl.scheme+quote_plus(decode_img(qcbase64))
         else:
-            gl.pushprint(decode_img(qcbase64))
+            qrurl = decode_img(qcbase64)
+        gl.pushprint(qrurl)
+        return qrurl, qcbase64
 
     def getQRcode(self):
         try:

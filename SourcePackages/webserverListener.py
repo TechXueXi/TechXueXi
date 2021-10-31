@@ -126,13 +126,13 @@ def update():
 
 @app.route('/api/list')
 def list():
-    return resp_models_ok(UserInfo.query.all())
+    return resp_models_ok(web_db.session.query(UserInfo).all())
 
 
 @app.route('/api/refresh_all_cookies')
 def refresh_all_cookies():
     user_status = user.refresh_all_cookies(display_score=True)
-    user_infos = UserInfo.query.all()
+    user_infos = web_db.session.query(UserInfo).all()
     for user_info in user_infos:
         web_db.session.delete(user_info)
     for (uid, status) in user_status.items():
@@ -196,13 +196,13 @@ def remove_cookie(uid):
 
 @app.route('/api/list_qrurls')
 def list_qrurls():
-    qrurls = WebQrUrl.query.all()
+    qrurls = web_db.session.query(WebQrUrl).all()
     # print(
     #     '二维码:', [((datetime.now() - qrurl.timestamp).seconds, qrurl.timestamp) for qrurl in qrurls])
     for qrurl in qrurls:
         # print('--------------------------------\n秒：{}\n--------------------------------'.format(
         #     (datetime.now() - qrurl.timestamp).seconds))
-        if (datetime.now() - qrurl.timestamp).seconds > 30:
+        if (datetime.now() - qrurl.timestamp).seconds > 300:
             web_log('超时，二维码已被移除: {}'.format(qrurl.id))
             web_db.session.delete(qrurl)
     web_db.session.commit()
@@ -211,13 +211,13 @@ def list_qrurls():
 
 @app.route('/api/list_messages')
 def list_messages():
-    messages = WebMessage.query.all()
+    messages = web_db.session.query(WebMessage).all()
     # print(
     #     '消息:', [(datetime.now() - message.timestamp).seconds for message in messages])
     for message in messages:
         # print('--------------------------------\n分：{}\n--------------------------------'.format(
         #     (datetime.now() - message.timestamp).seconds/60))
-        if (datetime.now() - message.timestamp).seconds > 30:
+        if (datetime.now() - message.timestamp).seconds > 300:
             # web_log('超时，消息已被移除: {} - {}'.format(message.id, message.timestamp))
             web_db.session.delete(message)
     web_db.session.commit()
