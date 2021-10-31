@@ -85,6 +85,7 @@ def web_log(send_log):
 def hello_world():
     return redirect('/static/index.html', code=302)
 
+
 @app.route('/jump')
 def hello_world():
     return redirect('/static/index.html', code=302)
@@ -226,7 +227,6 @@ def list_messages():
             web_db.session.delete(message)
     web_db.session.commit()
     return resp_models_ok(messages)
-
 
 
 if __name__ == "__main__":
