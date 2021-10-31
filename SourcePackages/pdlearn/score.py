@@ -38,7 +38,7 @@ def show_score(cookies):
     return total, scores
 
 
-def show_scorePush(cookies):
+def show_scorePush(cookies, chat_id=None):
     userId, total, scores, userName = get_score(cookies)
     globalvar.pushprint(userName+" 当前学 xi 总积分：" + str(total) + "\t" + "今日得分：" + str(scores["today"]) +
                         "\n阅读文章:" + handle_score_color(scores["article_num"], const.article_num_all, False) + "," +
@@ -48,7 +48,7 @@ def show_scorePush(cookies):
                         "\n每日登陆:" + handle_score_color(scores["login"], const.login_all, False) + "," +
                         "每日答题:" + handle_score_color(scores["daily"], const.daily_all, False) + "," +
                         "每周答题:" + handle_score_color(scores["weekly"], const.weekly_all, False) + "," +
-                        "专项答题:" + handle_score_color(scores["zhuanxiang"], const.zhuanxiang_all, False))
+                        "专项答题:" + handle_score_color(scores["zhuanxiang"], const.zhuanxiang_all, False), chat_id)
     return total, scores
 
 

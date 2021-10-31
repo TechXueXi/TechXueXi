@@ -54,9 +54,9 @@ docker pull techxuexi/techxuexi-arm64v8:{tag}
 
 ### 版本说明
 
-分为开发版：tag含有dev，
+分为开发版：tag 含有 dev，
 
-稳定版： tag为 latest
+稳定版： tag 为 latest
 
 # Docker 命令运行
 
@@ -270,7 +270,6 @@ services:
 5. 在`/xuexi/user/settings.conf`中添加微信配置
    ```
    addition {
-      Pushmode="2"
       wechat{
           appid = "第2步中获取的appid"
           appsecret = "第2步中获取的appsecret"
@@ -278,7 +277,54 @@ services:
       }
    }
    ```
-   _后续 **可能** 会增加`账号绑定`功能，允许多用户关注并绑定学 xi 账号，进行消息分发_
+
+### 微信进阶设置
+
+以下操作适用于有公网 IP，且需要跟微信互动的用户
+
+1. 修改上面第五步中的配置文件追加`token`属性。token 用于验证请求，随意填写 8~16 位字符即可，也可以到[这里](https://www.toolzl.com/tools/createString.html)生成，_不要勾选字符_
+   ```
+   addition {
+      wechat{
+          appid = "第2步中获取的appid"
+          appsecret = "第2步中获取的appsecret"
+          openid = "第4步中获取的微信号"
+          token = "随机字符串"
+      }
+   }
+   ```
+2. 在【接口配置信息】中填入`URL`和第 1 步的`token`。![image](https://user-images.githubusercontent.com/91232777/139572541-42184b52-350c-4c49-b646-d763f16b715f.png)
+   URL：`http://你的域名或IP地址:端口号/weixin`
+   【端口号】是你从 docker 中映射出来的本地端口号，记得在路由器或防火墙中开启端口转发。访问链大概为：`微信--端口A-->路由--端口B-->docker--端口8088-->程序`。
+   这里要填写的就是`端口A`。
+3. 点【提交】，如果提示`token验证失败`,要么端口不通，要么 docker 没启动监听，就不用往下看了。
+
+#### 微信的使用
+
+恭喜你完成所有配置，下面开始介绍功能的使用
+
+配置成功之后，给公众号发送`/help`即可获得答复，如果没有，检查第一步中的 openid 是不是你的微信号。**只有主账号才能使用指令**
+
+首先，给公众号发送 `/init` 初始化订阅号菜单,操作成功后等菜单出现，或者重新关注微信号，即可看到菜单，
+![image](https://user-images.githubusercontent.com/91232777/139573137-141675e4-8939-4ce4-8cff-4432e7ff6fd8.png)
+
+点击`我的-账号编码`获取微信号编码。
+
+发送`/add` 登录学 xi 账号，登录完成后获得 `数字ID_昵称`登录成功的消息。
+
+发送`/bind 微信编码 数字ID` 吧微信号和学 xi 账号绑定。如`/bind gw_djahdhfs 155555555`,不要有多余的空格。可以重复绑定，最后绑定的账号有效。
+
+点`开始学xi`即可开始今天的学习。
+
+`我的-今日积分` 获取今天学习积分。
+
+其他账号绑定
+
+1. 让`用户A`先关注你的公众号。然后点击`账号编码`，并将编码给你。
+2. 给你的公众号发送`/add`指令，让`用户A`登录。你可以获得 ta 的数字 ID
+3. 给你的公众号发送`/bind 用户A的账号编码 用户A的数字ID`绑定成功后，`用户A`就可以自己学习和查分了。
+
+`\unbind 微信编码` 解绑指定用户。
 
 ## Server 酱
 
@@ -325,11 +371,12 @@ services:
 
 其他没有固定下来的用法，请加群了解。
 
-# Web网页控制台
+# Web 网页控制台
 
 参考 telegram 需要打开端口映射
 
-docker指令
+docker 指令
+
 ```sh
 
 
@@ -343,9 +390,11 @@ docker run \
   -d --name=techxuexi --shm-size="2g" \
   -p 9980:80 \
   techxuexi/techxuexi-amd64:latest
-   
+
 ```
-docker-config.yaml配置
+
+docker-config.yaml 配置
+
 ```yaml
 version: '3.5'
 services:
@@ -356,7 +405,7 @@ services:
     ports:
       - 9980:80/tcp
     volumes:
-       - ./user:/xuexi/user
+      - ./user:/xuexi/user
     environment:
       - Scheme=https://techxuexi.js.org/jump/techxuexi-20211023.html?
       - ZhuanXiang=True
@@ -364,11 +413,9 @@ services:
       - CRONTIME=30 9 * * *
     build:
       context: .
-      shm_size: '2gb' 
+      shm_size: '2gb'
     shm_size: '2gb'
-
 ```
-
 
 **[交流群地址及说明](https://github.com/TechXueXi/TechXueXi/issues/14)**
 
