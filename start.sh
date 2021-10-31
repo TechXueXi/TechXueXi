@@ -14,6 +14,9 @@ if [ "${Pushmode}" = "5" ]; then
     sleep 1
     supervisorctl start xuexitg
 fi
+if [ "${Pushmode}" = "2" ]; then
+    nohup /usr/local/bin/python /xuexi/wechatListener.py >> /xuexi/user/wechat_listener.log 2>&1 &
+fi
 if [ "${Pushmode}" = "6" ]; then
     echo "当前模式为网页控制台模式，即将启动守护 --  xuexiweb"
     : > /var/log/xuexi-web.log 

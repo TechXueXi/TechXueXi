@@ -1,6 +1,9 @@
 {
-    "techxuexi_version": "v20211030",
+    "techxuexi_version": "v20211031",
     "techxuexi_update_log": [{
+        "version": "v20211031",
+        "info": "docker: 1.增加微信互动功能; 2.微信token改为文件存储，方便主线程和守护线程共享; 3.修改bot消息发送，可以发送给指定用户; 4.增加文档说明; 5.增加默认配置文件的配置项; 6.微信暂时使用nohup启动，方便查阅日志，稳定后改为supervisord; 7.修复文档，get_score异常处理; 8.access_token过期后强制刷新; "
+    },{
         "version": "v20211030",
         "info": "优化参数配置 修复了无窗模式默认开启的问题，优化v指令"
     },{
