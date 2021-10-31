@@ -177,12 +177,12 @@
 
 
         $(document).ready(function () {
-            add_tips('两分钟自动刷新状态,请勿长期打开此页面')
+            add_tips('15秒自动刷新状态,请勿长期打开此页面')
             setInterval(() => {
                 list_users_status()
                 list_messages()
                 list_qrurls()
-            }, 2000);
+            }, 1000);
             setTimeout(() => {
                 setInterval(() => {
                     refresh_all_cookies()

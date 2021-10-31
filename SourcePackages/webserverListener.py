@@ -7,10 +7,9 @@ from typing import List
 from flask import redirect, request
 from flask_cors import CORS
 
-from webServerConf import app, web_db
-
 import pandalearning as pdl
-from pdlearn import user, WebMessage, WebQrUrl, UserInfo
+from pdlearn import user
+from webServerConf import UserInfo, WebMessage, WebQrUrl, app, web_db
 
 
 @app.before_first_request
@@ -77,8 +76,8 @@ def hello_world():
 
 
 @app.route('/jump')
-def hello_world():
-    return redirect('/static/index.html', code=302)
+def jump():
+    return redirect('/static/jump.html', code=302)
 
 
 @app.route('/api/sleep/<sleep_time>')

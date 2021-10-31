@@ -37,8 +37,8 @@ from webServerConf import web_db, WebQrUrl, WebMessage
 
 def decode_img(data):
     if None == data:
-        raise Exception('未获取到二维码,请检查网络并重试') 
-        
+        raise Exception('未获取到二维码,请检查网络并重试')
+
     img_b64decode = base64.b64decode(data[data.index(';base64,')+8:])
     decoded = pyzbar.decode(Image.open(io.BytesIO(img_b64decode)))
     return decoded[0].data.decode("utf-8")
@@ -147,6 +147,7 @@ class Mydriver:
 
     def get_cookie_from_network(self):
         print("正在打开二维码登陆界面,请稍后")
+        web_db.session.add(WebMessage('正在打开二维码登陆界面,请稍后'))
         self.driver.get("https://pc.xuexi.cn/points/login.html")
         try:
             remover = WebDriverWait(self.driver, 30, 0.2).until(
@@ -180,13 +181,13 @@ class Mydriver:
         # 扫码登录后删除二维码和登录链接 准备
         qcbase64 = self.getQRcode()
         qrurl = WebQrUrl.query.filter_by(url=qcbase64).first()
-        
+
         if gl.scheme:
             url = gl.scheme+quote_plus(decode_img(qcbase64))
         else:
             url = decode_img(qcbase64)
         msg_url = WebMessage.query.filter_by(text=url).first()
-            
+
         # print(' ----------------------------------------------------------------')
         # print(qrurl)
         # print(' ----------------------------------------------------------------')
@@ -232,6 +233,10 @@ class Mydriver:
             if str(e).find("check_hostname") > -1 and str(e).find("server_hostname") > -1:
                 print("针对“check_hostname requires server_hostname”问题：")
                 print("您的网络连接存在问题，请检查您与xuexi.cn的网络连接并关闭“某些”软件")
+                web_db.session.add(WebMessage(
+                    "针对“check_hostname requires server_hostname”问题："))
+                web_db.session.add(WebMessage(
+                    "您的网络连接存在问题，请检查您与xuexi.cn的网络连接并关闭“某些”软件"))
             auto.prompt("按回车键退出程序. ")
             exit()
 
