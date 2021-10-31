@@ -16,7 +16,7 @@ if [ "${Pushmode}" = "5" ]; then
 fi
 if [ "${Pushmode}" = "6" ]; then
     echo "当前模式为网页控制台模式，即将启动守护 --  xuexiweb"
-    : > filename
+    : > /var/log/xuexi-web.log 
     sleep 1
     supervisord -c /etc/supervisord.conf
     sleep 1

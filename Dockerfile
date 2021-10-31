@@ -32,7 +32,7 @@ RUN cd /xuexi/; \
   chmod 755 chromedriver; \
   ls -la; \
   ./chromedriver --version
-
+RUN apt-get clean
 WORKDIR /xuexi
 RUN chmod +x ./run.sh
 RUN chmod +x ./start.sh
