@@ -25,8 +25,9 @@ cat >> /etc/supervisord.conf <<EOF
 [program:xuexiweb]
 directory=/xuexi
 user=root
-command=/usr/local/bin/python webserverListener.py >> /var/log/xuexi-web.log  2>&1 
+command=/usr/local/bin/python webserverListener.py 
 autostart=false
 autorestart=true
-
+stdout_logfile=/var/log/xuexi-web.log
+stderr_logfile=/var/log/xuexi-web.log
 EOF
