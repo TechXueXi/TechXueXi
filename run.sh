@@ -8,7 +8,7 @@ update() {
     echo "更新完成"
 }
 
-if [[ ${usebranche} == "developing" ]]; then
+if [[ ${pullbranche} == "developing" ]]; then
     echo "当前处于开发模式，自动更新"
     update
 fi
