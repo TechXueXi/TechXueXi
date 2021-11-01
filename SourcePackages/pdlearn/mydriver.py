@@ -192,16 +192,19 @@ class Mydriver:
         # print(web_db.session.query(WebMessage).all())
 
         # 扫码登录后删除二维码和登录链接 准备
-        web_qr_url = web_db.session.query(
-            WebQrUrl).filter_by(url=qcbase64).first()
-        web_msg = web_db.session.query(
-            WebMessage).filter_by(text=qrurl).first()
+        qcbase64 = self.getQRcode()
+        qrurl = WebQrUrl.query.filter_by(url=qcbase64).first()
+
+        if gl.scheme:
+            url = gl.scheme+quote_plus(decode_img(qcbase64))
+        else:
+            url = decode_img(qcbase64)
+        msg_url = WebMessage.query.filter_by(text=url).first()
 
         # print(' ----------------------------------------------------------------')
-        # print(web_qr_url)
+        # print(qrurl)
         # print(' ----------------------------------------------------------------')
-        # print(web_msg)
-        # print(web_db.session.query(WebMessage).all())
+        # print(msg_url)
 
         # try:
         #     # 取出iframe中二维码，并发往方糖，拿到的base64没办法直接发钉钉，所以发方糖
