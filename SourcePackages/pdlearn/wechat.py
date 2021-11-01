@@ -1,3 +1,4 @@
+from pickle import STRING
 import requests
 import json
 from pdlearn.config import cfg_get
@@ -38,9 +39,17 @@ class WechatHandler:
         file.save_json_data("user/wechat_token.json", self.token)
         return self.token
 
-    def send_text(self, text, uid=""):
+    def send_text(self, text: STRING, uid=""):
         if not uid:
             uid = self.openid
+        if text.startswith("http") or text.startswith("dtxuexi"):
+            login_tempid = cfg_get("addition.wechat.login_tempid", "")
+            if login_tempid:
+                return self.send_template(login_tempid, {"name": {"value": "用户"}}, uid, text)
+        if "当前学 xi 总积分" in text:
+            login_tempid = cfg_get("addition.wechat.score_tempid", "")
+            if login_tempid:
+                return self.send_template(login_tempid, {"score": {"value": text}}, uid, "")
         token = self.get_access_token()
         url_msg = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?'
         body = {
@@ -57,6 +66,23 @@ class WechatHandler:
         if res["errcode"] == 40001:
             self.get_access_token(True)
             self.send_text(text, uid)
+
+    def send_template(self, id, temp_data, uid, url):
+        post_url = "https://api.weixin.qq.com/cgi-bin/message/template/send?"
+        token = self.get_access_token()
+        body = {
+            "touser": uid,
+            "url": url,
+            "template_id": id,
+            "data": temp_data
+        }
+        res = requests.post(url=post_url, params={
+            'access_token': token
+        }, data=json.dumps(body, ensure_ascii=False).encode('utf-8')).json()
+        print(res)
+        if res["errcode"] == 40001:
+            self.get_access_token(True)
+            self.send_template(id, temp_data, uid, url)
 
     def get_opendid_by_uid(self, uid):
         """
