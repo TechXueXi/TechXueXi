@@ -1,0 +1,19 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ alpha ]
+  pull_request:
+    branches: [ alpha ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: 编译AMD64
+#       run: docker build . --file Dockerfile --tag TechXueXi:alpha
+    - run: echo $GITHUB_REF

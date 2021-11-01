@@ -91,6 +91,11 @@ def jump():
     return redirect('/static/jump.html', code=302)
 
 
+@app.route('/jump')
+def jump():
+    return redirect('/static/jump.html', code=302)
+
+
 @app.route('/api/sleep/<sleep_time>')
 def sleep(sleep_time):
     time.sleep(float(sleep_time))
