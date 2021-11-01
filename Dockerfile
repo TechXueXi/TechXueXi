@@ -1,4 +1,4 @@
-  
+
 FROM python:3.7-slim
 ARG usesource="https://github.com.cnpmjs.org/TechXueXi/TechXueXi.git"
 ARG usebranche="dev"
@@ -39,7 +39,7 @@ RUN chmod +x ./start.sh
 RUN chmod +x ./supervisor.sh;./supervisor.sh
 RUN mkdir code
 WORKDIR /xuexi/code
-RUN git clone -b ${usebranche} ${usesource}
+RUN git clone -b ${usebranche} ${usesource};cp -r /xuexi/code/TechXueXi/SourcePackages/* /xuexi;
 WORKDIR /xuexi
 EXPOSE 80
 ENTRYPOINT ["/bin/bash", "./start.sh"]

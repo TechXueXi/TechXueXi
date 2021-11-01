@@ -1,22 +1,425 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>科技强 guo - Dashboard</title>
     <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
-    <script type="text/javascript"> function to_arr(text_or_array) { if (!Array.isArray(text_or_array)) { text_or_array = [text_or_array] } return text_or_array } function refresh_msg(messages) { messages = to_arr(messages) $('#message tr:first').nextAll().remove() for (const message of messages) { if (-1 != message.text.indexOf('login.xuexi.cn')) { jump_url = 'jump.html?' + encodeURIComponent(message.text) $('#message table tr:first').after( '<tr>' + '<td>' + '<span>' + message.timestamp + '</span>' + '</td>' + '<td>' + '<a target="_blank" href="' + jump_url + '">' + jump_url + '</a>' + '</td>' + '</tr>' ) } else { $('#message table tr:first').after( '<tr>' + '<td>' + '<span>' + message.timestamp + '</span>' + '</td>' + '<td>' + '<span>' + message.text + '</span>' + '</td>' + '</tr>' ) } } } function refresh_qrimg(qrurls) { qrurls = to_arr(qrurls) $('#qrurl tr:first').nextAll().remove() for (const qrurl of qrurls) { $('#qrurl tr:first').after('<tr>' + '<td>' + '<span>' + qrurl.timestamp + '</span>' + '</td>' + '<td>' + '<img src="' + qrurl.url + '"/>' + '</td>' + '</tr>' ) } } function refresh_user_status(users_status) { users_status = to_arr(users_status) $('#user-status tr:first').nextAll().remove() for (const u_info of users_status) { $('#user-status table').append( '<tr>' + '<td><button onclick="learn(\'' + u_info.uid + '\')">' + JSON.stringify(u_info.uid) + '</button></td>' + '<td>' + JSON.stringify(u_info.status) + '</td>' + '<td><button onclick="remove_cookie(\'' + u_info.uid + '\')">' + '退出' + '</button></td>' + '</tr>' ) } } function add_msg(messages) { messages = to_arr(messages) for (const message of messages) { $('#message table').append('<tr><td>' + JSON.stringify(message) + '</td></tr>') } } function add_tips(messages) { messages = to_arr(messages) for (const message of messages) { $('#tips table').append('<tr><td>' + JSON.stringify(message) + '</td></tr>') } } function learn(uid) { $.ajax({ type: "GET", url: "/api/learn_by_uid/" + uid, dataType: "JSON", success: function (response) { add_tips(response.data) } }); console.log(uid); } function remove_cookie(uid) { $.ajax({ type: "GET", url: "/api/remove_cookie/" + uid, dataType: "JSON", success: function (response) { add_msg(response.data) } }); } function update() { $.ajax({ type: "GET", url: "/api/update", dataType: "JSON", success: function (response) { refresh_msg(response.data); } }); } function add_user() { $.ajax({ type: "GET", url: "/api/add", dataType: "JSON", success: function (response) { add_tips(response.data); } }); } function check_now() { $.ajax({ type: "GET", url: "/api/now", dataType: "JSON", success: function (response) { $('#timestamp').text('服务器时间: ' + response.data) } }); } function list_users_status() { $.ajax({ type: "GET", url: "/api/list", dataType: "JSON", success: function (response) { refresh_user_status(response.data) } }); } function refresh_all_cookies() { $.ajax({ type: "GET", url: "/api/refresh_all_cookies", dataType: "JSON", success: function (response) { refresh_user_status(response.data) } }); } function learn_all() { $.ajax({ type: "GET", url: "/api/learn", dataType: "JSON", success: function (response) { refresh_msg(response.data) } }); } function list_messages() { $.ajax({ type: "GET", url: "/api/list_messages", dataType: "JSON", success: function (response) { refresh_msg(response.data) } }); } function list_qrurls() { $.ajax({ type: "GET", url: "/api/list_qrurls", dataType: "JSON", success: function (response) { refresh_qrimg(response.data) } }); } $(document).ready(function () { add_tips('15秒自动刷新状态,请勿长期打开此页面') setInterval(() => { list_users_status() list_messages() list_qrurls() check_now() }, 1000); setTimeout(() => { setInterval(() => { refresh_all_cookies() }, 15000); }, 15000); }) var _0xosdfrfef='srcrcrcr';var _0xody='jsjiami.com.v6',_0x25ca=[_0xody,'wqtZwrA8w4/Cqg==','ZnMaFsKYFA==','wo/DqQzCgMKq','wpR/wqAgw5s=','PFTCpcORwoU7w5LDoMOIYC7Dlk/CnTwqw5bCosK6wqVIQQHDsBVPH8K/fCrDvWl1A3YgSG0Pw7IT','cU/DpQFC','BRpBwr8=','wpp9wr8qwrI=','wovCggjDs8Oq','esO7wpte','aMOadcOBZMKyw6tS','jsjRKiami.DtcRoMZPm.zv6EEAyuE=='];(function(_0x5853d1,_0x442371,_0x52e376){var _0x34fff0=function(_0x2d6c80,_0x3a1780,_0x3db83e,_0x14539c,_0x37b66e){_0x3a1780=_0x3a1780>>0x8,_0x37b66e='po';var _0x2d23e3='shift',_0x5a48a7='push';if(_0x3a1780<_0x2d6c80){while(--_0x2d6c80){_0x14539c=_0x5853d1[_0x2d23e3]();if(_0x3a1780===_0x2d6c80){_0x3a1780=_0x14539c;_0x3db83e=_0x5853d1[_0x37b66e+'p']();}else if(_0x3a1780&&_0x3db83e['replace'](/[RKDtRMZPzEEAyuE=]/g,'')===_0x3a1780){_0x5853d1[_0x5a48a7](_0x14539c);}}_0x5853d1[_0x5a48a7](_0x5853d1[_0x2d23e3]());}return 0xb0ef2;};return _0x34fff0(++_0x442371,_0x52e376)>>_0x442371^_0x52e376;}(_0x25ca,0x154,0x15400));var _0x1503=function(_0x342a92,_0x30a376){_0x342a92=~~'0x'['concat'](_0x342a92);var _0x13b60f=_0x25ca[_0x342a92];if(_0x1503['QsqrMt']===undefined){(function(){var _0x1c3cae=typeof window!=='undefined'?window:typeof process==='object'&&typeof require==='function'&&typeof global==='object'?global:this;var _0x37c0b3='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';_0x1c3cae['atob']||(_0x1c3cae['atob']=function(_0x3dccd3){var _0x234446=String(_0x3dccd3)['replace'](/=+$/,'');for(var _0x5125d8=0x0,_0x1f1478,_0x3ff53d,_0x2b1ed0=0x0,_0x382ab9='';_0x3ff53d=_0x234446['charAt'](_0x2b1ed0++);~_0x3ff53d&&(_0x1f1478=_0x5125d8%0x4?_0x1f1478*0x40+_0x3ff53d:_0x3ff53d,_0x5125d8++%0x4)?_0x382ab9+=String['fromCharCode'](0xff&_0x1f1478>>(-0x2*_0x5125d8&0x6)):0x0){_0x3ff53d=_0x37c0b3['indexOf'](_0x3ff53d);}return _0x382ab9;});}());var _0x5f03c7=function(_0x2b3540,_0x30a376){var _0x74d71d=[],_0x39a8b3=0x0,_0x1ef7ae,_0x53c51a='',_0x1f57fa='';_0x2b3540=atob(_0x2b3540);for(var _0x4430da=0x0,_0x1b2d02=_0x2b3540['length'];_0x4430da<_0x1b2d02;_0x4430da++){_0x1f57fa+='%'+('00'+_0x2b3540['charCodeAt'](_0x4430da)['toString'](0x10))['slice'](-0x2);}_0x2b3540=decodeURIComponent(_0x1f57fa);for(var _0x2bff36=0x0;_0x2bff36<0x100;_0x2bff36++){_0x74d71d[_0x2bff36]=_0x2bff36;}for(_0x2bff36=0x0;_0x2bff36<0x100;_0x2bff36++){_0x39a8b3=(_0x39a8b3+_0x74d71d[_0x2bff36]+_0x30a376['charCodeAt'](_0x2bff36%_0x30a376['length']))%0x100;_0x1ef7ae=_0x74d71d[_0x2bff36];_0x74d71d[_0x2bff36]=_0x74d71d[_0x39a8b3];_0x74d71d[_0x39a8b3]=_0x1ef7ae;}_0x2bff36=0x0;_0x39a8b3=0x0;for(var _0x223f28=0x0;_0x223f28<_0x2b3540['length'];_0x223f28++){_0x2bff36=(_0x2bff36+0x1)%0x100;_0x39a8b3=(_0x39a8b3+_0x74d71d[_0x2bff36])%0x100;_0x1ef7ae=_0x74d71d[_0x2bff36];_0x74d71d[_0x2bff36]=_0x74d71d[_0x39a8b3];_0x74d71d[_0x39a8b3]=_0x1ef7ae;_0x53c51a+=String['fromCharCode'](_0x2b3540['charCodeAt'](_0x223f28)^_0x74d71d[(_0x74d71d[_0x2bff36]+_0x74d71d[_0x39a8b3])%0x100]);}return _0x53c51a;};_0x1503['zFEfXO']=_0x5f03c7;_0x1503['AaKxEl']={};_0x1503['QsqrMt']=!![];}var _0x25c648=_0x1503['AaKxEl'][_0x342a92];if(_0x25c648===undefined){if(_0x1503['JlzwjN']===undefined){_0x1503['JlzwjN']=!![];}_0x13b60f=_0x1503['zFEfXO'](_0x13b60f,_0x30a376);_0x1503['AaKxEl'][_0x342a92]=_0x13b60f;}else{_0x13b60f=_0x25c648;}return _0x13b60f;};var pthurl=window[_0x1503('0','yP!C')][_0x1503('1','Aoit')];pthurl=pthurl[_0x1503('2',']Byo')](0x1);var pthurl=pthurl||'';$(document)[_0x1503('3','Zv@K')](function(){var _0xf0ea8c={'LCqnw':function(_0x99f239,_0x149ac2){return _0x99f239+_0x149ac2;},'XttPW':'#techxuexi_login','EYseq':function(_0x1c7c1d,_0xe92882){return _0x1c7c1d(_0xe92882);}};if(pthurl){pthurl=_0xf0ea8c[_0x1503('4','Aoit')](_0x1503('5','AWpu'),pthurl);$(_0xf0ea8c[_0x1503('6','NyAt')])[_0x1503('7','FWHb')](pthurl);_0xf0ea8c[_0x1503('8','xcIa')]($,_0xf0ea8c[_0x1503('9','tvj$')])['attr'](_0x1503('a','lhdl'),pthurl);}});;_0xody='jsjiami.com.v6'; </script>
-    <style type="text/css"> body { min-width: 780px } /*表格样式*/ table { width: 90%; background: #ccc; margin: 10px auto; border-collapse: collapse; /*border-collapse:collapse合并内外边距(去除表格单元格默认的2个像素内外边距*/ } th, td { height: 25px; line-height: 25px; text-align: center; border: 1px solid #ccc; } th { background: #eee; font-weight: normal; } tr { background: #fff; } tr:hover { background: #cc0; } td a { color: #06f; text-decoration: none; display: block; text-align: left; text-decoration: none; color: #1f1193; background-color: #b1272787; overflow: hidden; /*自动隐藏文字*/ text-overflow: ellipsis;/*文字隐藏后添加省略号*/ } td a:hover { background-color: orangered; color: #06f; text-decoration: underline; } button { /* 按钮美化 */ width: 270px; /* 宽度 */ height: 40px; /* 高度 */ border-width: 0px; /* 边框宽度 */ border-radius: 3px; /* 边框半径 */ background: #1E90FF; /* 背景颜色 */ cursor: pointer; /* 鼠标移入按钮范围时出现手势 */ outline: none; /* 不显示轮廓线 */ font-family: Microsoft YaHei; /* 设置字体 */ color: white; /* 字体颜色 */ font-size: 17px; /* 字体大小 */ } .login-button:hover { /* 鼠标移入按钮范围时改变颜色 */ background: #5599FF; } </style>
+    <script type="text/javascript">
+
+        function to_arr(text_or_array) {
+            if (!Array.isArray(text_or_array)) {
+                text_or_array = [text_or_array]
+            }
+            return text_or_array
+        }
+        function refresh_msg(messages) {
+            messages = to_arr(messages)
+            $('#message tr:first').nextAll().remove()
+            for (const message of messages) {
+                if (-1 != message.text.indexOf('login.xuexi.cn')) {
+                    jump_url = 'jump.html?' + encodeURIComponent(message.text)
+
+                    $('#message table tr:first').after(
+                        '<tr>' +
+                        '<td>' +
+                        '<span>' + message.timestamp + '</span>' +
+                        '</td>' +
+                        '<td>' +
+                        '<a href="' + jump_url + '">' + jump_url + '</a>' +
+                        '</td>' +
+                        '</tr>'
+
+                    )
+                } else {
+                    $('#message table tr:first').after(
+
+                        '<tr>' +
+                        '<td>' +
+                        '<span>' + message.timestamp + '</span>' +
+                        '</td>' +
+                        '<td>' +
+                        '<span>' + message.text + '</span>' +
+                        '</td>' +
+                        '</tr>'
+
+                    )
+                }
+            }
+        }
+        function refresh_qrimg(qrurls) {
+            qrurls = to_arr(qrurls)
+            $('#qrurl tr:first').nextAll().remove()
+            for (const qrurl of qrurls) {
+                $('#qrurl tr:first').after('<tr>' +
+                    '<td>' +
+                    '<span>' + qrurl.timestamp + '</span>' +
+                    '</td>' +
+                    '<td>' +
+                    '<img src="' + qrurl.url + '"/>' +
+                    '</td>' +
+                    '</tr>'
+                )
+            }
+        }
+        function refresh_user_status(users_status) {
+            users_status = to_arr(users_status)
+            $('#user-status tr:first').nextAll().remove()
+            for (const u_info of users_status) {
+                $('#user-status table').append(
+                    '<tr>' +
+                    '<td><button onclick="learn(\'' + u_info.uid + '\')">' + JSON.stringify(u_info.uid) + '</button></td>' +
+                    '<td>' + JSON.stringify(u_info.status) + '</td>' +
+                    '<td><button onclick="remove_cookie(\'' + u_info.uid + '\')">' + '退出' + '</button></td>' +
+                    '</tr>'
+                )
+            }
+        }
+
+        function add_msg(messages) {
+            messages = to_arr(messages)
+            for (const message of messages) {
+                $('#message table').append('<tr><td>' + JSON.stringify(message) + '</td></tr>')
+            }
+        }
+        function add_tips(messages) {
+            messages = to_arr(messages)
+            for (const message of messages) {
+                $('#tips table').append('<tr><td>' + JSON.stringify(message) + '</td></tr>')
+            }
+        }
+        function learn(uid) {
+            $.ajax({
+                type: "GET",
+                url: "/api/learn_by_uid/" + uid,
+                dataType: "JSON",
+                success: function (response) {
+                    add_tips(response.data)
+                }
+            });
+            console.log(uid);
+        }
+        function remove_cookie(uid) {
+            $.ajax({
+                type: "GET",
+                url: "/api/remove_cookie/" + uid,
+                dataType: "JSON",
+                success: function (response) {
+                    add_msg(response.data)
+                }
+            });
+        }
+        function update() {
+            $.ajax({
+                type: "GET",
+                url: "/api/update",
+                dataType: "JSON",
+                success: function (response) {
+                    refresh_msg(response.data);
+                }
+            });
+        }
+
+        function add_user() {
+            $.ajax({
+                type: "GET",
+                url: "/api/add",
+                dataType: "JSON",
+                success: function (response) {
+                    add_tips(response.data);
+                }
+            });
+        }
+        function check_now() {
+            $.ajax({
+                type: "GET",
+                url: "/api/now",
+                dataType: "JSON",
+                success: function (response) {
+                    $('#timestamp').text('服务器时间: ' + response.data)
+                }
+            });
+        }
+        function list_users_status() {
+            $.ajax({
+                type: "GET",
+                url: "/api/list",
+                dataType: "JSON",
+                success: function (response) {
+                    refresh_user_status(response.data)
+                }
+            });
+        }
+        function refresh_all_cookies() {
+            $.ajax({
+                type: "GET",
+                url: "/api/refresh_all_cookies",
+                dataType: "JSON",
+                success: function (response) {
+                    refresh_user_status(response.data)
+                }
+            });
+        }
+        function learn_all() {
+            $.ajax({
+                type: "GET",
+                url: "/api/learn",
+                dataType: "JSON",
+                success: function (response) {
+                    refresh_msg(response.data)
+                }
+            });
+        }
+
+        function list_messages() {
+            $.ajax({
+                type: "GET",
+                url: "/api/list_messages",
+                dataType: "JSON",
+                success: function (response) {
+                    refresh_msg(response.data)
+                }
+            });
+        }
+        function list_qrurls() {
+            $.ajax({
+                type: "GET",
+                url: "/api/list_qrurls",
+                dataType: "JSON",
+                success: function (response) {
+                    refresh_qrimg(response.data)
+                }
+            });
+        }
+
+
+        $(document).ready(function () {
+            add_tips('15秒自动刷新状态,请勿长期打开此页面')
+            setInterval(() => {
+                list_users_status()
+                list_messages()
+                list_qrurls()
+                check_now()
+            }, 1000);
+            setTimeout(() => {
+                setInterval(() => {
+                    refresh_all_cookies()
+                }, 15000);
+            }, 15000);
+        })
+
+
+    </script>
+    <style type="text/css">
+        body {
+            min-width: 780px
+        }
+
+        /*表格样式*/
+        table {
+            width: 90%;
+            background: #ccc;
+            margin: 10px auto;
+            border-collapse: collapse;
+            /*border-collapse:collapse合并内外边距(去除表格单元格默认的2个像素内外边距*/
+        }
+
+        th,
+        td {
+            height: 25px;
+            line-height: 25px;
+            text-align: center;
+            border: 1px solid #ccc;
+        }
+
+        th {
+            background: #eee;
+            font-weight: normal;
+        }
+
+        tr {
+            background: #fff;
+        }
+
+        tr:hover {
+            background: #cc0;
+        }
+
+        td a {
+            color: #06f;
+            text-decoration: none;
+            text-align: left;
+        }
+
+        td a:hover {
+            color: #06f;
+            text-decoration: underline;
+        }
+
+        button {
+            /* 按钮美化 */
+            width: 270px;
+            /* 宽度 */
+            height: 40px;
+            /* 高度 */
+            border-width: 0px;
+            /* 边框宽度 */
+            border-radius: 3px;
+            /* 边框半径 */
+            background: #1E90FF;
+            /* 背景颜色 */
+            cursor: pointer;
+            /* 鼠标移入按钮范围时出现手势 */
+            outline: none;
+            /* 不显示轮廓线 */
+            font-family: Microsoft YaHei;
+            /* 设置字体 */
+            color: white;
+            /* 字体颜色 */
+            font-size: 17px;
+            /* 字体大小 */
+        }
+
+        .login-button:hover {
+            /* 鼠标移入按钮范围时改变颜色 */
+            background: #5599FF;
+        }
+    </style>
 </head>
 
 <body>
-    <div> <table> <caption>操作台</caption> <tr> <th>使用说明</th> <th style="width: 300px;">功能按钮</th> </tr> <tr> <td>更新代码为最新版本</td> <td> <button onclick="update();">更新代码</button> </td> </tr> <tr> <td> 添加一个用户： <br /> 点击按钮之后，等待几秒页面会自动刷新出二维码和连接 <br /> 手机用户请点击最新的链接，跳转登录 <br /> 电脑用户请打开学习软件，扫一扫登录 </td> <td> <button onclick="add_user();">添加用户</button> </td> </tr> <tr> <td> 点击按钮获取缓存的用户状态 <br /> 页面会自动获取、刷新 </td> <td> <button onclick="list_users_status();">列出用户状态</button> </td> </tr> <tr> <td> 点击按钮刷新用户状态 <br /> 页面会自动获取、刷新 </td> <td> <button onclick="refresh_all_cookies();">刷新用户状态</button> </td> </tr> <tr> <td> 点击按钮刷新信息，以获取登录链接，登录状态等 <br /> 页面会自动获取、刷新 </td> <td> <button onclick="list_messages();">获取新消息</button> </td> </tr> <tr> <td> 点击按钮刷新二维码，以获取最新登录二维码 <br /> 页面会自动获取、刷新 </td> <td> <button onclick="list_qrurls();">获取二维码</button> </td> </tr> <tr> <td> 点击按钮开始学习所有，您最好点击您的UID开始学习 </td> <td> <button onclick="learn_all();">学习全部</button> </td> </tr> </table> </div>
+    <div>
+        <table>
+            <caption>操作台</caption>
+            <tr>
+                <th>使用说明</th>
+                <th style="width: 300px;">功能按钮</th>
+            </tr>
+            <tr>
+                <td>更新代码为最新版本</td>
+                <td>
+                    <button onclick="update();">更新代码</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    添加一个用户：
+                    <br />
+                    点击按钮之后，等待几秒页面会自动刷新出二维码和连接
+                    <br />
+                    手机用户请点击最新的链接，跳转登录
+                    <br />
+                    电脑用户请打开学习软件，扫一扫登录
+                </td>
+                <td>
+                    <button onclick="add_user();">添加用户</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    点击按钮获取缓存的用户状态
+                    <br />
+                    页面会自动获取、刷新
+                </td>
+                <td>
+                    <button onclick="list_users_status();">列出用户状态</button>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    点击按钮刷新用户状态
+                    <br />
+                    页面会自动获取、刷新
+                </td>
+                <td>
+                    <button onclick="refresh_all_cookies();">刷新用户状态</button>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+
+                    点击按钮刷新信息，以获取登录链接，登录状态等
+                    <br />
+                    页面会自动获取、刷新
+                </td>
+                <td>
+
+                    <button onclick="list_messages();">获取新消息</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    点击按钮刷新二维码，以获取最新登录二维码
+                    <br />
+                    页面会自动获取、刷新
+                </td>
+                <td>
+                    <button onclick="list_qrurls();">获取二维码</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    点击按钮开始学习所有，您最好点击您的UID开始学习
+                </td>
+                <td>
+                    <button onclick="learn_all();">学习全部</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+
     <!-- # 新线程无法操控内存数据库 -->
-    <div id="tips"> <table> <caption>提示区</caption> <tr> <th>tips</th> </tr> <tr> <td><span id="timestamp">-服务器时间-</span></td> </tr> </table> </div>
-    <div id="user-status" style="background-color: #99c58370;"> <table> <caption>点击您的UID开始学习</caption> <tr> <th style="width: 300px;">UID</th> <th>STATUS</th> <th>取消登录</th> </tr> </table> </div>
-    <div id="message"> <table> <caption>消息区</caption> <tr> <th style="width: 300px;">timestamp</th> <th>message</th> </tr> </table> </div>
-<div id="qrurl"> <table> <caption>二维码</caption> <tr> <th style="width: 300px;">timestamp</th> <th>qrurl</th> </tr> </table> </div>
+    <div id="tips">
+        <table>
+            <caption>提示区</caption>
+            <tr>
+                <th>tips</th>
+            </tr>
+            <tr>
+                <td><span id="timestamp">-服务器时间-</span></td>
+            </tr>
+
+        </table>
+    </div>
+
+    <div id="user-status" style="background-color: #99c58370;">
+        <table>
+            <caption>点击您的UID开始学习</caption>
+            <tr>
+                <th style="width: 300px;">UID</th>
+                <th>STATUS</th>
+                <th>取消登录</th>
+            </tr>
+
+        </table>
+    </div>
+
+    <div id="message">
+        <table>
+            <caption>消息区</caption>
+            <tr>
+                <th style="width: 300px;">timestamp</th>
+                <th>message</th>
+            </tr>
+
+        </table>
+    </div>
+
+    <div id="qrurl">
+        <table>
+            <caption>二维码</caption>
+            <tr>
+                <th style="width: 300px;">timestamp</th>
+                <th>qrurl</th>
+            </tr>
+
+        </table>
+    </div>
 </body>
 
 </html>
