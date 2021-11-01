@@ -1,5 +1,6 @@
 import json
 import requests
+import time
 from pdlearn import color
 
 
@@ -19,10 +20,26 @@ def up_info():
     jsdelivery_url = "https://cdn.jsdelivr.net/gh/TechXueXi/TechXueXi@master/SourcePackages/pdlearn/version_info.json"
     try:
         native_info = get_native_json()
-        native_version = native_info["techxuexi_version"]
-        native_update_logs = native_info["techxuexi_update_log"]
         remote_json = requests.get(jsdelivery_url).content.decode("utf8")
         remote_info = json.loads(remote_json)
+        print(remote_info["notice"])
+    except:
+        print(color.yellow("[*] 版本信息网络错误"))
+    try:
+        remote_least_version=int((str(remote_info["least_version"]))[1:])
+        int_native_version = int((str(native_info["techxuexi_version"]))[1:])
+        if int_native_version < remote_least_version:
+            old_version_warning=remote_info["old_version_warning"]
+            print(color.yellow("[*] 您的版本太低，程序不会继续运行。请升级："))
+            print(old_version_warning)
+            while True:
+                time.sleep(6000)
+    except:
+        print(color.yellow("[*] 查询本版本是否能继续使用，错误"))
+    try:
+        native_version = native_info["techxuexi_version"]
+        native_update_logs = native_info["techxuexi_update_log"]
+        
         remote_version = remote_info["techxuexi_version"]
         remote_update_logs = remote_info["techxuexi_update_log"]
         print(color.yellow("[*] " + __INFO))
