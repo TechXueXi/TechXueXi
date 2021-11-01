@@ -1,11 +1,27 @@
 #!/bin/bash
 
+# eg : ./docker-manifest.sh localhost:5000 dev79 youname
+
 TAG='latest'
-PUBLIC_REGISTRY_URL='docker.io'
-PRIVATE_REGISTRY_URL='docker.io'
-PUBLIC_COMMUNITY_USER='techxuexi'
-PRIVATE_COMMUNITY_USER='techxuexi'
+PULL_REGISTRY_URL='docker.io'
+PULL_COMMUNITY_USER='techxuexi'
 IMAGE_NAME='techxuexi'
+PUSH_REGISTRY_URL='docker.io'
+PUSH_COMMUNITY_USER='techxuexi'
+
+if [[ $1 ]]; then
+  PUSH_REGISTRY_URL=$1
+else
+  PUSH_REGISTRY_URL=${PULL_REGISTRY_URL}
+fi
+
+if [[ $2 ]]; then
+  TAG=$2
+fi
+
+if [[ $3 ]]; then
+  PUSH_COMMUNITY_USER=$3
+fi
 
 LOG_INFO() {
   echo -e "\033[0;32m[INFO] $* \033[0m"
@@ -23,37 +39,56 @@ LOGGER_RUN() {
   bash -c "$*"
 }
 
-if [[ $1 ]]; then
-  PRIVATE_REGISTRY_URL=$1
-fi
+for ARCH in amd64 arm64v8 arm32v7; do
 
-if [[ $2 ]]; then
-  PRIVATE_COMMUNITY_USER=$2
-fi
-
-OUT_TAGS=""
-for PLATFORM in amd64 arm64v8 arm32v7; do
-
-  case $PLATFORM in
+  case $ARCH in
   amd64)
-    ARCH =x86_64
+    PLATFORM=x86_64
     ;;
 
   arm64v8)
-    ARCH =arm64
+    PLATFORM=arm64
     ;;
 
   arm32v7)
-    ARCH =arm
+    PLATFORM=arm
     ;;
   esac
 
-  LOGGER_RUN docker pull --platform ${PLATFORM} ${PUBLIC_REGISTRY_URL}/${PUBLIC_COMMUNITY_USER}/${IMAGE_NAME}-${ARCH}:${TAG}
-  OUT_TAGS="${OUT_TAGS} ${PUBLIC_REGISTRY_URL}/${PUBLIC_COMMUNITY_USER}/${IMAGE_NAME}-${ARCH}:${TAG}"
+  LOGGER_RUN docker pull --platform ${PLATFORM} ${PULL_REGISTRY_URL}/${PULL_COMMUNITY_USER}/${IMAGE_NAME}-${ARCH}:${TAG}
+  LOGGER_RUN docker tag ${PULL_REGISTRY_URL}/${PULL_COMMUNITY_USER}/${IMAGE_NAME}-${ARCH}:${TAG} ${PUSH_REGISTRY_URL}/${PUSH_COMMUNITY_USER}/${IMAGE_NAME}-${ARCH}:${TAG}
+  LOGGER_RUN docker push ${PUSH_REGISTRY_URL}/${PUSH_COMMUNITY_USER}/${IMAGE_NAME}-${ARCH}:${TAG}
+  OUT_TAGS="${OUT_TAGS} ${PUSH_REGISTRY_URL}/${PUSH_COMMUNITY_USER}/${IMAGE_NAME}-${ARCH}:${TAG}"
 done
 
-LOGGER_RUN docker manifest create ${PRIVATE_REGISTRY_URL}/${PRIVATE_COMMUNITY_USER}/${IMAGE_NAME}:${TAG} ${OUT_TAGS}
+for ARCH in amd64 arm64v8 arm32v7; do
 
-LOGGER_RUN docker manifest push ${PRIVATE_REGISTRY_URL}/${PRIVATE_COMMUNITY_USER}/${IMAGE_NAME}:${TAG}
+  case $ARCH in
+  amd64)
+    PLATFORM=x86_64
+    ;;
 
-LOGGER_RUN docker manifest inspect ${PRIVATE_REGISTRY_URL}/${PRIVATE_COMMUNITY_USER}/${IMAGE_NAME}:${TAG}
+  arm64v8)
+    PLATFORM=arm64
+    ;;
+
+  arm32v7)
+    PLATFORM=arm
+    ;;
+  esac
+
+  LOG_INFO # $ docker manifest annotate [OPTIONS] MANIFEST_LIST MANIFEST
+  LOG_INFO docker manifest annotate ${PUSH_REGISTRY_URL}/${PUSH_COMMUNITY_USER}/${IMAGE_NAME}:${TAG} \
+    ${PUSH_REGISTRY_URL}/${PUSH_COMMUNITY_USER}/${IMAGE_NAME}-${ARCH}:${TAG} \
+    --os linux --arch ${PLATFORM}
+done
+LOG_INFO # $ docker manifest create MANIFEST_LIST MANIFEST [MANIFEST...]
+LOGGER_RUN docker manifest create ${PUSH_REGISTRY_URL}/${PUSH_COMMUNITY_USER}/${IMAGE_NAME}:${TAG} ${OUT_TAGS}
+if [ $? -ne 0 ]; then
+  LOGGER_RUN docker manifest create --amend ${PUSH_REGISTRY_URL}/${PUSH_COMMUNITY_USER}/${IMAGE_NAME}:${TAG} ${OUT_TAGS}
+  echo "failed, retry"
+fi
+
+LOGGER_RUN docker manifest inspect ${PUSH_REGISTRY_URL}/${PUSH_COMMUNITY_USER}/${IMAGE_NAME}:${TAG}
+
+LOGGER_RUN docker manifest push ${PUSH_REGISTRY_URL}/${PUSH_COMMUNITY_USER}/${IMAGE_NAME}:${TAG}
