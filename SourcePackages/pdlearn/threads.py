@@ -1,7 +1,6 @@
 # import sys
 # import signal
 # from pdlearn import color
-from pdlearn import globalvar
 from threading import Thread
 from threading import Lock
 
@@ -23,8 +22,9 @@ threads = []
 #         func()
 #     print(color.green("工作线程清理完毕. Bye."))
 #     sys.exit()
- 
+
 # signal.signal(signal.SIGINT,signal_handler)
+
 
 class MyThread(Thread):
     def __init__(self, name, func, *args, lock=False):
