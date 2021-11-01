@@ -66,7 +66,12 @@ for ARCH in amd64 arm64v8 arm32v7; do
   LOGGER_RUN docker push ${PUSH_REGISTRY_URL}/${PUSH_COMMUNITY_USER}/${IMAGE_NAME}-${ARCH}:${TAG}
   OUT_TAGS="${OUT_TAGS} ${PUSH_REGISTRY_URL}/${PUSH_COMMUNITY_USER}/${IMAGE_NAME}-${ARCH}:${TAG}"
 done
-
+LOG_INFO # $ docker manifest create MANIFEST_LIST MANIFEST [MANIFEST...]
+LOGGER_RUN docker manifest create ${PUSH_REGISTRY_URL}/${PUSH_COMMUNITY_USER}/${IMAGE_NAME}:${TAG} ${OUT_TAGS}
+if [ $? -ne 0 ]; then
+  LOGGER_RUN docker manifest create --amend ${PUSH_REGISTRY_URL}/${PUSH_COMMUNITY_USER}/${IMAGE_NAME}:${TAG} ${OUT_TAGS}
+  echo "failed, retry"
+fi
 for ARCH in amd64 arm64v8 arm32v7; do
 
   case $ARCH in
