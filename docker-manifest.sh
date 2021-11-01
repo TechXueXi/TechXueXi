@@ -1,6 +1,12 @@
 #!/bin/bash
 
 # eg : ./docker-manifest.sh localhost:5000 dev79 youname
+# 1. 拉取镜像         : docker pull docker.io/techxuexi/techxuexi-{}:dev79     % amd64 arm64v8 arm32v7
+# 2. 推送镜像         : docker push localhost:5000/youname/techxuexi-{}:dev79   % amd64 arm64v8 arm32v7
+# 3. 创建manifest    : docker docker manifest create MANIFEST_LIST MANIFEST [MANIFEST...]
+# 4. 附加架构信息     ：docker manifest annotate [OPTIONS] MANIFEST_LIST MANIFEST
+# 5. 推送manifest     ：docker manifest push  localhost:5000/youname/techxuexi:dev79
+# 5. 显示manifest     ：docker manifest inspect localhost:5000/youname/techxuexi:dev79
 
 TAG='latest'
 PULL_REGISTRY_URL='docker.io'
@@ -60,7 +66,12 @@ for ARCH in amd64 arm64v8 arm32v7; do
   LOGGER_RUN docker push ${PUSH_REGISTRY_URL}/${PUSH_COMMUNITY_USER}/${IMAGE_NAME}-${ARCH}:${TAG}
   OUT_TAGS="${OUT_TAGS} ${PUSH_REGISTRY_URL}/${PUSH_COMMUNITY_USER}/${IMAGE_NAME}-${ARCH}:${TAG}"
 done
-
+LOG_INFO # $ docker manifest create MANIFEST_LIST MANIFEST [MANIFEST...]
+LOGGER_RUN docker manifest create ${PUSH_REGISTRY_URL}/${PUSH_COMMUNITY_USER}/${IMAGE_NAME}:${TAG} ${OUT_TAGS}
+if [ $? -ne 0 ]; then
+  LOGGER_RUN docker manifest create --amend ${PUSH_REGISTRY_URL}/${PUSH_COMMUNITY_USER}/${IMAGE_NAME}:${TAG} ${OUT_TAGS}
+  echo "failed, retry"
+fi
 for ARCH in amd64 arm64v8 arm32v7; do
 
   case $ARCH in
@@ -82,13 +93,7 @@ for ARCH in amd64 arm64v8 arm32v7; do
     ${PUSH_REGISTRY_URL}/${PUSH_COMMUNITY_USER}/${IMAGE_NAME}-${ARCH}:${TAG} \
     --os linux --arch ${PLATFORM}
 done
-LOG_INFO # $ docker manifest create MANIFEST_LIST MANIFEST [MANIFEST...]
-LOGGER_RUN docker manifest create ${PUSH_REGISTRY_URL}/${PUSH_COMMUNITY_USER}/${IMAGE_NAME}:${TAG} ${OUT_TAGS}
-if [ $? -ne 0 ]; then
-  LOGGER_RUN docker manifest create --amend ${PUSH_REGISTRY_URL}/${PUSH_COMMUNITY_USER}/${IMAGE_NAME}:${TAG} ${OUT_TAGS}
-  echo "failed, retry"
-fi
-
-LOGGER_RUN docker manifest inspect ${PUSH_REGISTRY_URL}/${PUSH_COMMUNITY_USER}/${IMAGE_NAME}:${TAG}
 
 LOGGER_RUN docker manifest push ${PUSH_REGISTRY_URL}/${PUSH_COMMUNITY_USER}/${IMAGE_NAME}:${TAG}
+
+LOGGER_RUN docker manifest inspect ${PUSH_REGISTRY_URL}/${PUSH_COMMUNITY_USER}/${IMAGE_NAME}:${TAG}
