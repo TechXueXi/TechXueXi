@@ -20,16 +20,16 @@
             $('#message tr:first').nextAll().remove()
             for (const message of messages) {
                 if (-1 != message.text.indexOf('login.xuexi.cn')) {
-                    jump_url = 'https://techxuexi.zctmdc.cc/jump.php?url=' + message.text
+                    jump_url = 'jump.html?' + encodeURIComponent(message.text)
 
                     $('#message table tr:first').after(
                         '<tr>' +
-                            '<td>' +
-                                '<span>' + message.timestamp + '</span>' +
-                            '</td>' +
-                            '<td>' +
-                                '<a href="' + jump_url + '">' + jump_url + '</a>' +
-                            '</td>' +
+                        '<td>' +
+                        '<span>' + message.timestamp + '</span>' +
+                        '</td>' +
+                        '<td>' +
+                        '<a href="' + jump_url + '">' + jump_url + '</a>' +
+                        '</td>' +
                         '</tr>'
 
                     )
@@ -37,12 +37,12 @@
                     $('#message table tr:first').after(
 
                         '<tr>' +
-                            '<td>' +
-                                '<span>' + message.timestamp + '</span>' +
-                            '</td>' +
-                            '<td>' +
-                                    '<span>' + message.text+ '</span>' +
-                            '</td>' +
+                        '<td>' +
+                        '<span>' + message.timestamp + '</span>' +
+                        '</td>' +
+                        '<td>' +
+                        '<span>' + message.text + '</span>' +
+                        '</td>' +
                         '</tr>'
 
                     )
@@ -54,12 +54,12 @@
             $('#qrurl tr:first').nextAll().remove()
             for (const qrurl of qrurls) {
                 $('#qrurl tr:first').after('<tr>' +
-                        '<td>' +
-                            '<span>' + qrurl.timestamp + '</span>' +
-                        '</td>' +
-                        '<td>' +
-                            '<img src="' + qrurl.url + '"/>' +
-                        +'</td>' +
+                    '<td>' +
+                    '<span>' + qrurl.timestamp + '</span>' +
+                    '</td>' +
+                    '<td>' +
+                    '<img src="' + qrurl.url + '"/>' +
+                    '</td>' +
                     '</tr>'
                 )
             }
@@ -70,16 +70,18 @@
             for (const u_info of users_status) {
                 $('#user-status table').append(
                     '<tr>' +
-                    '<td onclick="evn_learn(this)">' + JSON.stringify(u_info.uid) + '</td>' +
+                    '<td><button onclick="learn(\'' + u_info.uid + '\')">' + JSON.stringify(u_info.uid) + '</button></td>' +
                     '<td>' + JSON.stringify(u_info.status) + '</td>' +
+                    '<td><button onclick="remove_cookie(\'' + u_info.uid + '\')">' + '退出' + '</button></td>' +
                     '</tr>'
                 )
             }
         }
+
         function add_msg(messages) {
             messages = to_arr(messages)
             for (const message of messages) {
-                $('##message table').append('<tr><td>' + JSON.stringify(message) + '</td></tr>')
+                $('#message table').append('<tr><td>' + JSON.stringify(message) + '</td></tr>')
             }
         }
         function add_tips(messages) {
@@ -88,19 +90,27 @@
                 $('#tips table').append('<tr><td>' + JSON.stringify(message) + '</td></tr>')
             }
         }
-        function evn_learn(e) {
-            uid = $(e).text()
+        function learn(uid) {
             $.ajax({
                 type: "GET",
                 url: "/api/learn_by_uid/" + uid,
                 dataType: "JSON",
                 success: function (response) {
-                    add_msg(response.data)
+                    add_tips(response.data)
                 }
             });
             console.log(uid);
         }
-
+        function remove_cookie(uid) {
+            $.ajax({
+                type: "GET",
+                url: "/api/remove_cookie/" + uid,
+                dataType: "JSON",
+                success: function (response) {
+                    add_msg(response.data)
+                }
+            });
+        }
         function update() {
             $.ajax({
                 type: "GET",
@@ -122,7 +132,16 @@
                 }
             });
         }
-
+        function check_now() {
+            $.ajax({
+                type: "GET",
+                url: "/api/now",
+                dataType: "JSON",
+                success: function (response) {
+                    $('#timestamp').text('服务器时间: ' + response.data)
+                }
+            });
+        }
         function list_users_status() {
             $.ajax({
                 type: "GET",
@@ -177,12 +196,13 @@
 
 
         $(document).ready(function () {
-            add_tips('两分钟自动刷新状态,请勿长期打开此页面')
+            add_tips('15秒自动刷新状态,请勿长期打开此页面')
             setInterval(() => {
                 list_users_status()
                 list_messages()
                 list_qrurls()
-            }, 2000);
+                check_now()
+            }, 1000);
             setTimeout(() => {
                 setInterval(() => {
                     refresh_all_cookies()
@@ -193,6 +213,10 @@
 
     </script>
     <style type="text/css">
+        body {
+            min-width: 780px
+        }
+
         /*表格样式*/
         table {
             width: 90%;
@@ -233,12 +257,42 @@
             color: #06f;
             text-decoration: underline;
         }
+
+        button {
+            /* 按钮美化 */
+            width: 270px;
+            /* 宽度 */
+            height: 40px;
+            /* 高度 */
+            border-width: 0px;
+            /* 边框宽度 */
+            border-radius: 3px;
+            /* 边框半径 */
+            background: #1E90FF;
+            /* 背景颜色 */
+            cursor: pointer;
+            /* 鼠标移入按钮范围时出现手势 */
+            outline: none;
+            /* 不显示轮廓线 */
+            font-family: Microsoft YaHei;
+            /* 设置字体 */
+            color: white;
+            /* 字体颜色 */
+            font-size: 17px;
+            /* 字体大小 */
+        }
+
+        .login-button:hover {
+            /* 鼠标移入按钮范围时改变颜色 */
+            background: #5599FF;
+        }
     </style>
 </head>
 
 <body>
     <div>
         <table>
+            <caption>操作台</caption>
             <tr>
                 <th>使用说明</th>
                 <th style="width: 300px;">功能按钮</th>
@@ -309,7 +363,7 @@
             </tr>
             <tr>
                 <td>
-                    点击按钮开始学习，您最好点击您的UID开始学习
+                    点击按钮开始学习所有，您最好点击您的UID开始学习
                 </td>
                 <td>
                     <button onclick="learn_all();">学习全部</button>
@@ -322,19 +376,24 @@
     <!-- # 新线程无法操控内存数据库 -->
     <div id="tips">
         <table>
+            <caption>提示区</caption>
             <tr>
                 <th>tips</th>
+            </tr>
+            <tr>
+                <td><span id="timestamp">-服务器时间-</span></td>
             </tr>
 
         </table>
     </div>
 
-    <div id="user-status">
+    <div id="user-status" style="background-color: #99c58370;">
         <table>
             <caption>点击您的UID开始学习</caption>
             <tr>
                 <th style="width: 300px;">UID</th>
                 <th>STATUS</th>
+                <th>取消登录</th>
             </tr>
 
         </table>
@@ -342,6 +401,7 @@
 
     <div id="message">
         <table>
+            <caption>消息区</caption>
             <tr>
                 <th style="width: 300px;">timestamp</th>
                 <th>message</th>
@@ -352,6 +412,7 @@
 
     <div id="qrurl">
         <table>
+            <caption>二维码</caption>
             <tr>
                 <th style="width: 300px;">timestamp</th>
                 <th>qrurl</th>
