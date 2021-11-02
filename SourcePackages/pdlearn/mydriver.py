@@ -77,7 +77,7 @@ class Mydriver:
                 # self.options.add_argument('--window-size=900,800')
                 # self.options.add_argument("--window-size=1920,1050")
 
-            self.options.add_argument('--disable-dev-shm-usage')  
+            self.options.add_argument('--disable-dev-shm-usage')
             self.options.add_argument(
                 '--disable-software-rasterizer')  # 解决GL报错问题
             self.options.add_argument('--disable-extensions')
@@ -141,7 +141,7 @@ class Mydriver:
             auto.prompt("按回车键继续......")
             raise
 
-    def get_cookie_from_network(self):
+    def get_cookie_from_network(self, chat_id=None):
         print("正在打开二维码登陆界面,请稍后")
         self.driver.get("https://pc.xuexi.cn/points/login.html")
         try:
@@ -171,7 +171,7 @@ class Mydriver:
         # 取出iframe中二维码，并发往钉钉
         if gl.nohead == True or cfg_get("addition.SendLoginQRcode", 0) == 1:
             print("二维码将发往机器人...\n" + "=" * 60)
-            self.sendmsg()
+            self.sendmsg(chat_id)
 
         # try:
         #     # 取出iframe中二维码，并发往方糖，拿到的base64没办法直接发钉钉，所以发方糖
@@ -212,15 +212,15 @@ class Mydriver:
             auto.prompt("按回车键退出程序. ")
             exit()
 
-    def sendmsg(self):
+    def sendmsg(self, chat_id=None):
         qcbase64 = self.getQRcode()
         # 发送二维码
         gl.send_qrbase64(qcbase64)
         # 发送链接
         if gl.scheme:
-            gl.pushprint(gl.scheme+quote_plus(decode_img(qcbase64)))
+            gl.pushprint(gl.scheme+quote_plus(decode_img(qcbase64)), chat_id)
         else:
-            gl.pushprint(decode_img(qcbase64))
+            gl.pushprint(decode_img(qcbase64), chat_id)
 
     def getQRcode(self):
         try:
@@ -239,9 +239,9 @@ class Mydriver:
         else:
             return path
 
-    def login(self):
+    def login(self, chat_id=None):
         # 调用前要先尝试从cookie加载，失败再login
-        cookie_list = self.get_cookie_from_network()
+        cookie_list = self.get_cookie_from_network(chat_id)
         return cookie_list
 
     def get_cookies(self):
