@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>科技强 guo - Dashboard</title>
+        <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+        <script type="text/javascript">
+            function to_arr(text_or_array) {
+                if (!Array.isArray(text_or_array)) {
+                    text_or_array = [text_or_array];
+                }
+                return text_or_array;
+            }
+            function get_app_jump_url(url){
+                if (url.indexOf('/')!=-1) {
+                    return encodeURIComponent(url);
+                }else{
+                    return url;
+                }
+            }
+            function refresh_msg(messages) {
+                messages = to_arr(messages);
+                $("#message tr:first").nextAll().remove();
+                for (const message of messages) {
+                    if (-1 != message.text.indexOf("login.xuexi.cn")) {
+                        jump_url =
+                            "jump.html?" + get_app_jump_url(message.text);
+
+                        $("#message table tr:first").after(
+                            "<tr>" +
+                                "<td>" +
+                                "<span>" +
+                                message.timestamp +
+                                "</span>" +
+                                "</td>" +
+                                "<td>" +
+                                '<a target="_blank" href="' +
+                                jump_url +
+                                '">' +
+                                jump_url +
+                                "</a>" +
+                                "</td>" +
+                                "</tr>"
+                        );
+                    } else {
+                        $("#message table tr:first").after(
+                            "<tr>" +
+                                "<td>" +
+                                "<span>" +
+                                message.timestamp +
+                                "</span>" +
+                                "</td>" +
+                                "<td>" +
+                                "<span>" +
+                                message.text +
+                                "</span>" +
+                                "</td>" +
+                                "</tr>"
+                        );
+                    }
+                }
+            }
+            function refresh_qrimg(qrurls) {
+                qrurls = to_arr(qrurls);
+                $("#qrurl tr:first").nextAll().remove();
+                for (const qrurl of qrurls) {
+                    $("#qrurl tr:first").after(
+                        "<tr>" +
+                            "<td>" +
+                            "<span>" +
+                            qrurl.timestamp +
+                            "</span>" +
+                            "</td>" +
+                            "<td>" +
+                            '<img src="' +
+                            qrurl.url +
+                            '"/>' +
+                            "</td>" +
+                            "</tr>"
+                    );
+                }
+            }
+            function refresh_user_status(users_status) {
+                users_status = to_arr(users_status);
+                $("#user-status tr:first").nextAll().remove();
+                for (const u_info of users_status) {
+                    $("#user-status table").append(
+                        "<tr>" +
+                            "<td><button onclick=\"learn('" +
+                            u_info.uid +
+                            "')\">" +
+                            JSON.stringify(u_info.uid) +
+                            "</button></td>" +
+                            "<td>" +
+                            JSON.stringify(u_info.status) +
+                            "</td>" +
+                            "<td><button onclick=\"remove_cookie('" +
+                            u_info.uid +
+                            "')\">" +
+                            "退出" +
+                            "</button></td>" +
+                            "</tr>"
+                    );
+                }
+            }
+
+            function add_msg(messages) {
+                messages = to_arr(messages);
+                for (const message of messages) {
+                    $("#message table").append(
+                        "<tr><td>" + JSON.stringify(message) + "</td></tr>"
+                    );
+                }
+            }
+            function add_tips(messages) {
+                messages = to_arr(messages);
+                for (const message of messages) {
+                    $("#tips table").append(
+                        "<tr><td>" + JSON.stringify(message) + "</td></tr>"
+                    );
+                }
+            }
+            function learn(uid) {
+                $.ajax({
+                    type: "GET",
+                    url: "/api/learn_by_uid/" + uid,
+                    dataType: "JSON",
+                    success: function (response) {
+                        add_tips(response.data);
+                    },
+                });
+                console.log(uid);
+            }
+            function remove_cookie(uid) {
+                $.ajax({
+                    type: "GET",
+                    url: "/api/remove_cookie/" + uid,
+                    dataType: "JSON",
+                    success: function (response) {
+                        add_msg(response.data);
+                    },
+                });
+            }
+            function update() {
+                $.ajax({
+                    type: "GET",
+                    url: "/api/update",
+                    dataType: "JSON",
+                    success: function (response) {
+                        refresh_msg(response.data);
+                    },
+                });
+            }
+
+            function add_user() {
+                $.ajax({
+                    type: "GET",
+                    url: "/api/add",
+                    dataType: "JSON",
+                    success: function (response) {
+                        add_tips(response.data);
+                    },
+                });
+            }
+            function check_now() {
+                $.ajax({
+                    type: "GET",
+                    url: "/api/now",
+                    dataType: "JSON",
+                    success: function (response) {
+                        $("#timestamp").text("服务器时间: " + response.data);
+                    },
+                });
+            }
+            function list_users_status() {
+                $.ajax({
+                    type: "GET",
+                    url: "/api/list",
+                    dataType: "JSON",
+                    success: function (response) {
+                        refresh_user_status(response.data);
+                    },
+                });
+            }
+            function refresh_all_cookies() {
+                $.ajax({
+                    type: "GET",
+                    url: "/api/refresh_all_cookies",
+                    dataType: "JSON",
+                    success: function (response) {
+                        refresh_user_status(response.data);
+                    },
+                });
+            }
+            function learn_all() {
+                $.ajax({
+                    type: "GET",
+                    url: "/api/learn",
+                    dataType: "JSON",
+                    success: function (response) {
+                        refresh_msg(response.data);
+                    },
+                });
+            }
+
+            function list_messages() {
+                $.ajax({
+                    type: "GET",
+                    url: "/api/list_messages",
+                    dataType: "JSON",
+                    success: function (response) {
+                        refresh_msg(response.data);
+                    },
+                });
+            }
+            function list_qrurls() {
+                $.ajax({
+                    type: "GET",
+                    url: "/api/list_qrurls",
+                    dataType: "JSON",
+                    success: function (response) {
+                        refresh_qrimg(response.data);
+                    },
+                });
+            }
+
+            $(document).ready(function () {
+                add_tips("15秒自动刷新状态,请勿长期打开此页面");
+                setInterval(() => {
+                    list_users_status();
+                    list_messages();
+                    list_qrurls();
+                    check_now();
+                }, 1000);
+                setTimeout(() => {
+                    setInterval(() => {
+                        refresh_all_cookies();
+                    }, 15000);
+                }, 15000);
+            });
+        </script>
+        <style type="text/css">
+
+            .main{
+                        background-color: rgba(102, 146, 191, 0.44);
+                        /*边框*/
+                        border: solid 1px rgba(102, 146, 191, 0.68);
+                        /*边角弧度*/
+                        border-radius: 10px;
+                        /*阴影*/
+                        -moz-box-shadow:2px 2px 5px #333333; 
+                        -webkit-box-shadow:2px 2px 5px #333333; 
+                        box-shadow: 7px 15px 30px #285a63;
+            }
+            body {
+                min-width: 780px;
+            }
+
+            /*表格样式*/
+            table {
+                width: 90%;
+                background: #ccc;
+                margin: 10px auto;
+                border-collapse: collapse;
+                /*border-collapse:collapse合并内外边距(去除表格单元格默认的2个像素内外边距*/
+            }
+
+            th,
+            td {
+                height: 25px;
+                line-height: 25px;
+                text-align: center;
+                border: 1px solid #ccc;
+            }
+
+            th {
+                background: #eee;
+                font-weight: normal;
+            }
+
+            tr {
+                background: #fff;
+            }
+
+            tr:hover {
+                background: #cc0;
+            }
+
+            td a {
+                color: #06f;
+                text-decoration: none;
+                text-align: left;
+                display: block; /* width: 120px; */ /* height: 40px; */
+                color: #1f1193;
+                background-color: #b1272787;
+                overflow: hidden; /*自动隐藏文字*/
+                text-overflow: ellipsis; /*文字隐藏后添加省略号*/
+            }
+
+            td a:hover {
+                color: #06f;
+                text-decoration: underline;
+                background-color: orangered;
+            }
+
+            button {
+                /* 按钮美化 */
+                width: 270px;
+                /* 宽度 */
+                height: 40px;
+                /* 高度 */
+                border-width: 0px;
+                /* 边框宽度 */
+                border-radius: 3px;
+                /* 边框半径 */
+                background: #1e90ff;
+                /* 背景颜色 */
+                cursor: pointer;
+                /* 鼠标移入按钮范围时出现手势 */
+                outline: none;
+                /* 不显示轮廓线 */
+                font-family: Microsoft YaHei;
+                /* 设置字体 */
+                color: white;
+                /* 字体颜色 */
+                font-size: 17px;
+                /* 字体大小 */
+            }
+
+            .login-button:hover {
+                /* 鼠标移入按钮范围时改变颜色 */
+                background: #5599ff;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <div id="console" >
+            <div>
+                <table>
+                    <caption>
+                        <h2> 👇👇操作台👇👇</h2>    
+                    </caption>
+                    <tr>
+                        <th>使用说明</th>
+                        <th style="width: 300px">功能按钮</th>
+                    </tr>
+                    <tr>
+                        <td>更新代码为最新版本</td>
+                        <td>
+                            <button onclick="update();">更新代码</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            添加一个用户：
+                            <br />
+                            点击按钮之后，等待几秒
+                            <br />
+                            下面会自动刷新出二维码和链接
+                            <br />
+                            
+                            按照提示操作
+                            <!-- <br />
+                            手机用户请点击最新的链接，跳转APP登录，电脑点了没有用
+                            <br />
+                            电脑用户请打开学习强国软件，扫一扫登录，其他软件扫了没有用 -->
+                        </td>
+                        <td>
+                            <button onclick="add_user();">添加用户</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            点击按钮获取缓存的用户状态
+                            <br />
+                            页面会自动获取、刷新
+                        </td>
+                        <td>
+                            <button onclick="list_users_status();">
+                                列出用户状态
+                            </button>
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td>
+                            点击按钮刷新用户状态
+                            <br />
+                            页面会自动获取、刷新
+                        </td>
+                        <td>
+                            <button onclick="refresh_all_cookies();">
+                                刷新用户状态
+                            </button>
+                        </td>
+                    </tr>
+    
+                   <tr>
+                        <td>
+                            点击按钮刷新信息，以获取登录链接，登录状态等
+                            <br />
+                            页面会自动获取、刷新
+                        </td>
+                        <td>
+                            <button onclick="list_messages();">获取新消息</button>
+                        </td>
+                    </tr> -->
+                    <tr>
+                        <td>
+                            点击按钮刷新二维码消息
+                            <br />
+                            以获取最新登录二维码，
+                            <br />
+                            不会出现新的二维码
+                            <br />
+                            页面会自动获取、刷新
+                        </td>
+                        <td>
+                            <button onclick="list_qrurls();">获取二维码</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            点击按钮开始学习所有
+                            <br>
+                            您最好点击您的UID开始学习
+                        </td>
+                        <td>
+                            <button onclick="learn_all();">学习全部</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <!-- # 新线程无法操控内存数据库 -->
+            <div id="tips">
+                <table>
+                    <caption >
+                        提示区
+                        <h2> 👇👇提示区👇👇</h2>
+                    </caption>
+                    <tr>
+                        <th>tips</th>
+                    </tr>
+                    <tr>
+                        <td><span id="timestamp">-服务器时间-</span></td>
+                    </tr>
+                </table>
+            </div>
+            <div id="user-status" style="background-color: #99c58370"  class='main'>
+                <table>
+                    <caption>
+                        <h2> 👇👇点击您的UID开始学习 </h2>
+                    </caption>
+                    <tr>
+                        <th style="width: 300px">UID</th>
+                        <th>STATUS</th>
+                        <th>取消登录</th>
+                    </tr>
+                </table>
+            </div>
+            <div id="message">
+                <table>
+                    <caption>
+                        <h2>👇👇👇 消息区域 👇👇👇 </h2>
+                      <h3> 点击添加用户就会出现链接，要在手机浏览器点击才会跳转</h3>
+                    </caption>
+                    <tr>
+                        <th style="width: 300px">timestamp</th>
+                        <th>message</th>
+                    </tr>
+                </table>
+            </div>
+            <div id="qrurl">
+                <table>
+                    <caption>
+                       <h2> 👇👇👇二维码区域👇👇👇 </h2> 
+                       <h3>请开学习强国，上面搜索栏右边扫一扫，其他软件扫了没有用</h3>
+                       <h3>扫了之后卡住了多试两次</h3>
+                    </caption>
+                    <tr>
+                        <th style="width: 300px">timestamp</th>
+                        <th>qrurl</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>
