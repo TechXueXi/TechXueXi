@@ -1,5 +1,6 @@
 from hashlib import sha1
 import os
+import time
 from flask import Flask, request
 import requests
 import json
@@ -48,6 +49,9 @@ class MessageInfo:
             elif child.tag == 'EventKey':
                 self.event_key = child.text
 
+    def returnXml(self, msg, msg_type="text"):
+        return f"<xml><ToUserName><![CDATA[{self.from_user_name}]]></ToUserName><FromUserName><![CDATA[{self.to_user_name}]]></FromUserName><CreateTime>{time.time()}</CreateTime><MsgType><![CDATA[{msg_type}]]></MsgType><Content><![CDATA[{msg}]]></Content></xml>"
+
 
 def get_update(timestamp, nonce):
     arguments = ''
@@ -75,7 +79,7 @@ def parse_xml(data):
     return MessageInfo(root)
 
 
-def wechat_init():
+def wechat_init(msg: MessageInfo):
     """
     初始化订阅号菜单
     """
@@ -109,9 +113,9 @@ def wechat_init():
         'access_token': wechat.get_access_token()
     }, data=json.dumps(body, ensure_ascii=False).encode('utf-8')).json()
     if res.get("errcode") == 0:
-        wechat.send_text("菜单初始化成功，请重新关注订阅号")
+        return msg.returnXml("菜单初始化成功，请重新关注订阅号")
     else:
-        wechat.send_text(res.get("errmsg"))
+        return msg.returnXml(res.get("errmsg"))
 
 
 def get_uid(oid):
@@ -129,7 +133,7 @@ def wechat_get_openid(msg: MessageInfo):
     """
     获取用户的openId
     """
-    wechat.send_text(msg.from_user_name, msg.from_user_name)
+    return msg.returnXml(msg.from_user_name)
 
 
 def wechat_learn(msg: MessageInfo):
@@ -138,7 +142,7 @@ def wechat_learn(msg: MessageInfo):
     """
     uid = get_uid(msg.from_user_name)
     if not uid:
-        wechat.send_text("您未绑定账号，请联系管理员绑定", uid=msg.from_user_name)
+        msg: MessageInfo("您未绑定账号，请联系管理员绑定")
     else:
         pdl.start(uid)
 
@@ -157,11 +161,11 @@ def wechat_get_score(msg: MessageInfo):
             pdl.add_user(msg.from_user_name)
 
 
-def wechat_help():
+def wechat_help(msg: MessageInfo):
     """
     获取帮助菜单
     """
-    wechat.send_text(
+    return msg.returnXml(
         "/help 显示帮助消息\n/init 初始化订阅号菜单，仅需要执行一次\n/add 添加新账号\n/bind 绑定账号，如：/bind 账号编码 学xi编号\n/unbind 解除绑定 如：/unbind 账号编码")
 
 
@@ -188,9 +192,9 @@ def wechat_bind(msg: MessageInfo):
         else:
             json_obj.append({"openId": args[1], "accountId": args[2]})
         file.save_json_data("user/wechat_bind.json", json_obj)
-        wechat.send_text("绑定成功")
+        return msg.returnXml("绑定成功")
     else:
-        wechat.send_text("参数格式错误")
+        return msg.returnXml("参数格式错误")
 
 
 def wechat_unbind(msg: MessageInfo):
@@ -207,14 +211,14 @@ def wechat_unbind(msg: MessageInfo):
             index = json_obj.index(wx_list[0])
             json_obj.pop(index)
             file.save_json_data("user/wechat_bind.json", json_obj)
-            wechat.send_text("解绑成功")
+            return msg.returnXml("解绑成功")
         else:
-            wechat.send_text("账号编码错误或该编码未绑定账号")
+            return msg.returnXml("账号编码错误或该编码未绑定账号")
     else:
-        wechat.send_text("参数格式错误")
+        return msg.returnXml("参数格式错误")
 
 
-@ app.route('/wechat', methods=['GET', 'POST'])
+@app.route('/wechat', methods=['GET', 'POST'])
 def weixinInterface():
     if check_signature:
         if request.method == 'GET':
@@ -225,20 +229,20 @@ def weixinInterface():
             msg = parse_xml(data)
             if msg.msg_type == "event" and msg.event == "CLICK":
                 if msg.event_key == "MENU_OPENID":
-                    MyThread("get_user_openid", wechat_get_openid, msg).start()
+                    return wechat_get_openid(msg)
                 if msg.event_key == "MENU_LEARN":
                     MyThread("wechat_learn", wechat_learn, msg).start()
                 if msg.event_key == "MENU_SCORE":
                     MyThread("wechat_get_score", wechat_get_score, msg).start()
             if msg.from_user_name == openid:
                 if msg.content.startswith("/init"):
-                    MyThread("wechat_init", wechat_init).start()
+                    return wechat_init(msg)
                 if msg.content.startswith("/help"):
-                    MyThread("wechat_help", wechat_help).start()
+                    return wechat_help(msg)
                 if msg.content.startswith("/bind"):
-                    MyThread("wechat_bind", wechat_bind, msg).start()
+                    return wechat_bind(msg)
                 if msg.content.startswith("/unbind"):
-                    MyThread("wechat_unbind", wechat_unbind, msg).start()
+                    return wechat_unbind(msg)
                 if msg.content.startswith("/add"):
                     MyThread("wechat_add", wechat_add).start()
             return "success"
