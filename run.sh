@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 update() {
     echo "下载更新"
