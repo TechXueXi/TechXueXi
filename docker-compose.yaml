@@ -9,57 +9,63 @@ services:
             - ./xuexi:/xuexi/user
         ports:
             - 9980:80
+        shm_size: 2gb
         environment:
             - CRONTIME=5 21,0,8,14 * * *
             - Pushmode=6
             - ZhuanXiang=True
-            - Sourcepath=https://github.com/TechXueXi/TechXueXi.git
-            - pullbranche=developing
-        shm_size: 2gb
-        build:
-            context: https://github.com/TechXueXi/TechXueXi.git
-            dockerfile: Dockerfile.dev
-            shm_size: 2gb
-            args:
-                - usesource=https://github.com/TechXueXi/TechXueXi.git
-                - usebranche=developing
 
-    frpc:
-        image: zctmdc/frp:Alpha
-        # hostname: $hostname
-        container_name: frpc
-        restart: always
-        # network_mode: host
-        environment:
-            - SUBDOMAIN_HOST=frp.zctmdc.cc
-            - BIND_PORT=7001
-            - TOKEN=12345678
-            - ADMIN_USER=admin
-            - ADMIN_PWD=admin
-            - ADMIN_PORT=7500
-            - VHOST_HTTP_PORT=3080
-        ports:
-            - 7500:7500
-        healthcheck:
-            test: "/opt/healthcheck/healthcheck-frpc.sh"
-            interval: 30s
-            timeout: 10s
-            retries: 3
-        command: ["/usr/sbin/frpc", "-c", "/etc/frp/frpc.ini"]
-        external_links:
-            - techxuexi:techxuexi
-        depends_on:
-            - techxuexi
+        # --------------------------------
+        # 有公网IP的只要以上内容，下面的没有用，运行之后打开IP:9980即可
+            # 自定义拉取版本
+            # - Sourcepath=https://github.com/TechXueXi/TechXueXi.git
+            # - pullbranche=developing
+        # 本地编译才需要
+        # build:
+        #     context: https://github.com/TechXueXi/TechXueXi.git
+        #     dockerfile: Dockerfile.dev
+        #     shm_size: 2gb
+        #     args:
+        #         - usesource=https://github.com/TechXueXi/TechXueXi.git
+        #         - usebranche=developing
 
+    # 需要需要映射公网的请参考下面内容 
+    # frpc:
+    #     image: zctmdc/frp:Alpha
+    #     # hostname: $hostname
+    #     container_name: frpc
+    #     restart: always
+    #     # network_mode: host
+    #     environment:
+    #         - SUBDOMAIN_HOST=frp.zctmdc.cc
+    #         - BIND_PORT=7001
+    #         - TOKEN=12345678
+    #         - ADMIN_USER=admin
+    #         - ADMIN_PWD=admin
+    #         - ADMIN_PORT=7500
+    #         - VHOST_HTTP_PORT=3080
+    #     ports:
+    #         - 7500:7500
+    #     healthcheck:
+    #         test: "/opt/healthcheck/healthcheck-frpc.sh"
+    #         interval: 30s
+    #         timeout: 10s
+    #         retries: 3
+    #     command: ["/usr/sbin/frpc", "-c", "/etc/frp/frpc.ini"]
+    #     external_links:
+    #         - techxuexi:techxuexi
+    #     depends_on:
+    #         - techxuexi
 
-            
+#----------------------------------------------------------------
 # 打开docker所在 IP:7500 或者指定 hostname 再打开$hostname.frp.zctmdc.cc
 # 用上面的 ADMIN_PWD/ADMIN_PWD登录
 # 点击configure 粘贴以下代码(请取消注释)  即可使用~
 
 # 访问地址为 {{subdomain}}.frp.zctmdc.cc
-# subdomain提交之后刷新就出来了
-# 或者可以查看[http_admin_UI] 上面一行的user值
+# subdomain点击上面提交之后刷新页面就出来了
+# 或者可以查看[http_admin_UI]上面一行的user值
+#----------------------------------------------------------------
 
 # ; ------ ;
 # [http_xuexi]
