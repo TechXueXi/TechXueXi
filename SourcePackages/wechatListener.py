@@ -166,7 +166,7 @@ def wechat_help(msg: MessageInfo):
     获取帮助菜单
     """
     return msg.returnXml(
-        "/help 显示帮助消息\n/init 初始化订阅号菜单，仅需要执行一次\n/add 添加新账号\n/bind 绑定账号，如：/bind 账号编码 学xi编号\n/unbind 解除绑定 如：/unbind 账号编码")
+        "/help 显示帮助消息\n/init 初始化订阅号菜单，仅需要执行一次\n/add 添加新账号\n/bind 绑定账号，如：/bind 账号编码 学xi编号\n/unbind 解除绑定 如：/unbind 账号编码\n/list 获取全部账号信息\n/update 更新程序")
 
 
 def wechat_add():
@@ -218,6 +218,38 @@ def wechat_unbind(msg: MessageInfo):
         return msg.returnXml("参数格式错误")
 
 
+def wechat_list(msg: MessageInfo):
+    """
+    获取全部成员
+    """
+    msg = pdl.get_user_list()
+    wechat.send_text(msg)
+
+
+def wechat_admin_learn(msg: MessageInfo):
+    """
+    学习
+    """
+
+
+def wechat_update(msg: MessageInfo):
+    res = ""
+    try:
+        shell = "git -C /xuexi/code/TechXueXi pull $Sourcepath $pullbranche "
+        params = msg.content.split(" ")
+        if len(params) > 1:
+            shell += params[1]
+        msg = os.popen(shell).readlines()[-1]
+        if "up to date" in msg:
+            res = "当前代码已经是最新的了"
+        else:
+            os.popen("cp -r /xuexi/code/TechXueXi/SourcePackages/* /xuexi")
+            res = "代码更新完成"+msg
+    except Exception as e:
+        res = "更新失败："+str(e)
+    wechat.send_text(res)
+
+
 @app.route('/wechat', methods=['GET', 'POST'])
 def weixinInterface():
     if check_signature:
@@ -245,6 +277,14 @@ def weixinInterface():
                     return wechat_unbind(msg)
                 if msg.content.startswith("/add"):
                     MyThread("wechat_add", wechat_add).start()
+                if msg.content.startswith("/list"):
+                    MyThread("wechat_list", wechat_list, msg).start()
+                if msg.content.startswith("/learn"):
+                    MyThread("wechat_admin_learn",
+                             wechat_admin_learn, msg).start()
+                if msg.content.startswith("/update"):
+                    MyThread("wechat_update",
+                             wechat_update, msg).start()
             return "success"
     else:
         return 'signature error'

@@ -174,7 +174,7 @@ def add_user(chat_id=None):
     get_argv()
     gl.pushprint("请扫码登录：", chat_id=chat_id)
     driver_login = Mydriver()
-    cookies = driver_login.login()
+    cookies = driver_login.login(chat_id)
     driver_login.quit()
     if not cookies:
         gl.pushprint("登录超时。", chat_id=chat_id)

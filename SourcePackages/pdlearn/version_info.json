@@ -1,6 +1,12 @@
 {
-    "techxuexi_version": "v20211101",
+    "techxuexi_version": "v20211102",
+    "notice": "欢迎使用 TechXueXi",
+    "least_version": "v20211020",
+    "old_version_warning": "您的版本太旧，请立即更新",
     "techxuexi_update_log": [{
+        "version": "v20211102",
+        "info": "修复微信子账号登录问题，增加list,update指令"
+    },{
         "version": "v20211101",
         "info": "docker: 1. 部分功能采用及时回复; 2. 微信模板发送; 3. 增加微信模板配置项，增加说明文档 "
     },{
