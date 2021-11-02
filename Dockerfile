@@ -39,7 +39,7 @@ RUN chmod +x ./start.sh
 RUN chmod +x ./supervisor.sh;./supervisor.sh
 RUN mkdir code
 WORKDIR /xuexi/code
-RUN git clone -b ${usebranche} ${usesource};cp -r /xuexi/code/TechXueXi/SourcePackages/* /xuexi;
+RUN git clone -b ${usebranche} ${usesource}; cp -r /xuexi/code/TechXueXi/SourcePackages/* /xuexi;
 WORKDIR /xuexi
 EXPOSE 80
 ENTRYPOINT ["/bin/bash", "./start.sh"]
