@@ -26,23 +26,22 @@
         }
         // 获取跳转链接
         function get_app_jump_url(url) {
-          app_url = null
           if (url.indexOf('/') != -1) {
-              app_url= encodeURIComponent(url);
+            url= encodeURIComponent(url);
           } 
           return 'dtxuexi://appclient/page/study_feeds?url='+url;
         }
         // 设置跳转链接
         function set_jump_url(ele_id) {
-          row_url = null
+          url = null
           if (window.location.search) {
-            row_url = window.location.search.substring(1)
+            url = window.location.search.substring(1)
           } else if (getQueryVariable(url)) {
-            row_url = getQueryVariable(url)
+            url = getQueryVariable(url)
           }else{
-            row_url='获取失败，请检查地址'
+            url='获取失败，请检查地址'
           }
-          if (row_url) {
+          if (url) {
             $('#' + ele_id).attr("href", get_app_jump_url(url));
             $('#' + ele_id).text(get_app_jump_url(url));
           }

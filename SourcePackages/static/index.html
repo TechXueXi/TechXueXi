@@ -20,9 +20,8 @@
             return text_or_array;
         }
         function get_app_jump_url(url) {
-          app_url = null
           if (url.indexOf('/') != -1) {
-              app_url= encodeURIComponent(url);
+            url = encodeURIComponent(url);
           } 
           return 'dtxuexi://appclient/page/study_feeds?url='+url;
         }
