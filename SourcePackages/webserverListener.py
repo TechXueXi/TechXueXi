@@ -4,68 +4,20 @@ import time
 from datetime import date, datetime
 from typing import List
 
-from flask import Flask, redirect, request
+from flask import redirect, request
 from flask_cors import CORS
-from flask_sqlalchemy import SQLAlchemy
 
 import pandalearning as pdl
 from pdlearn import user
-
-app = Flask(__name__)
-
-SQLOTE_MEMORY = 'sqlite:///:memory:'
-
-app.config['SQLALCHEMY_DATABASE_URI'] = SQLOTE_MEMORY
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
-db = SQLAlchemy(app)
-
-
-class Message(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    text = db.Column(db.String())
-    timestamp = db.Column(db.DateTime, default=datetime.now())
-
-    def __init__(self, text, timestamp=datetime.now()):
-        self.text = text
-        self.timestamp = timestamp
-
-    def __repr__(self):
-        return '<Message: %r>' % self.text
-
-
-class QrUrl(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    url = db.Column(db.String())
-    timestamp = db.Column(db.DateTime, default=datetime.now())
-
-    def __init__(self, url, timestamp=datetime.now()):
-        self.url = url
-        self.timestamp = timestamp
-
-    def __repr__(self):
-        return '<QrUrl: %r>' % self.url
-
-
-class UserInfo(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    uid = db.Column(db.String())
-    status = db.Column(db.String())
-    timestamp = db.Column(db.DateTime, default=datetime.now())
-
-    def __init__(self, uid, status):
-        self.uid = uid
-        self.status = status
-
-    def __repr__(self):
-        return '<QrUrl: %r %r>' % (self.uid, self.status)
+from webServerConf import UserInfo, WebMessage, WebQrUrl, app, web_db
 
 
 @app.before_first_request
 def create_db():
     '创建表格、插入数据'
     # Recreate database each time for demo
-    db.drop_all()
-    db.create_all()
+    web_db.drop_all()
+    web_db.create_all()
 
 
 def request_parse(req_data):
@@ -85,6 +37,11 @@ def resp(code=200, data=dict(), status='success', resp_code=200):
 def resp_ok(resp_data=dict()):
     resp = {'code': 200, 'data': resp_data, 'status': "success"}
     return resp
+
+
+def web_log_and_resp_ok(resp_data=dict()):
+    web_log(resp_data)
+    return resp_ok(resp_data)
 
 
 def resp_db_ok(res_rows=None):
@@ -118,9 +75,20 @@ def resp_err(resp_msg=None):
     return resp, 500
 
 
+def web_log(send_log):
+    print(send_log)
+    web_db.session.add(WebMessage(send_log))
+    web_db.session.commit()
+
+
 @app.route('/')
 def hello_world():
     return redirect('/static/index.html', code=302)
+
+
+@app.route('/jump')
+def jump_app():
+    return redirect('/static/jump.html', code=302)
 
 
 @app.route('/api/sleep/<sleep_time>')
@@ -129,6 +97,11 @@ def sleep(sleep_time):
     resp_data = dict()
     resp_data['sleep'] = sleep_time
     return resp_ok(resp_data)
+
+
+@app.route('/api/now')
+def now():
+    return resp_ok(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 
 
 @app.route('/api/update')
@@ -141,62 +114,70 @@ def update():
             shell += params[1]
         msg = os.popen(shell).readlines()[-1]
         if "up to date" in msg:
-            return resp_ok("当前代码已经是最新的了")
+            msg += "当前代码已经是最新的了"
+            return web_log_and_resp_ok("当前代码已经是最新的了")
         else:
+
             os.popen("cp -r /xuexi/code/TechXueXi/SourcePackages/* /xuexi")
-            return resp_ok("代码更新完成"+msg)
+            return web_log_and_resp_ok("代码更新完成"+msg)
     except Exception as e:
         return resp_err("更新失败："+str(e))
 
 
 @app.route('/api/list')
 def list():
-    return resp_models_ok(UserInfo.query.all())
+    return resp_models_ok(web_db.session.query(UserInfo).all())
 
 
 @app.route('/api/refresh_all_cookies')
 def refresh_all_cookies():
     user_status = user.refresh_all_cookies(display_score=True)
+    user_infos = web_db.session.query(UserInfo).all()
+    for user_info in user_infos:
+        web_db.session.delete(user_info)
     for (uid, status) in user_status.items():
-        db.session.add(UserInfo(uid, status))
-    db.session.commit()
+        web_db.session.add(UserInfo(uid, status))
+    web_db.session.commit()
     return list()
 
 
 @app.route('/api/add')
 def add():
     pdl.add_user()
-    return resp_ok('登录成功')
+    return web_log_and_resp_ok('ヾ(o◕∀◕)ﾉヾ登录成功，首次登录请手动开始学习ヾ(≧O≦)〃嗷~')
 
 
 @app.route('/api/learn')
 def learn():
     ''' 新线程无法操控内存数据库'''
+    # web_db.session.add(WebMessage('新线程无法操控内存数据库'))
+    # web_db.session.commit()
+    # return resp_models_ok(WebMessage('新线程无法操控内存数据库'))
     names = pdl.get_all_user_name()
     if len(names) <= 1:
-        return resp_ok('请添加用户')
+        return web_log_and_resp_ok('请添加用户')
     else:
         pdl.start(None)
-        return resp_ok('全部账号开始学习：{}'.format(names))
+        return web_log_and_resp_ok('全部账号开始学习：{}'.format(names))
 
 
 @app.route('/api/learn_by_nick_name/<nick_name>')
 def learn_by_nick_name(nick_name):
     names = pdl.get_all_user_name()
     if len(names) <= 1:
-        return resp_ok('请添加用户')
+        return web_log_and_resp_ok('请添加用户')
     else:
         names = pdl.get_all_user_name()
         for name in names:
             if nick_name == name:
                 pdl.start(nick_name)
-                return resp_ok('开始学习：{}'.format(nick_name))
+                return web_log_and_resp_ok('开始学习：{}'.format(nick_name))
 
 
 @app.route('/api/learn_by_uid/<uid>')
 def learn_by_uid(uid):
     pdl.start_learn(uid, None)
-    return resp_ok('开始学习：{}'.format(user.get_fullname(uid)))
+    return web_log_and_resp_ok('开始学习：{}'.format(user.get_fullname(uid)))
 
 
 @app.route('/api/list_user')
@@ -204,27 +185,42 @@ def list_user():
     return resp_ok(user.list_user(printing=False))
 
 
+@app.route('/api/remove_cookie/<uid>')
+def remove_cookie(uid):
+    user_name = user.get_fullname(uid)
+    msg = 'uid: {}  ,username: {} 状态清除成功'.format(uid, user_name)
+    user.remove_cookie(uid)
+    web_log(msg)
+    return resp_models_ok(WebMessage(msg))
+
+
 @app.route('/api/list_qrurls')
 def list_qrurls():
-    qrurls = QrUrl.query.all()
+    qrurls = web_db.session.query(WebQrUrl).all()
+    # print(
+    #     '二维码:', [((datetime.now() - qrurl.timestamp).seconds, qrurl.timestamp) for qrurl in qrurls])
     for qrurl in qrurls:
         # print('--------------------------------\n秒：{}\n--------------------------------'.format(
         #     (datetime.now() - qrurl.timestamp).seconds))
-        if (datetime.now() - qrurl.timestamp).seconds /60 > 5 :
-            db.session.delete(qrurl)
-    db.session.commit()
+        if (datetime.now() - qrurl.timestamp).seconds > 300:
+            web_log('超时，二维码已被移除: {}'.format(qrurl.id))
+            web_db.session.delete(qrurl)
+    web_db.session.commit()
     return resp_models_ok(qrurls)
 
 
 @app.route('/api/list_messages')
 def list_messages():
-    messages = Message.query.all()
+    messages = web_db.session.query(WebMessage).all()
+    # print(
+    #     '消息:', [(datetime.now() - message.timestamp).seconds for message in messages])
     for message in messages:
         # print('--------------------------------\n分：{}\n--------------------------------'.format(
         #     (datetime.now() - message.timestamp).seconds/60))
-        if (datetime.now() - message.timestamp).seconds/60 > 5:
-            db.session.delete(message)
-    db.session.commit()
+        if (datetime.now() - message.timestamp).seconds > 300:
+            # web_log('超时，消息已被移除: {} - {}'.format(message.id, message.timestamp))
+            web_db.session.delete(message)
+    web_db.session.commit()
     return resp_models_ok(messages)
 
 

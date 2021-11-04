@@ -38,7 +38,7 @@ def init_global():
         nohead = True
     else:
         nohead = cfg_get("addition.Nohead", False)
-
+        
     if os.getenv('islooplogin') == "True":
         islooplogin = True
 

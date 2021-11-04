@@ -1,24 +1,21 @@
+import math
 import os
 import sys
 import time
-import math
 from sys import argv
+
 from pdlearn import boot
+
 boot.check_environment()
 try:
     # 在此处导入所有 pdlearn 内的模块
-    from pdlearn import version
-    from pdlearn import user
-    from pdlearn import score
-    from pdlearn import color
-    from pdlearn import threads
+    import pdlearn.globalvar as gl
+    from pdlearn import color, score, threads, user, version
+    from pdlearn.answer_question import daily, weekly, zhuanxiang
+    from pdlearn.article_video import article, video
     from pdlearn.config import cfg_get
     from pdlearn.mydriver import Mydriver
-    from pdlearn.score import show_score
-    from pdlearn.score import show_scorePush
-    from pdlearn.article_video import article, video
-    from pdlearn.answer_question import daily, weekly, zhuanxiang
-    import pdlearn.globalvar as gl
+    from pdlearn.score import show_score, show_scorePush
 except ImportError as e:
     boot.try_pip_install(exception=e)
 
@@ -66,8 +63,12 @@ def start_learn(uid, name):
             msg = "需要增加新用户，请扫码登录，否则请无视"
         else:
             msg = name+" 登录信息失效，请重新扫码"
-        print(msg)
+        # print(msg)
         gl.pushprint(msg, chat_id=uid)
+        if gl.pushmode == "6":
+            gl.pushprint("web模式跳过自动获取二维码,请手动点击添加按钮", chat_id=uid)
+            print(color.red("【#️⃣】 若直接退出请运行：webserverListener.py"))
+            return
         driver_login = Mydriver()
         cookies = driver_login.login()
         driver_login.quit()

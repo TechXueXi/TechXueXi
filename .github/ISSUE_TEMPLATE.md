@@ -10,6 +10,7 @@
 ### 清单
 
 - [ ] 我已经仔细阅读过 README.md  ( https://github.com/TechXueXi/TechXueXi/blob/developing/README.md )
+- [ ] 我已经仔细阅读过 文档  ( https://github.com/TechXueXi/TechXueXi/wiki )
 - [ ] 我已经查看/搜索过所有已有 issue，无论是open还是close的
 - [ ] 我已经通过搜索引擎搜索   www.google.com  www.baidu.com
 - [ ] 我已经到提供的在线聊天室询问过  (聊天室说明：https://github.com/TechXueXi/TechXueXi/issues/14)

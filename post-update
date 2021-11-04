@@ -1,0 +1,17 @@
+#!/bin/sh
+# v0x09
+echo "=========================="
+echo "ON PUSH"
+git fetch --all
+git push
+time=$(date)
+echo "git fetch and push at time: $time."
+echo "=========================="
+
+cd /git/TechXueXi.git || exit
+unset GIT_DIR
+
+git reset --hard
+echo "reset local `pwd`"
+echo "=========================="
+exec git update-server-info
