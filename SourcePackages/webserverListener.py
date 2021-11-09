@@ -1,5 +1,6 @@
 import json
 import os
+from re import T
 import time
 from datetime import date, datetime
 from typing import List
@@ -9,7 +10,7 @@ from flask_cors import CORS
 
 import pandalearning as pdl
 from pdlearn import user
-from webServerConf import UserInfo, WebMessage, WebQrUrl, app, web_db
+from webServerConf import UserInfo, WebMessage, WebQrUrl, app, web_db, LAST_STATUS_REFRESH_ALL_COOKIES
 
 
 @app.before_first_request
@@ -124,27 +125,41 @@ def update():
         return resp_err("更新失败："+str(e))
 
 
-@app.route('/api/list')
-def list():
+@app.route('/api/list_users_status_from_memory')
+def list_users_status_from_memory():
     return resp_models_ok(web_db.session.query(UserInfo).all())
 
 
 @app.route('/api/refresh_all_cookies')
 def refresh_all_cookies():
+    return do_refresh_all_cookies(force=False)
+
+
+@app.route('/api/force_refresh_all_cookies')
+def force_refresh_all_cookies():
+    return do_refresh_all_cookies(force=True)
+
+
+def do_refresh_all_cookies(force):
+    if (not force) and LAST_STATUS_REFRESH_ALL_COOKIES['USER_STATUS'] and ((datetime.now() - LAST_STATUS_REFRESH_ALL_COOKIES['TIME']).seconds < 30):
+        return list_users_status_from_memory()
+    LAST_STATUS_REFRESH_ALL_COOKIES['TIME'] = datetime.now()
     user_status = user.refresh_all_cookies(display_score=True)
+    LAST_STATUS_REFRESH_ALL_COOKIES['USER_STATUS'] = user_status
     user_infos = web_db.session.query(UserInfo).all()
     for user_info in user_infos:
         web_db.session.delete(user_info)
     for (uid, status) in user_status.items():
         web_db.session.add(UserInfo(uid, status))
     web_db.session.commit()
-    return list()
+    return list_users_status_from_memory()
 
 
 @app.route('/api/add')
 def add():
     pdl.add_user()
-    return web_log_and_resp_ok('ヾ(o◕∀◕)ﾉヾ登录成功，首次登录请手动开始学习ヾ(≧O≦)〃嗷~')
+    sleep(3) and do_refresh_all_cookies(force=True)
+    return web_log_and_resp_ok('ヾ(o◕∀◕)ﾉヾ☆登录成功，手动点击UID开始学习★ヾ(≧O≦)〃嗷~')
 
 
 @app.route('/api/learn')

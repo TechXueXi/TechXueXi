@@ -20,4 +20,3 @@
 4. 到提供的在线聊天室询问 (聊天室说明： https://github.com/TechXueXi/TechXueXi/issues/14 )
 5. 提新 issue ，关注邮箱有关这个 issue 的提醒。
 > \* 2021 年 9 月 25 日起 arm 和 amd 地址分开，请重新配置 docker
-

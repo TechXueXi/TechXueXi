@@ -6,7 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 
 SQLOTE_MEMORY = 'sqlite:///:memory:'
-
+LAST_STATUS_REFRESH_ALL_COOKIES = {'TIME': datetime.now(), 'USER_STATUS': None}
 app.config['SQLALCHEMY_DATABASE_URI'] = SQLOTE_MEMORY
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 

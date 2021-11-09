@@ -7,10 +7,12 @@ git push
 time=$(date)
 echo "git fetch and push at time: $time."
 echo "=========================="
+echo "now in `pwd`"
 
-cd /git/TechXueXi.git || exit
+cd .. || exit
 unset GIT_DIR
 
+echo "change to `pwd`"
 git reset --hard
 echo "reset local `pwd`"
 echo "=========================="

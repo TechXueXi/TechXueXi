@@ -178,7 +178,9 @@
                 dataType: "JSON",
                 success: function (response) {
                     add_tips(response.data);
-                    refresh_all_cookies()
+                    // setTimeout(() => {
+                    //     refresh_all_cookies()
+                    // }, 1000);
                 },
             });
         }
@@ -197,7 +199,7 @@
         function list_users_status() {
             $.ajax({
                 type: "GET",
-                url: "/api/list",
+                url: "/api/list_users_status_from_memory",
                 dataType: "JSON",
                 success: function (response) {
                     refresh_user_status(response.data);
@@ -426,8 +428,8 @@
                 <tr>
                     <td>
                         点击按钮获取缓存的用户状态
-                        <!-- <br />
-                        页面会自动获取、刷新 -->
+                        <br />
+                        页面会自动获取、刷新
                     </td>
                     <td>
                         <button onclick="list_users_status();">
@@ -438,9 +440,11 @@
 
                 <tr>
                     <td>
-                        点击按钮刷新用户状态
-                        <!-- <br />
-                        页面会自动获取、刷新 -->
+                        点击按钮在线刷新用户状态
+                        <br/>
+                        15秒内只会执行一次
+                        <br />
+                        页面会自动获取、刷新
                     </td>
                     <td>
                         <button onclick="refresh_all_cookies();">

@@ -12,7 +12,7 @@ ARG usebranche="dev"
 ENV pullbranche=${usebranche}
 ENV Sourcepath=${usesource}
 RUN apt-get update
-RUN apt-get install -y wget unzip libzbar0 git cron chromium-driver; chromedriver --version; which chromedriver; chromium --version
+RUN apt-get install -y wget unzip libzbar0 git cron supervisor chromium-driver; chromedriver --version; which chromedriver; chromium --version
 ENV TZ=Asia/Shanghai
 ENV AccessToken=
 ENV Secret=
@@ -25,10 +25,12 @@ ENV CRONTIME="30 9 * * *"
 COPY requirements.txt /xuexi/requirements.txt
 COPY run.sh /xuexi/run.sh 
 COPY start.sh /xuexi/start.sh 
+COPY supervisor.sh /xuexi/supervisor.sh
 RUN pip install -r /xuexi/requirements.txt
 WORKDIR /xuexi
 RUN chmod +x ./run.sh
 RUN chmod +x ./start.sh
+RUN chmod +x ./supervisor.sh;./supervisor.sh
 RUN mkdir code
 WORKDIR /xuexi/code
 #RUN git clone -b ${pullbranche} ${Sourcepath}

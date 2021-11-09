@@ -177,7 +177,7 @@
             function list_users_status() {
                 $.ajax({
                     type: "GET",
-                    url: "/api/list",
+                    url: "/api/list_users_status_from_memory",
                     dataType: "JSON",
                     success: function (response) {
                         refresh_user_status(response.data);
@@ -190,6 +190,17 @@
                     url: "/api/refresh_all_cookies",
                     dataType: "JSON",
                     success: function (response) {
+                        refresh_user_status(response.data);
+                    },
+                });
+            }
+            function force_refresh_all_cookies() {
+                $.ajax({
+                    type: "GET",
+                    url: "/api/force_refresh_all_cookies",
+                    dataType: "JSON",
+                    success: function (response) {
+                        add_tips('强制刷新用户状态!!!')
                         refresh_user_status(response.data);
                     },
                 });
@@ -362,12 +373,11 @@
                             <br />
                             下面会自动刷新出二维码和链接
                             <br />
-                            
                             按照提示操作
-                            <!-- <br>
+                            <br>
                             手机用户请点击最新的链接，跳转APP登录，电脑点了没有用
                             <br />
-                            电脑用户请打开学习强国软件，扫一扫登录，其他软件扫了没有用 -->
+                            电脑用户请打开学习强国软件，扫一扫登录，其他软件扫了没有用
                         </td>
                         <td>
                             <button onclick="add_user();">添加用户</button>
@@ -388,13 +398,13 @@
     
                     <tr>
                         <td>
-                            点击按钮刷新用户状态
+                            点击按钮强制刷新用户状态
                             <br />
                             页面会自动获取、刷新
                         </td>
                         <td>
-                            <button onclick="refresh_all_cookies();">
-                                刷新用户状态
+                            <button onclick="force_refresh_all_cookies();">
+                                强制刷新用户状态
                             </button>
                         </td>
                     </tr>
