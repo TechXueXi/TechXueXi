@@ -9,7 +9,7 @@ from pdlearn import boot
 boot.check_environment()
 try:
     # 在此处导入所有 pdlearn 内的模块
-    import pdlearn.globalvar as gl
+    from pdlearn import globalvar as gl
     from pdlearn import color, score, threads, user, version
     from pdlearn.answer_question import daily, weekly, zhuanxiang
     from pdlearn.article_video import article, video
