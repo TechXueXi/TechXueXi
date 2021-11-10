@@ -75,6 +75,9 @@
 - 编写有关如何使用项目的教程
 - 提供指导另一个贡献者，
 
+## 其他说明
+有一些开发者说明请到 https://github.com/TechXueXi/techxuexi-readme 查看，但说明不完善。加入开发组后登录可见。 加入说明： https://github.com/TechXueXi/TechXueXi/issues/2
+
 ## 有疑问？
 遇到问题，请试着按如下步骤解决：
 

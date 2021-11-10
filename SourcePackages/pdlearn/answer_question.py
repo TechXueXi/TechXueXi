@@ -11,7 +11,7 @@ from pdlearn.log import *
 from pdlearn.config import cfg_get
 from pdlearn.exp_catch import exception_catcher
 from pdlearn.db_helper import search_answer
-import pdlearn.globalvar as gl
+from pdlearn import globalvar as gl
 
 
 def generate_tiku_data(quiz_type=None, tip=None, option=None, answer=None, question=None):
