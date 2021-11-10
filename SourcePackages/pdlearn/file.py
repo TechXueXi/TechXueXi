@@ -22,20 +22,21 @@ def get_json_data(filename, template_json_str):
             except Exception as e:
                 print(filename, "解析错误：", str(e))
                 print("请检查", filename, "信息")
-                print("正在尝试修复", filename)
-                new = []
-                error_line_index = 8
-                with open(filename, 'r', encoding='utf-8') as conf:
-                    for line in conf:
-                        new.append(line)
-                    print(new[error_line_index+1])
-                    if '},' in new[error_line_index+1]:
-                        new[error_line_index-1] = '        "0":"default",\n'
-                        new[error_line_index] = ''
-                        new[error_line_index+1] = ''
-                with open(filename, 'w', encoding='utf-8') as conf:
-                    for line in new:
-                        conf.write(line)
+# 打开非 user status 文件可能造成问题。
+#                print("正在尝试修复", filename)
+#                new = []
+#                error_line_index = 8
+#                with open(filename, 'r', encoding='utf-8') as conf:
+#                    for line in conf:
+#                        new.append(line)
+#                    print(new[error_line_index+1])
+#                    if '},' in new[error_line_index+1]:
+#                        new[error_line_index-1] = '        "0":"default",\n'
+#                        new[error_line_index] = ''
+#                        new[error_line_index+1] = ''
+#                with open(filename, 'w', encoding='utf-8') as conf:
+#                    for line in new:
+#                        conf.write(line)
                 exit()
     else:
         json_data = json.loads(template_json_str)
