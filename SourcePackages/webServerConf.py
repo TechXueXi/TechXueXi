@@ -49,3 +49,5 @@ class UserInfo(web_db.Model):
 
     def __repr__(self):
         return '<QrUrl: %r %r>' % (self.uid, self.status)
+if __name__ == '__main__':
+    print("执行错误，请运行： webserverListener.py")

@@ -9,6 +9,21 @@ sed -i -e 's/^file=\/tmp/file=\/var\/run/' \
     -e 's/^serverurl=unix:\/\/\/tmp/serverurl=unix:\/\/\/var\/run/' \
     /etc/supervisord.conf
 
+
+
+cat >> /etc/supervisord.conf <<EOF
+
+[program:xuexiwechat]
+directory=/xuexi
+user=root
+command=/usr/local/bin/python wechatListener.py 
+autostart=false
+autorestart=true
+stdout_logfile=/xuexi/user/wechat_listener.log
+stderr_logfile/xuexi/user/wechat_listener.log
+
+EOF
+
 cat >> /etc/supervisord.conf <<EOF
 
 [program:xuexitg]
@@ -17,6 +32,8 @@ user=root
 command=/usr/local/bin/python telegramListener.py
 autostart=false
 autorestart=true
+stdout_logfile=/xuexi/user/tg_listener.log
+stderr_logfile/xuexi/user/tg_listener.log
 
 EOF
 
@@ -28,6 +45,7 @@ user=root
 command=/usr/local/bin/python webserverListener.py 
 autostart=false
 autorestart=true
-stdout_logfile=/var/log/xuexi-web.log
-stderr_logfile=/var/log/xuexi-web.log
+stdout_logfile=/xuexi/user/web_listener.log
+stderr_logfile/xuexi/user/web_listener.log
+
 EOF

@@ -32,29 +32,53 @@ fi
 printenv >>/etc/environment
 touch /var/log/cron.log
 
+#TODO : 日志时间后缀，记得将 supervisor.sh 一起改了
+LOG_SUFFIX=$(date +"%Y-%m-%d--%H-%M-%S")
+
+if [ "${Pushmode}" = "2" ]; then
+    echo "当前模式为 Wechat 模式，即将启动守护 --  xuexiwechat"
+    # : > /xuexi/user/wechat_listener.log
+    # sleep 1
+    # supervisord -c /etc/supervisord.conf
+    # sleep 1
+    # supervisorctl start xuexiwechat
+    # if [ $? -ne 0 ]; then
+    #     echo "守护进程启动失败，切换备用方式"
+        nohup /usr/local/bin/python /xuexi/wechatListener.py >> /xuexi/user/wechat_listener.log 2>&1 &
+    # fi
+    # tail -f /xuexi/user/wechat_listener.log &
+fi
+
+
 if [ "${Pushmode}" = "5" ]; then
-    echo "当前模式为网页控制台模式，即将启动守护 --  xuexitg"
+    echo "当前模式为 Telegram 模式，即将启动守护 --  xuexitg"
+    : > /xuexi/user/tg_listener.log
     sleep 1
     supervisord -c /etc/supervisord.conf
-    # nohup /usr/local/bin/python /xuexi/telegramListener.py >> /xuexi/user/tg_listener.log 2>&1 &
+    if [ $? -ne 0 ]; then
+        echo "守护进程启动失败，切换备用方式"
+        nohup /usr/local/bin/python /xuexi/telegramListener.py >> /xuexi/user/tg_listener.log 2>&1 &
+    fi
     sleep 1
     supervisorctl start xuexitg
+    tail -f /xuexi/user/tg_listener.log &
 fi
-if [ "${Pushmode}" = "2" ]; then
-    nohup /usr/local/bin/python /xuexi/wechatListener.py >> /xuexi/user/wechat_listener.log 2>&1 &
-fi
+
+
 if [ "${Pushmode}" = "6" ]; then
-    echo "当前模式为网页控制台模式，即将启动守护 --  xuexiweb"
-    : > /var/log/xuexi-web.log 
+    echo "当前模式为 WEB网页控制台 模式，即将启动守护 --  xuexiweb"
+    : > /xuexi/user/web_listener.log
     sleep 1
     supervisord -c /etc/supervisord.conf
     sleep 1
-    # nohup /usr/local/bin/python /xuexi/telegramListener.py >> /xuexi/user/tg_listener.log 2>&1 &
-    sleep 1
-    # nohup /usr/local/bin/python /xuexi/telegramListener.py >> /xuexi/user/tg_listener.log 2>&1 &
     supervisorctl start xuexiweb
-    tail -f /var/log/xuexi-web.log &
+    if [ $? -ne 0 ]; then
+        echo "守护进程启动失败，切换备用方式"
+        nohup /usr/local/bin/python /xuexi/webserverListener.py >> /xuexi/user/web_listener.log 2>&1 &
+    fi
+    tail -f /xuexi/user/web_listener.log &
 fi
+
 ./run.sh 2>&1 &
 echo -e "$CRONTIME $USER /xuexi/run.sh >> /var/log/cron.log 2>&1\n#empty line" >/etc/cron.d/mycron
 crontab /etc/cron.d/mycron

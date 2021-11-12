@@ -1,9 +1,12 @@
 {
-    "techxuexi_version": "v20211111",
+    "techxuexi_version": "v20211112",
     "notice": "欢迎使用 TechXueXi",
     "least_version": "v20211020",
     "old_version_warning": "您的版本太旧，请立即更新",
     "techxuexi_update_log": [{
+        "version": "v20211112",
+        "info": "docker: 守护增加微信模式，未启用。守护日志功能。优化守护提示"
+    },{
         "version": "v20211111",
         "info": "修复错误：打开非 user_status 的 json 文件可能造成问题。优化开发用脚本"
     },{

@@ -157,6 +157,33 @@ def do_refresh_all_cookies(force):
 
 @app.route('/api/add')
 def add():
+
+    filename = os.path.join('user', 'user_status.json')
+    new = []
+    bad_file_flag=False
+    error_line_index = 8
+    with open(filename, 'r', encoding='utf-8') as conf:
+        for line in conf:
+            new.append(line)
+        # 保险起见，判断两次
+        if  '"0":"default"' in new[error_line_index-1] and '},' in new[error_line_index+1]:
+            bad_file_flag=True
+            print("================================================")
+            print("检测到文件出现问题~~~")
+            print("正在冒死修复", filename)
+            # print(new[error_line_index-1])
+            # 一般错误为'        "0":"default"\n'
+            new[error_line_index-1] = new[error_line_index-1][:-1]+',\n'
+            new[error_line_index] = ''
+            new[error_line_index+1] = ''
+
+    if bad_file_flag:
+        with open(filename, 'w', encoding='utf-8') as conf:
+            for line in new:
+                conf.write(line)
+            print("修复完毕~~~")
+            print("================================================")
+
     pdl.add_user()
     sleep(3) and do_refresh_all_cookies(force=True)
     return web_log_and_resp_ok('ヾ(o◕∀◕)ﾉヾ☆登录成功，手动点击UID开始学习★ヾ(≧O≦)〃嗷~')
