@@ -1,8 +1,10 @@
 import json
 import requests  # 导入依赖库
 class PlusPushHandler:
-    def __init__(self, token):
+    def __init__(self, token, topic=''):
         self.token = token
+        self.topic = topic
+
     def ftmsgsend(self, msgurl):
            
             url="http://www.pushplus.plus/send"
@@ -21,7 +23,8 @@ class PlusPushHandler:
             data = {
                 "token":self.token,
                 "title": "学 xi 强 guo ",
-                "content":text
+                "content": text,
+                "topic": self.topic
             }
 
             res = requests.post(url, data=json.dumps(data), headers=headers)  # 发送post请求
