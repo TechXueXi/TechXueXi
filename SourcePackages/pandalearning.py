@@ -173,7 +173,7 @@ def get_all_user_name():
 
 def add_user(chat_id=None):
     get_argv()
-    gl.pushprint("请扫码登录：", chat_id=chat_id)
+    gl.pushprint("请登录（登录方式请仔细阅读文档，如果觉得这是让你下载，就是你没仔细读文档）：", chat_id=chat_id)
     driver_login = Mydriver()
     cookies = driver_login.login(chat_id)
     driver_login.quit()

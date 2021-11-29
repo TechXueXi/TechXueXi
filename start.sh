@@ -39,7 +39,7 @@ if [ "${Pushmode}" = "2" ]; then
     echo "当前模式为 Wechat 模式，即将启动守护 --  xuexiwechat"
     # : > /xuexi/user/wechat_listener.log
     # sleep 1
-    # supervisord -c /etc/supervisord.conf
+    # supervisord -c /xuexi/user/supervisord.conf
     # sleep 1
     # supervisorctl start xuexiwechat
     # if [ $? -ne 0 ]; then
@@ -54,7 +54,7 @@ if [ "${Pushmode}" = "5" ]; then
     echo "当前模式为 Telegram 模式，即将启动守护 --  xuexitg"
     : > /xuexi/user/tg_listener.log
     sleep 1
-    supervisord -c /etc/supervisord.conf
+    supervisord -c /xuexi/user/supervisord.conf
     if [ $? -ne 0 ]; then
         echo "守护进程启动失败，切换备用方式"
         nohup /usr/local/bin/python /xuexi/telegramListener.py >> /xuexi/user/tg_listener.log 2>&1 &
@@ -69,7 +69,7 @@ if [ "${Pushmode}" = "6" ]; then
     echo "当前模式为 WEB网页控制台 模式，即将启动守护 --  xuexiweb"
     : > /xuexi/user/web_listener.log
     sleep 1
-    supervisord -c /etc/supervisord.conf
+    supervisord -c /xuexi/user/supervisord.conf
     sleep 1
     supervisorctl start xuexiweb
     if [ $? -ne 0 ]; then

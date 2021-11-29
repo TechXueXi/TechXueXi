@@ -16,6 +16,7 @@ is_init = False
 pushmode = "0"  # 0 不开启 1 钉钉 2 微信（并未实现） 3 Server 酱 4 pluspush 5 Telegram Bot 6 Web Dashboard
 nohead = False
 accesstoken = ""
+topic = ''
 secret = ""
 islooplogin = False
 zhuanxiang = False
@@ -33,7 +34,7 @@ def init_global():
     """
     初始化全局变量
     """
-    global nohead, islooplogin, single, scheme, pushmode, accesstoken, secret, zhuanxiang, is_init, lock, stime, tg_bot, wechat
+    global nohead, islooplogin, single, scheme, pushmode, accesstoken, secret, zhuanxiang, is_init, lock, stime, tg_bot, wechat, topic
     if os.getenv('Nohead') == "True":
         nohead = True
     else:
@@ -80,6 +81,9 @@ def init_global():
             accesstoken, secret, cfg_get("addition.telegram.proxy"))
     if pushmode == "2":
         wechat = WechatHandler()
+
+    # pushplus topic
+    topic = os.getenv('topic') if os.getenv('topic') else ''
     is_init = True
 
 
@@ -105,7 +109,7 @@ def pushprint(text, chat_id=None):
             push = FangtangHandler(accesstoken)
             push.fttext(text)
         elif pushmode == "4":
-            push = PlusPushHandler(accesstoken)
+            push = PlusPushHandler(accesstoken, topic)
             push.fttext(text)
         elif pushmode == "5":
             tg_bot.send_message(text)
@@ -122,7 +126,7 @@ def send_qrbase64(qcbase64):
         ft = FangtangHandler(accesstoken)
         ft.ftmsgsend(qcbase64)
     elif pushmode == "4":
-        push = PlusPushHandler(accesstoken)
+        push = PlusPushHandler(accesstoken, topic)
         push.ftmsgsend(qcbase64)
     elif pushmode == "5" and cfg_get("addition.telegram.send_qrimage", 0) == 1:
         img_b64decode = base64.b64decode(

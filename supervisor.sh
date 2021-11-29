@@ -20,7 +20,7 @@ command=/usr/local/bin/python wechatListener.py
 autostart=false
 autorestart=true
 stdout_logfile=/xuexi/user/wechat_listener.log
-stderr_logfile/xuexi/user/wechat_listener.log
+stderr_logfile=/xuexi/user/wechat_listener.log
 
 EOF
 
@@ -33,7 +33,7 @@ command=/usr/local/bin/python telegramListener.py
 autostart=false
 autorestart=true
 stdout_logfile=/xuexi/user/tg_listener.log
-stderr_logfile/xuexi/user/tg_listener.log
+stderr_logfile=/xuexi/user/tg_listener.log
 
 EOF
 
@@ -46,6 +46,13 @@ command=/usr/local/bin/python webserverListener.py
 autostart=false
 autorestart=true
 stdout_logfile=/xuexi/user/web_listener.log
-stderr_logfile/xuexi/user/web_listener.log
+stderr_logfile=/xuexi/user/web_listener.log
 
 EOF
+
+mkdir -p /xuexi/user
+cp -r /etc/supervisord.conf /xuexi/user/
+#systemctl enable supervisord
+#supervisorctl stop all
+#supervisord -c /xuexi/user/supervisord.conf
+#supervisorctl start all

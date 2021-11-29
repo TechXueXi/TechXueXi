@@ -1,9 +1,15 @@
 {
-    "techxuexi_version": "v20211112",
+    "techxuexi_version": "v20211128",
     "notice": "欢迎使用 TechXueXi",
     "least_version": "v20211020",
     "old_version_warning": "您的版本太旧，请立即更新",
     "techxuexi_update_log": [{
+        "version": "v20211128",
+        "info": "修复和优化，优化登录提示，新增Dockerfile_arm32v7.dev"
+    },{
+        "version": "v20211124",
+        "info": "pushplus 支持按群组推送"
+    },{
         "version": "v20211112",
         "info": "docker: 守护增加微信模式，未启用。守护日志功能。优化守护提示"
     },{
