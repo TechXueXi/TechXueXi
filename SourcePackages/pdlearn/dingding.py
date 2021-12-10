@@ -60,12 +60,19 @@ class DingDingHandler:
     def ddtextsend(self, text):
         data={}
         headers = {"Content-Type": "application/json"}  # 定义数据类型
+        
+        
+        # 将信息类型由link改为text，所有信息都采用text形式，配置scheme后，直接点击发送过来的网址就可跳转到学xi强国APP，不用每次都点“同意”跳转，节省时间
+        
+        
+        '''
         if text.startswith('dtxuexi://appclient/'):
-            # 将推送类型由url改为text，直接点击网址就可跳转到学xi强国APP，操作上会少点一步“同意”，节省时间
             data = {
-                "msgtype": "text",
-                "text": {
-                    "content": text,
+                "msgtype": "link",
+                "link": {
+                    "text": "请点击重新登录",
+                    "title": "登录失效",
+                    "messageUrl": text,
                 },
             }
         else:
@@ -76,5 +83,15 @@ class DingDingHandler:
                     "content": text,
                 },
             }
+         '''
+        
+        
+        data = {
+            "msgtype": "text",
+            "text": {
+                "content": text,
+            },
+        }
+        
         res = requests.post(self.get_url(), data=json.dumps(data), headers=headers)  # 发送post请求
         print(res.text)
