@@ -61,12 +61,11 @@ class DingDingHandler:
         data={}
         headers = {"Content-Type": "application/json"}  # 定义数据类型
         if text.startswith('dtxuexi://appclient/'):
+            # 将推送类型由url改为text，直接点击网址就可跳转到学xi强国APP，操作上会少点一步“同意”，节省时间
             data = {
-                "msgtype": "link",
-                "link": {
-                    "text": "请点击重新登录",
-                    "title": "登录失效",
-                    "messageUrl": text,
+                "msgtype": "text",
+                "text": {
+                    "content": text,
                 },
             }
         else:
