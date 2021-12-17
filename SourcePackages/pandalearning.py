@@ -70,7 +70,7 @@ def start_learn(uid, name):
             print(color.red("【#️⃣】 若直接退出请运行：webserverListener.py"))
             return
         driver_login = Mydriver()
-        cookies = driver_login.login()
+        cookies = driver_login.login(uid)
         driver_login.quit()
         if not cookies:
             print("登录超时")
