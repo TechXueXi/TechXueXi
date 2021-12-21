@@ -170,8 +170,9 @@ class Mydriver:
             print("当前网络缓慢...")
         else:
             self.driver.execute_script('arguments[0].remove()', remover)
+            #修改了适配新版本的二维码的滚动位置 
             self.driver.execute_script(
-                'window.scrollTo(document.body.scrollWidth/2 - 200 , 0)')
+                'window.scrollTo(document.body.scrollWidth/2 - 200 , 400)')
         qrurl = ''
         qcbase64 = ''
         # 取出iframe中二维码，并发往钉钉
