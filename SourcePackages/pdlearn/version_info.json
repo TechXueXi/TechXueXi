@@ -1,9 +1,12 @@
 {
-    "techxuexi_version": "v20211128",
+    "techxuexi_version": "v20211221",
     "notice": "欢迎使用 TechXueXi",
     "least_version": "v20211020",
     "old_version_warning": "您的版本太旧，请立即更新",
     "techxuexi_update_log": [{
+        "version": "v20211221",
+        "info": "修改了适配新版本的二维码的滚动位置"
+    },{
         "version": "v20211128",
         "info": "修复和优化，优化登录提示，新增Dockerfile_arm32v7.dev"
     },{
