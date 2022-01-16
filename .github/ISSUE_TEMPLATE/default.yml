@@ -1,0 +1,109 @@
+name: 报告问题
+description: 提 issue 报告问题，请点击右边绿色按钮
+labels: ["bug"]
+title: "请修改这里的名称"
+assignees:
+  - octocat
+body:
+  - type: checkboxes
+    id: lists
+    attributes:
+      label: 清单
+      description: 你必须按要求尝试并勾选完成。
+      options:
+        - label: 我已经仔细阅读过 README 使用方法-更新方法-下载方式 ， DOCKER 这些说明 https://github.com/TechXueXi/TechXueXi/wiki
+          required: true
+        - label: 我已经仔细阅读过 常见问题汇总 https://github.com/TechXueXi/TechXueXi/wiki/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB
+          required: true
+        - label: 我已经查看/搜索过所有已有 issue，无论是open还是close的 
+          required: true
+        - label: 我已经通过搜索引擎搜索，尝试不同的关键词   www.google.com  www.baidu.com
+          required: true
+        - label: 我已经到提供的在线聊天室询问过  聊天室说明：https://github.com/TechXueXi/TechXueXi/issues/14
+          required: true
+  - type: dropdown
+    id: run
+    validations:
+      required: true
+    attributes:
+      label: 运行方式
+      description: 使用何种运行方式？
+      options:
+        - Docker运行
+        - 源码运行
+        - 一般运行（现在不提供支持）
+  - type: input
+    id: source-version
+    attributes:
+      label: 软件/源码版本
+      description: 源码 或 docer 运行可以在 /SourcePackages/pdlearn/version_info.json 文件的 techxuexi_version 处看到当前版本。 docker 需要填写 docker 里的源码版本
+      placeholder: v20211221
+    validations:
+      required: true
+  - type: input
+    id: sys-version
+    attributes:
+      label: 系统版本，包含位数
+      description: windows x64 , centos x64，debain arm32
+      placeholder: windows x64
+    validations:
+      required: true
+  - type: input
+    id: browser-version
+    attributes:
+      label: 浏览器、驱动版本
+      description: chrome v73.0.0 + chromedriver v x.x.x
+      placeholder: chrome v73.0.0 + chromedriver v x.x.x
+    validations:
+      required: true
+  - type: input
+    id: python-version
+    attributes:
+      label: python版本
+      description: docker 需要填写 docker 里的 python 版本，格式 python3.6.8 x32
+      placeholder: python3.6.8 x32
+    validations:
+      required: true
+  - type: input
+    id: docker-tag-version
+    attributes:
+      label: docker tag版本
+      description: docker 需要填写 docker 的 tag, latest,dev84
+      placeholder: 不使用docker,或 dev84 等
+    validations:
+      required: true
+
+  - type: dropdown
+    id: push
+    validations:
+      required: true
+    attributes:
+      label: 推送方式
+      description:
+      options:
+        - 不使用或不开启推送
+        - 1 钉钉
+        - 2 微信
+        - 3 Server酱
+        - 4 pluspush
+        - 5 telegram
+        - 6 网页推送
+  - type: textarea
+    id: description
+    attributes:
+      label: 详细描述
+      description: 报错请复制粘贴，可以粘贴图片，但不要只使用图片，方便同志们搜索。
+      placeholder:
+      value:
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: |
+        **必须填写完成才能按提交按钮**
+      
+        许多IT人员本终日埋头写代码，对我们这类软件确实有需求，
+        与其各人重复修改编写浪费生产力不如团队合作维护，因此我们希望长期维护此生态。
+        有意愿加入本组织者，请 https://techxuexi.js.org/
+        
+        我们不接受任何捐赠。远离非法牟利。
