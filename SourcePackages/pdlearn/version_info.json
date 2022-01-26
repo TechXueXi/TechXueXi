@@ -1,9 +1,12 @@
 {
-    "techxuexi_version": "v20220116",
+    "techxuexi_version": "v20220126",
     "notice": "欢迎使用 TechXueXi",
     "least_version": "v20211020",
     "old_version_warning": "您的版本太旧，请立即更新",
     "techxuexi_update_log": [{
+        "version": "v20220126",
+        "info": "修复Error:could not find config file /xuexi/user/supervisord.conf的问题"
+    },{
         "version": "v20220116",
         "info": "修改了依赖项版本，修改issue模板"
     },{

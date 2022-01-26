@@ -11,11 +11,11 @@ body:
       label: 清单
       description: 你必须按要求尝试并勾选完成。
       options:
-        - label: 我已经仔细阅读过 README 使用方法-更新方法-下载方式 ， DOCKER 这些说明 https://github.com/TechXueXi/TechXueXi/wiki
+        - label: 我已经仔细阅读过 README 使用方法-更新方法-下载方式 ， DOCKER 这些说明，可以通过菜单切换 https://github.com/TechXueXi/TechXueXi/wiki
           required: true
         - label: 我已经仔细阅读过 常见问题汇总 https://github.com/TechXueXi/TechXueXi/wiki/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB
           required: true
-        - label: 我已经查看/搜索过所有已有 issue，无论是open还是close的 
+        - label: 我已经查看/搜索过所有已有 issue，无论是open还是close的 https://github.com/TechXueXi/TechXueXi/issues?q=is%3Aissue
           required: true
         - label: 我已经通过搜索引擎搜索，尝试不同的关键词   www.google.com  www.baidu.com
           required: true
@@ -44,8 +44,8 @@ body:
     id: sys-version
     attributes:
       label: 系统版本，包含位数
-      description: windows x64 , centos x64，debain arm32
-      placeholder: windows x64
+      description: 如 windows7 x64 , centos7.8 x64
+      placeholder: windows7 x64
     validations:
       required: true
   - type: input
