@@ -5,6 +5,7 @@ import os
 import pandalearning as pdl
 from pdlearn.exp_catch import exception_catcher
 from pdlearn.config import cfg_get, get_env_or_cfg
+import gc #资源回收
 
 pushmode = get_env_or_cfg("addition.Pushmode", "Pushmode", "0")
 token = get_env_or_cfg("addition.telegram.bot_token", "AccessToken", "")
@@ -109,6 +110,8 @@ def polling():
         bot.polling(non_stop=True, timeout=120)
     except Exception as e:
         print("telegtram listener reconnecting...")
+    finally: #资源回收
+        gc.collect() #资源回收
         polling()
 
 
