@@ -1,5 +1,5 @@
 #!/bin/bash
-./supervisor.sh 2>&1 & #修复Error:could not find config file /xuexi/user/supervisord.conf问题
+./supervisor.sh 2>&1 & #修复Error:could not find config file /xuexi/user/supervisord.conf的问题
 
 update() {
 
