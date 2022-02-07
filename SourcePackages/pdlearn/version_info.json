@@ -1,9 +1,12 @@
 {
-    "techxuexi_version": "v20220126",
+    "techxuexi_version": "v20220207",
     "notice": "欢迎使用 TechXueXi",
     "least_version": "v20211020",
     "old_version_warning": "您的版本太旧，请立即更新",
     "techxuexi_update_log": [{
+        "version": "v20220207",
+        "info": "微信默认使用supervisord 守护"
+    },{
         "version": "v20220126",
         "info": "1.增加资源回收机制,减少栈内存溢出现象发生, 2.修复Error:could not find config file /xuexi/user/supervisord.conf的问题"
     },{
