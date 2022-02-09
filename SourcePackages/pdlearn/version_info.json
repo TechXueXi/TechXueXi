@@ -1,9 +1,12 @@
 {
-    "techxuexi_version": "v20220207",
+    "techxuexi_version": "v20220209",
     "notice": "欢迎使用 TechXueXi",
     "least_version": "v20211020",
     "old_version_warning": "您的版本太旧，请立即更新",
     "techxuexi_update_log": [{
+        "version": "v20220209",
+        "info": "修改 淘宝chromedriver地址"
+    },{
         "version": "v20220207",
         "info": "微信默认使用supervisord 守护"
     },{
