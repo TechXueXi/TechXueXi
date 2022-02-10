@@ -3,7 +3,7 @@ FROM alpine AS builder
 ENV QEMU_URL https://github.com/balena-io/qemu/releases/download/v3.0.0%2Bresin/qemu-3.0.0+resin-arm.tar.gz
 RUN apk add curl && curl -L ${QEMU_URL} | tar zxvf - -C . --strip-components 1
 FROM arm32v7/python:bullseye
-ARG usesource="https://github.com.cnpmjs.org/TechXueXi/TechXueXi.git"
+ARG usesource="https://hub.fastgit.xyz/TechXueXi/TechXueXi.git"
 ARG usebranche="dev"
 ENV pullbranche=${usebranche}
 ENV Sourcepath=${usesource}
@@ -27,7 +27,7 @@ ENV Secret=
 ENV Nohead=True
 ENV Pushmode=1
 ENV islooplogin=False
-#ENV Sourcepath="https://github.com.cnpmjs.org/TechXueXi/TechXueXi.git"
+#ENV Sourcepath="https://hub.fastgit.xyz/TechXueXi/TechXueXi.git"
 ENV CRONTIME="30 9 * * *"
 # RUN rm -f /xuexi/config/*; ls -la
 COPY requirements.txt /xuexi/requirements.txt

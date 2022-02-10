@@ -1,6 +1,6 @@
   
 FROM python:3.7-slim
-ARG usesource="https://github.com.cnpmjs.org/TechXueXi/TechXueXi.git"
+ARG usesource="https://hub.fastgit.xyz/TechXueXi/TechXueXi.git"
 ARG usebranche="dev"
 ENV pullbranche=${usebranche}
 ENV Sourcepath=${usesource}
