@@ -44,7 +44,7 @@ def up_info():
         remote_update_logs = remote_info["techxuexi_update_log"]
         print(color.yellow("[*] " + __INFO))
         print(color.yellow("[*] 程序版本为：{}".format(native_version)))
-        print(color.yellow("[*] 最新版本为：{}".format(remote_version)))
+        print(color.yellow("[*] 最新稳定版为：{}".format(remote_version)))
         if remote_version > native_version:  # 有新版本
             print(color.red("[*] 当前不是最新版本，建议更新"))
             print(color.red("[*] " + "=" * 60))
