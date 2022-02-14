@@ -22,7 +22,7 @@
 <img width=18% src="https://raw.githubusercontent.com/TechXueXi/TechXueXi/master/img_folder/kjqg.png" />
 </div>
 
-
+文档移动到了 https://github.com/TechXueXi/TechXueXi/wiki
 
 # TechXueXi
 <p align="center">TechXueXi 是一款使用python语言编写的学 xi 工具。可达 45 分/天</p>
