@@ -1,9 +1,12 @@
 {
-    "techxuexi_version": "v20220214",
+    "techxuexi_version": "v20220223",
     "notice": "欢迎使用 TechXueXi",
     "least_version": "v20211020",
     "old_version_warning": "您的版本太旧，请立即更新",
     "techxuexi_update_log": [{
+        "version": "v20220223",
+        "info": "修复cannot import name 'json' from 'itsdangerous'的问题：「itsdangerous」在v2.1.0中去掉了「json」方法，默认使用v2.0.1版"
+    },{
         "version": "v20220214",
         "info": "调整取消程序内自适应代码 在手机端自动缩放"
     },{
