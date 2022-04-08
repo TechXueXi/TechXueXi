@@ -167,7 +167,7 @@ win平台可能提示`无法定位程序输入点ucrtbase.terminate于动态链�
 
 ### [👨‍👨‍👦‍👦 直接参与贡献](https://github.com/TechXueXi/TechXueXi/blob/dev/CONTRIBUTING.md)(内附提交方法)
 
-如您开发了其他“科技强国”项目，也可以加入本组织，相互交流，共同维护生态。
+如您开发了其他“科技强国”项目，也可以加入本组织，相互交流，共同维护生态。。
 
 ### 🙋‍♂️ 加入组织
 https://github.com/TechXueXi/TechXueXi/issues/2
