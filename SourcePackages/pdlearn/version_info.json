@@ -1,9 +1,12 @@
 {
-    "techxuexi_version": "v20220319",
+    "techxuexi_version": "v20220411",
     "notice": "欢迎使用 TechXueXi",
     "least_version": "v20211020",
     "old_version_warning": "您的版本太旧，请立即更新",
     "techxuexi_update_log": [{
+        "version": "v20220411",
+        "info": "修复Linux or macOS上Pillow的问题"
+    },{
         "version": "v20220319",
         "info": "两个网页。去除无用js与css，修改网页背景为随机接口(每次刷新不同的壁纸)，更换自适应分辨率代码，增加弹窗公告(每次刷新会弹窗，不喜欢可以去掉，内容自己修改，大概在620行以后可以看到)，增加悬浮小人偶(装逼使用)，修复所有报错，修复源码icon图标，修改按钮颜色 点击动画 形状等，修改table表格背景颜色 线框阴影，修改th,tr,td表格颜色 形状 增加鼠标停留放大动画，修改的东西太多 就不一一说了 自己用着看吧，最最重要的 现在代码一目了然 有注释 会的随便修改修改吧"
     },{
