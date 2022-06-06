@@ -500,9 +500,10 @@ def answer_question(quiz_type, cookies, scores, score_all, quiz_xpath, category_
             if scores[quiz_type] >= score_all:
                 print("检测到"+quiz_zh_CN[quiz_type]+"答题分数已满,退出学 xi ")
             else:
-                print(
-                    "！！！！！没拿到满分，请收集日志反馈错误题目！！！！！https://github.com/TechXueXi/techxuexi-tiku/issues/1")
-                auto.prompt("完成后（或懒得弄）请在此按回车...")
+                if quiz_type != "weekly":
+                    print(
+                        "！！！！！没拿到满分，请收集日志反馈错误题目！！！！！https://github.com/TechXueXi/techxuexi-tiku/issues/1")
+                    auto.prompt("完成后（或懒得弄）请在此按回车...")
                 # log_daily("！！！！！没拿到满分！！！！！")
         if driver_default == None:
             try:
