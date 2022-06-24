@@ -131,7 +131,7 @@ TechXueXi为python学 xi 交流的开源非营利项目，仅作为程序员之�
 
 win平台可能提示`无法定位程序输入点ucrtbase.terminate于动态链接库api-ms-win-crt-runtime-|1-1-0.dll`等缺失dll文件的问题而无法使用，尝试安装`Visual C++ Redistributable for Visual Studio 2015`
 
-链接已失效，请自己百度下载
+[下载链接](https://www.microsoft.com/en-us/download/details.aspx?id=48145)
 
 **下载安装:**
 
