@@ -61,6 +61,8 @@ def login(chat_id=None):
     qr.make(fit=True)
     img = qr.make_image()
     img.show()
+    img.save("qrcode.png")
+    print("二维码已保存到qrcode.png")
     # 二维码转base64
     output_buffer = io.BytesIO()
     img.save(output_buffer, format='JPEG')
@@ -114,8 +116,13 @@ def login(chat_id=None):
                params={"code": secret.split("=")[1], "state": sign + str(uuid.uuid4())})
 
     print("token ==> " + client.cookies.get("token"))
-
-    cookies = [{"name": "token", "value": client.cookies.get("token")}]
+    cookies = [
+        {'domain': '.xuexi.cn',
+         "expiry": int(time.time())+12*3600,
+         'httpOnly': False,
+         'name': 'token', 'path': '/',
+         'secure': False,
+         'value': client.cookies.get("token")}]
     user.save_cookies(cookies)
     web_qr_url and web_db.session.delete(web_qr_url)
     web_msg and web_db.session.delete(web_msg)
