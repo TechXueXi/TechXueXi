@@ -14,3 +14,4 @@ itsdangerous==2.0.1
 Flask==2.1.0
 Flask_SQLAlchemy==2.5.1
 Flask_Cors==3.0.9
+qrcode==7.3.1

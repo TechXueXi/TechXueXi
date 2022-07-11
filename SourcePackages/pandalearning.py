@@ -14,7 +14,7 @@ try:
     from pdlearn.answer_question import daily, weekly, zhuanxiang
     from pdlearn.article_video import article, video
     from pdlearn.config import cfg_get
-    from pdlearn.mydriver import Mydriver
+    from pdlearn.mydriver import Mydriver, login
     from pdlearn.score import show_score, show_scorePush
 except ImportError as e:
     boot.try_pip_install(exception=e)
@@ -69,9 +69,10 @@ def start_learn(uid, name):
             gl.pushprint("web模式跳过自动获取二维码,请手动点击添加按钮", chat_id=uid)
             print(color.red("【#️⃣】 若直接退出请运行：webserverListener.py"))
             return
-        driver_login = Mydriver()
-        cookies = driver_login.login()
-        driver_login.quit()
+        # driver_login = Mydriver()
+        # cookies = driver_login.login()
+        # driver_login.quit()
+        cookies = login()
         if not cookies:
             print("登录超时")
             return
@@ -133,7 +134,7 @@ def start(nick_name=None):
         user_list.append(["", "新用户"])
     for i in range(len(user_list)):
         try:
-            if nick_name == None or nick_name == user_list[i][1] or nick_name == user_list[i][0]:
+            if nick_name is None or nick_name == user_list[i][1] or nick_name == user_list[i][0]:
                 _learn = threads.MyThread(
                     user_list[i][0]+"开始学xi", start_learn, user_list[i][0], user_list[i][1], lock=Single)
                 _learn.start()
@@ -174,9 +175,10 @@ def get_all_user_name():
 def add_user(chat_id=None):
     get_argv()
     gl.pushprint("请登录（登录方式请仔细阅读文档，如果觉得这是让你下载，就是你没仔细读文档）：", chat_id=chat_id)
-    driver_login = Mydriver()
-    cookies = driver_login.login(chat_id)
-    driver_login.quit()
+    # driver_login = Mydriver()
+    # cookies = driver_login.login(chat_id)
+    # driver_login.quit()
+    cookies = login(chat_id=chat_id)
     if not cookies:
         gl.pushprint("登录超时。", chat_id=chat_id)
         return

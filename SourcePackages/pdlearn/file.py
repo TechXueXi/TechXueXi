@@ -58,7 +58,7 @@ def save_json_data(filename, object_to_save, sort_keys=True):
 
 def get_conf_file(filename, template_conf_str):
     check_directory(filename)
-    if(os.path.exists(filename) and os.path.getsize(filename) != 0):
+    if os.path.exists(filename) and os.path.getsize(filename) != 0:
         try:
             conf_obj = ConfigFactory.parse_file(filename)
         except Exception as e:

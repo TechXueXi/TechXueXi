@@ -1,5 +1,7 @@
 from pdlearn import dingding
 from pdlearn import user
+from pdlearn.mydriver import login
+
 
 def user_flag(dd_status, uname):
     if False and dd_status:
@@ -10,9 +12,10 @@ def user_flag(dd_status, uname):
             cookies = user.get_cookie(uname)
             if not cookies:
                 print("未找到有效登录信息，需要登录")
-                driver_login = Mydriver(nohead=False)
-                cookies = driver_login.login()
-                driver_login.quit()
+                # driver_login = Mydriver(nohead=False)
+                # cookies = driver_login.login()
+                # driver_login.quit()
+                cookies = login()
         else:
             cookies = dingding.dd_login_status(uname)
     a_log = user.get_a_log(uname)

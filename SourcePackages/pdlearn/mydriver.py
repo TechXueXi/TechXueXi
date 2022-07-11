@@ -5,10 +5,12 @@ import random
 import re
 import string
 import time
+import uuid
 from typing import Any, List
 from urllib.parse import quote, quote_plus
 
 import lxml
+import qrcode
 import requests
 import selenium
 from bs4 import BeautifulSoup
@@ -22,25 +24,110 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+
+from pdlearn.globalvar import web
 from webServerConf import WebMessage, WebQrUrl, web_db
 
-from pdlearn import auto
-from pdlearn import globalvar as gl
+from pdlearn import globalvar as gl, auto
 from pdlearn import user, user_agent
 from pdlearn.web import WebHandler
 from pdlearn.config import cfg_get
 from pdlearn.dingding import DingDingHandler
-# from pdlearn.qywx import WeChat  # 使用微信发送二维码图片到手机
 
+
+# from pdlearn.qywx import WeChat  # 使用微信发送二维码图片到手机
 
 
 def decode_img(data):
     if None == data:
         raise Exception('未获取到二维码,请检查网络并重试')
 
-    img_b64decode = base64.b64decode(data[data.index(';base64,')+8:])
+    img_b64decode = base64.b64decode(data[data.index(';base64,') + 8:])
     decoded = pyzbar.decode(Image.open(io.BytesIO(img_b64decode)))
     return decoded[0].data.decode("utf-8")
+
+
+def login(chat_id=None):
+    client = requests.session()
+    # 1. 获取sign
+    sign: str = client.get(url="https://pc-api.xuexi.cn/open/api/sns/sign").json().get("data").get("sign")
+    # 2. 获取qr
+    qr_data: str = client.get("https://login.xuexi.cn/user/qrcode/generate").json().get("result")
+    # 3. 生成登录链接
+    code_url = f"https://login.xuexi.cn/login/qrcommit?showmenu=false&code={qr_data}&appId=dingoankubyrfkttorhpou"
+    # 生成二维码
+    qr = qrcode.QRCode(version=None, error_correction=qrcode.constants.ERROR_CORRECT_L, box_size=10, border=2)
+    qr.add_data(code_url)
+    qr.make(fit=True)
+    img = qr.make_image()
+    img.show()
+    img.save("qrcode.png")
+    print("二维码已保存到qrcode.png")
+    # 二维码转base64
+    output_buffer = io.BytesIO()
+    img.save(output_buffer, format='JPEG')
+    byte_data = output_buffer.getvalue()
+    qrbase64 = "data:image/png;base64," + base64.b64encode(byte_data).decode("utf-8")
+
+    # 推送消息
+    if gl.nohead or cfg_get("addition.SendLoginQRcode", 0) == 1:
+        print("二维码将发往机器人...\n" + "=" * 60)
+        # 发送二维码
+        gl.send_qrbase64(qrbase64)
+        # 发送链接
+        if gl.scheme:
+            qrurl = gl.scheme + quote_plus(code_url)
+        else:
+            qrurl = decode_img(qrbase64)
+        gl.pushprint(qrurl, chat_id)
+
+    web_qr_url = ""
+    web_msg = ""
+    try:
+        web_qr_url = web_db.session.query(
+            WebQrUrl).filter_by(url=qrbase64).first()
+        web_msg = web_db.session.query(
+            WebMessage).filter_by(text=code_url).first()
+    except Exception as e:
+        print(str(e))
+        print("web数据库添加失败")
+        web_db.session.rollback()
+
+    secret = ""
+    print(f"sign: {sign}, data: {qr_data}")
+    for i in range(60):
+        resp = client.post(url="https://login.xuexi.cn/login/login_with_qr",
+                           data={"qrCode": qr_data, "goto": "https://oa.xuexi.cn", "pdmToken": ""},
+                           ).json()
+        if resp.get("success"):
+            secret = resp.get("data")
+            break
+        else:
+            print("等待扫码中---")
+        print(resp)
+        time.sleep(5)
+    if secret == "":
+        if gl.islooplogin:
+            print("循环模式开启，即将重新获取二维码")
+            time.sleep(3)
+            return login(chat_id)
+        return None
+    client.get("https://pc-api.xuexi.cn/login/secure_check",
+               params={"code": secret.split("=")[1], "state": sign + str(uuid.uuid4())})
+
+    print("token ==> " + client.cookies.get("token"))
+    cookies = [
+        {'domain': '.xuexi.cn',
+         "expiry": int(time.time())+12*3600,
+         'httpOnly': False,
+         'name': 'token', 'path': '/',
+         'secure': False,
+         'value': client.cookies.get("token")}]
+    user.save_cookies(cookies)
+    web_qr_url and web_db.session.delete(web_qr_url)
+    web_msg and web_db.session.delete(web_msg)
+    web_db.session.commit()
+    return cookies
 
 
 class title_of_login:
@@ -50,7 +137,7 @@ class title_of_login:
             is_title1 = bool(EC.title_is(u'我的学习')(driver))
             is_title2 = bool(EC.title_is(u'系统维护中')(driver))
         except Exception as e:
-            print("chrome 开启失败。"+str(e))
+            print("chrome 开启失败。" + str(e))
             exit()
         if is_title1 or is_title2:
             return True
@@ -110,27 +197,27 @@ class Mydriver:
                 mydriver_log = '可找到 "/opt/google/chrome/chrome"'
             # ==================== 寻找 chromedriver ====================
             chromedriver_paths = [
-                "./chrome/chromedriver.exe",                # win
-                "./chromedriver",                           # linux
-                "/usr/bin/chromedriver",                    # linux用户安装
+                "./chrome/chromedriver.exe",  # win
+                "./chromedriver",  # linux
+                "/usr/bin/chromedriver",  # linux用户安装
                 # raspberry linux （需要包安装chromedriver）
                 "/usr/lib64/chromium-browser/chromedriver",
                 # raspberry linux （需要包安装chromedriver）
                 "/usr/lib/chromium-browser/chromedriver",
-                "/usr/local/bin/chromedriver",              # linux 包安装chromedriver
+                "/usr/local/bin/chromedriver",  # linux 包安装chromedriver
             ]
             have_find = False
             for one_path in chromedriver_paths:
                 if os.path.exists(one_path):
                     self.driver = self.webdriver.Chrome(
                         executable_path=one_path, chrome_options=self.options)
-                    mydriver_log = mydriver_log+'\r\n可找到 "' + one_path + '"'
+                    mydriver_log = mydriver_log + '\r\n可找到 "' + one_path + '"'
                     have_find = True
                     break
             if not have_find:
                 self.driver = self.webdriver.Chrome(
                     chrome_options=self.options)
-                mydriver_log = mydriver_log+'\r\n未找到chromedriver，使用默认方法。'
+                mydriver_log = mydriver_log + '\r\n未找到chromedriver，使用默认方法。'
         except:
             print("=" * 60)
             print(" Chrome 浏览器初始化失败。信息：")
@@ -170,7 +257,7 @@ class Mydriver:
             print("当前网络缓慢...")
         else:
             self.driver.execute_script('arguments[0].remove()', remover)
-            #修改了适配新版本的二维码的滚动位置 
+            # 修改了适配新版本的二维码的滚动位置
             self.driver.execute_script(
                 'window.scrollTo(document.body.scrollWidth/2 - 200 , 400)')
         qrurl = ''
@@ -223,11 +310,11 @@ class Mydriver:
             web_msg and web_db.session.delete(web_msg)
             web_db.session.commit()
             return cookies
-            
+
         except Exception as e:
             print("扫描二维码超时... 错误信息：" + str(e))
             self.web_log("扫描二维码超时... 错误信息：" + str(e))
-            if(gl.islooplogin == True):
+            if (gl.islooplogin == True):
                 print("循环模式开启，即将重新获取二维码")
                 self.web_log("循环模式开启，即将重新获取二维码")
                 time.sleep(3)
@@ -254,7 +341,7 @@ class Mydriver:
         # 发送链接
         qrurl = ''
         if gl.scheme:
-            qrurl = gl.scheme+quote_plus(decode_img(qcbase64))
+            qrurl = gl.scheme + quote_plus(decode_img(qcbase64))
         else:
             qrurl = decode_img(qcbase64)
         gl.pushprint(qrurl, chat_id)
@@ -408,7 +495,7 @@ class Mydriver:
             display_tip = 0  # 页面上没有加载提示的内容
             display_tip = self.driver.find_element_by_css_selector(
                 ".ant-popover-hidden")  # 关闭tip则为hidden
-            if(display_tip == 0):  # 没有关闭tip
+            if (display_tip == 0):  # 没有关闭tip
                 tips_close = self.driver.find_element_by_xpath(
                     '//*[@id="app"]/div/div[2]/div/div[4]/div[1]/div[1]')
                 tips_close.click()
@@ -475,6 +562,7 @@ class Mydriver:
         builder.release().perform()
         time.sleep(5)
         self.swiper_valid()
+
     # 鼠标移动
 
     def move_mouse(self, distance):
