@@ -223,9 +223,9 @@ class Mydriver:
             print(" Chrome 浏览器初始化失败。信息：")
             print(mydriver_log)
             print('您可以检查下：')
-            print("1. 是否存在./chrome/chromedriver.exe 或 PATH 中是否存在 chromedriver.exe")
+            print("1. 是否存在./chrome/chromedriver 或 PATH 中是否存在 chromedriver")
             print(
-                "2. 浏览器地址栏输入 chrome://version 看到的chrome版本 和 运行 chromedriver.exe 显示的版本整数部分是否相同")
+                "2. 浏览器地址栏输入 chrome://version 看到的chrome版本 和 运行 chromedriver 显示的版本整数部分是否相同")
             print("针对上述问题，请在 https://registry.npmmirror.com/binary.html?path=chromedriver/ 下载对应版本程序并放在合适的位置")
             print("3. 如不是以上问题，请提issue，附上报错信息和您的环境信息")
             print("=" * 60)

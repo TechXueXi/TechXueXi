@@ -1,9 +1,12 @@
 {
-    "techxuexi_version": "v20220411",
+    "techxuexi_version": "v20220711",
     "notice": "欢迎使用 TechXueXi",
     "least_version": "v20211020",
     "old_version_warning": "您的版本太旧，请立即更新",
     "techxuexi_update_log": [{
+        "version": "v20220711",
+        "info": "修复qrcode的问题"
+    },{
         "version": "v20220411",
         "info": "修复Linux or macOS上Pillow的问题"
     },{
