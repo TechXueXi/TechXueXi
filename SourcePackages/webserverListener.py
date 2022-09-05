@@ -84,7 +84,8 @@ def web_log(send_log):
 
 @app.route('/')
 def hello_world():
-    return redirect('/static/index.html', code=302)
+    # return redirect('/static/index.html', code=302)
+    return redirect('/static/login.html', code=302)
 
 
 @app.route('/jump')
