@@ -9,6 +9,7 @@ SQLOTE_MEMORY = 'sqlite:///:memory:'
 LAST_STATUS_REFRESH_ALL_COOKIES = {'TIME': datetime.now(), 'USER_STATUS': None}
 app.config['SQLALCHEMY_DATABASE_URI'] = SQLOTE_MEMORY
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
+app.secret_key = 'xuexi'
 
 web_db = SQLAlchemy(app)
 

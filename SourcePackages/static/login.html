@@ -1,49 +1,736 @@
-﻿
 <!DOCTYPE html>
-<html>
-<head>
-		<meta charset="utf-8">
-		<link href="css/login.css" rel='stylesheet' type='text/css' />
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-		<!--webfonts-->
-		<!--//webfonts-->
-</head>
-<body>
-	<div class="main">
-		<div class="header" >
-			<h1>登录或创建一个免费帐户！</h1>
-		</div>
-		<p></p>
-			<form>
-				<ul class="right-form">
-					<h3>登录:</h3>
-					<div>
-						<li><input type="text"  placeholder="Username" required/></li>
-						<li> <input type="password"  placeholder="Password" required/></li>
-						<h4>I forgot my Password!</h4>
-							<input type="submit" onClick="myFunction()" value="登录" >
-					</div>
-					<div class="clear"> </div>
-				</ul>
-				<div class="clear"> </div>
-					
-			</form>
-			
-		</div>
-			<!-----start-copyright---->
-   					<div class="copy-right">
-						<p>Template 2020.  </p> 
-					</div>
-				<!-----//end-copyright---->
 
-	
-<style>
-.copyrights{text-indent:-9999px;height:0;line-height:0;font-size:0;overflow:hidden;}
-</style>
-<div class="copyrights" id="links20210126">
-	Collect from <a href="http://www.cssmoban.com/"  title="网站模板">模板之家</a>
-	<a href="http://cooco.net.cn/" title="组卷网">组卷网</a>
-</div>
+<head>
+    <meta charset=utf-8>
+    <title>科技强国-WEB控制台</title>
+    <!--<meta name="viewport"  content="width=device-width,initial-scale=1.0">-->
+    <meta name=”viewport” content=”width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0,
+        user-scalable=yes” />
+    <style>
+        html,
+        body,
+        div,
+        span,
+        iframe,
+        h1,
+        h2,
+        p,
+        a {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            font-size: 100%;
+            font: inherit;
+            vertical-align: baseline
+        }
+
+        body {
+            padding: 2em 0;
+            margin: 0;
+            font-family: 'Raleway', sans-serif;
+            background: linear-gradient(to left, #ff0000 50%, #0000ff 50%)
+        }
+
+        body a {
+            transition: 0.5s all;
+            -webkit-transition: 0.5s all;
+            -moz-transition: 0.5s all;
+            -o-transition: 0.5s all;
+            -ms-transition: 0.5s all;
+            text-decoration: none;
+            letter-spacing: 1px;
+            font-size: 15px;
+            font-weight: 600
+        }
+
+        body a:hover {
+            text-decoration: none
+        }
+
+        body a:focus,
+        a:hover {
+            text-decoration: none
+        }
+
+        h1,
+        h2 {
+            margin: 0;
+            padding: 0;
+            font-family: 'Raleway', sans-serif;
+            font-weight: 600;
+            letter-spacing: 1px
+        }
+
+        a:focus,
+        a:hover {
+            text-decoration: none;
+            outline: none
+        }
+
+        .error_main {
+            width: 100%
+        }
+
+        h1 {
+            font-size: 50px;
+            text-align: center;
+            color: #fff;
+            margin-bottom: 40px;
+            letter-spacing: 5px
+        }
+
+        h2 {
+            font-size: 30px;
+            text-transform: capitalize;
+            margin: 0;
+            color: #333
+        }
+
+        p {
+            color: #777;
+            letter-spacing: 1px;
+            line-height: 1.8em;
+            font-size: 14px;
+            font-weight: 400;
+            margin: 2em 0
+        }
+
+        .error_content span.fa.fa-frown-o {
+            font-size: 100px;
+            color: #ffb310
+        }
+
+        .error_content {
+            padding: 5em 7em;
+            background: #fff;
+            width: 50%;
+            margin: 0 auto
+        }
+
+        .footer p {
+            text-align: center;
+            color: #eee;
+            letter-spacing: 2px;
+            font-size: 15px;
+            margin: 3em 0 1em
+        }
+
+        .footer p a {
+            color: #eee
+        }
+
+        @media screen and (max-width:1440px) {
+            .error_content {
+                padding: 5em 6em;
+                width: 52%
+            }
+        }
+
+        @media screen and (max-width:1366px) {
+            .error_content {
+                padding: 4em 6em;
+                width: 55%
+            }
+        }
+
+        @media screen and (max-width:1280px) {
+            .error_content {
+                padding: 4em 6em;
+                width: 60%
+            }
+
+            .error_content span.fa.fa-frown-o {
+                font-size: 90px
+            }
+        }
+
+        @media screen and (max-width:1080px) {
+            .error_content {
+                padding: 4em 4em;
+                width: 70%
+            }
+
+            h1 {
+                font-size: 45px;
+                letter-spacing: 3px
+            }
+        }
+
+        @media screen and (max-width:1024px) {
+            .error_content {
+                padding: 4em 3em;
+                width: 72%
+            }
+
+            h2 {
+                font-size: 28px
+            }
+        }
+
+        @media screen and (max-width:991px) {
+            .error_content {
+                padding: 4em 3em;
+                width: 75%
+            }
+
+            p {
+                margin: 1.5em 0
+            }
+        }
+
+        @media screen and (max-width:900px) {
+            p {
+                letter-spacing: .5px
+            }
+        }
+
+        @media screen and (max-width:768px) {
+            h1 {
+                font-size: 40px;
+                letter-spacing: 2px;
+                margin-bottom: 30px
+            }
+
+            h2 {
+                font-size: 26px
+            }
+
+            .error_content span.fa.fa-frown-o {
+                font-size: 80px
+            }
+        }
+
+        @media screen and (max-width:640px) {
+            .footer p {
+                letter-spacing: 1px
+            }
+
+            .error_content {
+                padding: 3em 3em
+            }
+        }
+
+        @media screen and (max-width:480px) {
+            h1 {
+                font-size: 35px;
+                letter-spacing: 2px;
+                margin-bottom: 20px
+            }
+
+            h2 {
+                font-size: 24px
+            }
+
+            .error_content span.fa.fa-frown-o {
+                font-size: 70px
+            }
+
+            .footer p {
+                letter-spacing: 1px;
+                font-size: 14px
+            }
+        }
+
+        @media screen and (max-width:414px) {
+            .error_content {
+                padding: 2em 2em
+            }
+
+            h2 {
+                font-size: 22px
+            }
+        }
+
+        @media screen and (max-width:384px) {
+            h1 {
+                font-size: 30px;
+                margin-bottom: 15px
+            }
+        }
+
+        @media screen and (max-width:375px) {
+            p {
+                letter-spacing: 0px
+            }
+        }
+
+        @media screen and (max-width:320px) {
+            h2 {
+                font-size: 19px;
+                letter-spacing: 0px
+            }
+        }
+    </style>
+    <style>
+        .msg_content {
+            margin-top: 15px;
+            margin-bottom: -16px;
+            padding: 15px;
+            background-color: #f7f7f7;
+            font-size: 14px;
+            color: #4d4d4d;
+            line-height: 22px;
+            text-align: center;
+        }
+
+        .nav a {
+            display: block;
+            /* width: 120px; */
+            /* height: 40px; */
+            text-decoration: none;
+            color: #1f1193;
+            background-color: #b1272787;
+            overflow: hidden;
+            /*自动隐藏文字*/
+            text-overflow: ellipsis;
+            /*文字隐藏后添加省略号*/
+        }
+
+        .nav a:hover {
+            background-color: orangered;
+        }
+    </style>
+    <link rel="icon"
+        href="https://bkimg.cdn.bcebos.com/pic/6f061d950a7b0208cc3d57e46cd9f2d3572cc83b?x-bce-process=image/resize,m_lfit,w_536,limit_1/format,f_jpg">
+    <script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/moment.js/2.29.1/locale/zh-cn.min.js"></script>
+    <script src="https://cdn.bootcss.com/sweetalert/2.1.0/sweetalert.min.js"></script>
+    <script type="text/javascript">
+        //强国js
+        function to_arr(text_or_array) {
+            if (!Array.isArray(text_or_array)) {
+                text_or_array = [text_or_array];
+            }
+            return text_or_array;
+        }
+
+        function get_app_jump_url(url) {
+            if (url.indexOf('/') != -1) {
+                url = encodeURIComponent(url);
+            }
+            return 'dtxuexi://appclient/page/study_feeds?url=' + url;
+        }
+
+        function refresh_msg(messages) {
+            messages = to_arr(messages);
+            $("#message tr:first").nextAll().remove();
+            for (const message of messages) {
+                if (-1 != message.text.indexOf("login.xuexi.cn")) {
+                    $("#message table tr:first").after(
+                        "<tr>" +
+                        "<td>" +
+                        "<span>" +
+                        // message.timestamp +
+                        moment(message.timestamp).format('a h:mm:ss') +
+                        "</span>" +
+                        "</td>" +
+                        "<td>" +
+                        '<button>' +
+                        '<a target="_blank" href="' +
+                        get_app_jump_url(message.text) +
+                        '" style="text-align: center;">' +
+                        '手机点此登录,或者扫码登陆,五分钟有效️' +
+                        "</a>" +
+                        '</button>' +
+                        "</td>" +
+                        "</tr>"
+                    );
+                } else {
+                    $("#message table tr:first").after(
+                        "<tr>" +
+                        "<td>" +
+                        "<span>" +
+                        // message.timestamp +
+                        moment(message.timestamp).format('a h:mm:ss') +
+                        "</span>" +
+                        "</td>" +
+                        "<td>" +
+                        "<span>" +
+                        message.text +
+                        "</span>" +
+                        "</td>" +
+                        "</tr>"
+                    );
+                }
+                // return text_or_array;
+            }
+        }
+
+        function refresh_qrimg(qrurls) {
+            qrurls = to_arr(qrurls);
+            $("#qrurl tr:first").nextAll().remove();
+            for (const qrurl of qrurls) {
+                $("#qrurl tr:first").after(
+                    "<tr>" +
+                    "<td>" +
+                    "<span>" +
+                    qrurl.timestamp +
+                    "</span>" +
+                    "</td>" +
+                    "<td>" +
+                    '<img src="' +
+                    qrurl.url +
+                    '"/>' +
+                    "</td>" +
+                    "</tr>"
+                );
+            }
+        }
+
+        function refresh_user_status(users_status) {
+            users_status = to_arr(users_status);
+            $("#user-status tr:first").nextAll().remove();
+            for (const u_info of users_status) {
+                $("#user-status table").append(
+                    "<tr>" +
+                    "<td><button onclick=\"learn('" +
+                    u_info.uid +
+                    "')\">" +
+                    JSON.stringify(u_info.uid) +
+                    "</button></td>" +
+                    "<td>" +
+                    JSON.stringify(u_info.status) +
+                    "</td>" +
+                    "<td><button onclick=\"remove_cookie('" +
+                    u_info.uid +
+                    "')\">" +
+                    "退出" +
+                    "</button></td>" +
+                    "</tr>"
+                );
+            }
+        }
+
+        function add_msg(messages) {
+            messages = to_arr(messages);
+            for (const message of messages) {
+                $("#message table").append(
+                    "<tr><td>" + JSON.stringify(message) + "</td></tr>"
+                );
+            }
+        }
+
+        function add_tips(messages) {
+            messages = to_arr(messages);
+            for (const message of messages) {
+                $("#tips table").append(
+                    "<tr><td>" + moment().format('a h:mm:ss') + "</td>" +
+                    "<td>" + JSON.stringify(message) + "</td></tr>"
+                );
+            }
+        }
+
+        function learn(uid) {
+            $.ajax({
+                type: "GET",
+                url: "/api/learn_by_uid/" + uid,
+                dataType: "JSON",
+                success: function (response) {
+                    add_tips(response.data);
+                },
+            });
+            console.log(uid);
+        }
+
+        function remove_cookie(uid) {
+            $.ajax({
+                type: "GET",
+                url: "/api/remove_cookie/" + uid,
+                dataType: "JSON",
+                success: function (response) {
+                    add_msg(response.data);
+                },
+            });
+        }
+
+        function update() {
+            $.ajax({
+                type: "GET",
+                url: "/api/update",
+                dataType: "JSON",
+                success: function (response) {
+                    refresh_msg(response.data);
+                },
+            });
+        }
+
+        function add_user() {
+            $.ajax({
+                type: "GET",
+                url: "/api/add",
+                dataType: "JSON",
+                success: function (response) {
+                    add_tips(response.data);
+                    // setTimeout(() => {
+                    //     refresh_all_cookies()
+                    // }, 1000);
+                    //1902180066
+                },
+            });
+        }
+
+        function check_now() {
+            $.ajax({
+                type: "GET",
+                url: "/api/now",
+                dataType: "JSON",
+                success: function (response) {
+                    $("#timestamp").text(response.data);
+                },
+            });
+        }
+
+        function list_users_status() {
+            $.ajax({
+                type: "GET",
+                url: "/api/list_users_status_from_memory",
+                dataType: "JSON",
+                success: function (response) {
+                    refresh_user_status(response.data);
+                },
+            });
+        }
+
+        function refresh_all_cookies() {
+            $.ajax({
+                type: "GET",
+                url: "/api/refresh_all_cookies",
+                dataType: "JSON",
+                success: function (response) {
+                    refresh_user_status(response.data);
+                },
+            });
+        }
+
+        function learn_all() {
+            $.ajax({
+                type: "GET",
+                url: "/api/learn",
+                dataType: "JSON",
+                success: function (response) {
+                    refresh_msg(response.data);
+                },
+            });
+        }
+
+        function list_messages() {
+            $.ajax({
+                type: "GET",
+                url: "/api/list_messages",
+                dataType: "JSON",
+                success: function (response) {
+                    refresh_msg(response.data);
+                },
+            });
+        }
+
+        function list_qrurls() {
+            $.ajax({
+                type: "GET",
+                url: "/api/list_qrurls",
+                dataType: "JSON",
+                success: function (response) {
+                    refresh_qrimg(response.data);
+                },
+            });
+        }
+
+        $(document).ready(function () {
+            add_tips("自动刷新状态,请勿长期打开此页面");
+            setInterval(() => {
+                list_users_status();
+                list_messages();
+                list_qrurls();
+                check_now();
+            }, 1000);
+            setTimeout(() => {
+                setInterval(() => {
+                    refresh_all_cookies();
+                }, 15000);
+            }, 15000);
+        });
+    </script>
+    <style type="text/css">
+        .main {
+            background-color: rgba(102, 146, 191, 0.44);
+            /*边框*/
+            border: solid 1px rgba(102, 146, 191, 0.68);
+            边角弧度 border-radius: 10px;
+            /*阴影*/
+            /* -moz-box-shadow:2px 2px 5px #333333; 
+                -webkit-box-shadow:2px 2px 5px #333333; 
+                box-shadow: 7px 15px 30px #285a63; */
+        }
+
+
+        .main:hover {
+            /*边框*/
+            border: solid 1px rgba(102, 146, 191, 0.68);
+            /*边角弧度*/
+            border-radius: 10px;
+            box-shadow: 7px 15px 30px #285a63;
+        }
+
+        body {
+            min-width: 780px;
+        }
+
+        /*表格样式*/
+        table {
+            width: 90%;
+            background: #ccc;
+            margin: 10px auto;
+            border-collapse: collapse;
+            /*border-collapse:collapse合并内外边距(去除表格单元格默认的2个像素内外边距*/
+        }
+
+        th,
+        td {
+            height: 25px;
+            line-height: 25px;
+            text-align: center;
+            border: 1px solid #ccc;
+        }
+
+        th {
+            background: #eee;
+            font-weight: normal;
+        }
+
+        tr {
+            background: #fff;
+            height: 40px;
+        }
+
+        tr:hover {
+            background: #cc0;
+        }
+
+        td a {
+            color: #06f;
+            text-decoration: none;
+            text-align: left;
+            display: block;
+            /* width: 120px; */
+            /* height: 40px; */
+            color: #1f1193;
+            background-color: #b1272787;
+            overflow: hidden;
+            /*自动隐藏文字*/
+            text-overflow: ellipsis;
+            /*文字隐藏后添加省略号*/
+        }
+
+        td a:hover {
+            color: #06f;
+            text-decoration: underline;
+            background-color: orangered;
+        }
+
+        .button {
+            /* 按钮美化 */
+            width: 120px;
+            /* 宽度 */
+            height: 40px;
+            /* 高度 */
+            border-width: 0px;
+            /* 边框宽度 */
+            border-radius: 3px;
+            /* 边框半径 */
+            background: #1e90ff;
+            /* 背景颜色 */
+            cursor: pointer;
+            /* 鼠标移入按钮范围时出现手势 */
+            outline: none;
+            /* 不显示轮廓线 */
+            font-family: Microsoft YaHei;
+            /* 设置字体 */
+            color: white;
+            /* 字体颜色 */
+            font-size: 17px;
+            /* 字体大小 */
+        }
+
+        button {
+            /* 按钮美化 */
+            width: 120px;
+            /* 宽度 */
+            height: 40px;
+            /* 高度 */
+            border-width: 0px;
+            /* 边框宽度 */
+            border-radius: 3px;
+            /* 边框半径 */
+            background: #1e90ff;
+            /* 背景颜色 */
+            cursor: pointer;
+            /* 鼠标移入按钮范围时出现手势 */
+            outline: none;
+            /* 不显示轮廓线 */
+            font-family: Microsoft YaHei;
+            /* 设置字体 */
+            color: white;
+            /* 字体颜色 */
+            font-size: 17px;
+            /* 字体大小 */
+        }
+
+        .login-button:hover {
+            /* 鼠标移入按钮范围时改变颜色 */
+            background: #5599ff;
+        }
+
+    </style>
+</head>
+
+<body>
+    <!--主体内容-->
+    <div class="error_main">
+        <h1>Tech Xuexi</h1>
+        <div class="error_content">
+            <h2 style="text-align: center;">Tech Xuexi</h2>
+            <div id="console" class='main'>
+                <div>
+                    <table>
+                        <caption>
+                            <h2> 👇👇登录👇👇</h2>
+                        </caption>
+                        <form action="/login" , method="POST">
+                            <tr>
+                                <th>
+                                    用户名
+                                </th>
+                                <th>
+                                    <input type="text" name="username" required style="width: 90%; height: 80%; border-style: none"/>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    密码
+                                </th>
+                                <th>
+                                    <input type="password" name="password" required style="width: 90%; height: 80%; border-style: none"/>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th colspan="2">
+                                    <button type="submit">登录</button>
+                                </th>
+                            </tr>
+                </div>
+                <div class="clear"> </div>
+                </ul>
+                <div class="clear"> </div>
+
+                </form>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <p><a target=_blank href="#">Tech Xuexi</a></p>
+    </div>
+    </div>
 </body>
-</html>
+</>

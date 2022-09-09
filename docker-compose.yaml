@@ -2,7 +2,8 @@ version: "3.6"
 
 services:
     techxuexi:
-        image: techxuexi/techxuexi-amd64
+        # image: techxuexi/techxuexi-amd64
+        image: xuexi
         container_name: techxuexi
         restart: unless-stopped
         volumes:
@@ -14,9 +15,10 @@ services:
             - CRONTIME=5 */6 * * *
             - Pushmode=6
             - ZhuanXiang=True
+            - web_login_open=False
         # # 自定义拉取版本
-        # - Sourcepath=https://github.com/TechXueXi/TechXueXi.git
-        # - pullbranche=developing
+            - Sourcepath=https://github.com/emhui-box/TechXueXi.git
+            - pullbranche=feature
 
         # --------------------------------
         # 运行之后打开IP:9980即可

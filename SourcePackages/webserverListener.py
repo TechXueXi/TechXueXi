@@ -1,15 +1,16 @@
-import json
+from crypt import methods
 import os
 from re import T
 import time
-from datetime import date, datetime
+from datetime import datetime
 from typing import List
 
-from flask import redirect, request
+from flask import request, redirect, session
 from flask_cors import CORS
 
 import pandalearning as pdl
 from pdlearn import user
+from pdlearn import globalvar as gl
 from webServerConf import UserInfo, WebMessage, WebQrUrl, app, web_db, LAST_STATUS_REFRESH_ALL_COOKIES
 
 
@@ -20,6 +21,13 @@ def create_db():
     web_db.drop_all()
     web_db.create_all()
 
+@app.before_request
+def before_request():
+    path = request.path
+    if 'login' in path:
+        return
+    if gl.web_login_open and ('username' not in session or gl.web_login_username != session['username']):
+        return redirect('/static/login.html') 
 
 def request_parse(req_data):
     data = None
@@ -84,8 +92,20 @@ def web_log(send_log):
 
 @app.route('/')
 def hello_world():
-    # return redirect('/static/index.html', code=302)
-    return redirect('/static/login.html', code=302)
+    return redirect('/static/index.html', code=302)
+
+@app.route('/login', methods=['POST'])
+def login():
+    username = request.form.get("username")
+    password = request.form.get("password")
+    print("*" * 10)
+    print(gl.web_login_open, gl.web_login_passowrd, gl.web_login_username)
+    print(username, password)
+    print("*" * 10)
+    if gl.web_login_username == username and gl.web_login_passowrd == password:
+        session['username'] = username
+        return redirect('/static/index.html', code=302)
+    return redirect('/static/login.html', code=302) 
 
 
 @app.route('/jump')
@@ -268,5 +288,8 @@ def list_messages():
 
 
 if __name__ == "__main__":
+    if gl.is_init != True:
+        gl.init_global()
+    gl.init_global()
     CORS(app, supports_credentials=True)
     app.run(host='0.0.0.0', port='80', debug=True)

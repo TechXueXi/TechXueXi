@@ -14,6 +14,9 @@ import base64  # 解码二维码图片
 # 全局变量是否已经初始化
 is_init = False
 pushmode = "0"  # 0 不开启 1 钉钉 2 微信（并未实现） 3 Server 酱 4 pluspush 5 Telegram Bot 6 Web Dashboard
+web_login_open = True
+web_login_username = ""
+web_login_passowrd = ""
 nohead = False
 accesstoken = ""
 topic = ''
@@ -34,7 +37,7 @@ def init_global():
     """
     初始化全局变量
     """
-    global nohead, islooplogin, single, scheme, pushmode, accesstoken, secret, zhuanxiang, is_init, lock, stime, tg_bot, wechat, topic
+    global nohead, islooplogin, single, scheme, pushmode, web_login_open, web_login_username, web_login_passowrd, accesstoken, secret, zhuanxiang, is_init, lock, stime, tg_bot, wechat, topic
     if os.getenv('Nohead') == "True":
         nohead = True
     else:
@@ -50,6 +53,18 @@ def init_global():
         pushmode = os.getenv('Pushmode')
     else:
         pushmode = cfg_get("addition.Pushmode", "0")
+
+    print('web_login_open is', os.getenv('web_login_open'))
+    if os.getenv('web_login_open') == "True":
+        web_login_open = True
+
+    print('web_login_username is', os.getenv('web_login_username'))
+    if os.getenv('web_login_username'):
+        web_login_username = os.getenv('web_login_username')
+
+    print('web_login_password is', os.getenv('web_login_password'))
+    if os.getenv('web_login_password'):
+        web_login_passowrd = os.getenv('web_login_password')
 
     if os.getenv("Scheme") != None:
         scheme = os.getenv("Scheme")

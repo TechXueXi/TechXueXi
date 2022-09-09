@@ -2,26 +2,14 @@
 <head>
     <meta charset=utf-8>
     <title>科技强国-WEB控制台</title>
-    <!--<meta name="viewport"  content="width=device-width,initial-scale=1.0">-->
     <meta name=”viewport” content=”width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes” />
-    <meta name=keywords content="强国通,科技强国,答题,docker,开源,外挂,学习强国,xuexiqiangguo,TechXueXi,懒人刷分工具,自动学习,技术强国,xxqg">
-    <meta name="description" content="强国通 科技强国 中国要强盛、要复兴，就一定要大力发展科学技术，努力成为世界主要科学中心和创新高地。我们比历史上任何时期都更接近中华民族伟大复兴的目标，我们比历史上任何时期都更需要建设世界科技强国！支持答题 支持docker 全网最好用开源学习强国助手 外挂 学习强国 xuexiqiangguo TechXueXi 懒人刷分工具 自动学习 技术强国">
+    <style>html,body,div,span,iframe,h1,h2,p,a{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline}body{padding:2em 0;margin:0;font-family:'Raleway',sans-serif;background:linear-gradient(to left,#ff0000 50%,#0000ff 50%)}body a{transition:0.5s all;-webkit-transition:0.5s all;-moz-transition:0.5s all;-o-transition:0.5s all;-ms-transition:0.5s all;text-decoration:none;letter-spacing:1px;font-size:15px;font-weight:600}body a:hover{text-decoration:none}body a:focus,a:hover{text-decoration:none}h1,h2{margin:0;padding:0;font-family:'Raleway',sans-serif;font-weight:600;letter-spacing:1px}a:focus,a:hover{text-decoration:none;outline:none}.error_main{width:100%}h1{font-size:50px;text-align:center;color:#fff;margin-bottom:40px;letter-spacing:5px}h2{font-size:30px;text-transform:capitalize;margin:0;color:#333}p{color:#777;letter-spacing:1px;line-height:1.8em;font-size:14px;font-weight:400;margin:2em 0}.error_content span.fa.fa-frown-o{font-size:100px;color:#ffb310}.error_content{padding:5em 7em;background:#fff;width:50%;margin:0 auto}.footer p{text-align:center;color:#eee;letter-spacing:2px;font-size:15px;margin:3em 0 1em}.footer p a{color:#eee}@media screen and (max-width:1440px){.error_content{padding:5em 6em;width:52%}}@media screen and (max-width:1366px){.error_content{padding:4em 6em;width:55%}}@media screen and (max-width:1280px){.error_content{padding:4em 6em;width:60%}.error_content span.fa.fa-frown-o{font-size:90px}}@media screen and (max-width:1080px){.error_content{padding:4em 4em;width:70%}h1{font-size:45px;letter-spacing:3px}}@media screen and (max-width:1024px){.error_content{padding:4em 3em;width:72%}h2{font-size:28px}}@media screen and (max-width:991px){.error_content{padding:4em 3em;width:75%}p{margin:1.5em 0}}@media screen and (max-width:900px){p{letter-spacing:.5px}}@media screen and (max-width:768px){h1{font-size:40px;letter-spacing:2px;margin-bottom:30px}h2{font-size:26px}.error_content span.fa.fa-frown-o{font-size:80px}}@media screen and (max-width:640px){.footer p{letter-spacing:1px}.error_content{padding:3em 3em}}@media screen and (max-width:480px){h1{font-size:35px;letter-spacing:2px;margin-bottom:20px}h2{font-size:24px}.error_content span.fa.fa-frown-o{font-size:70px}.footer p{letter-spacing:1px;font-size:14px}}@media screen and (max-width:414px){.error_content{padding:2em 2em}h2{font-size:22px}}@media screen and (max-width:384px){h1{font-size:30px;margin-bottom:15px}}@media screen and (max-width:375px){p{letter-spacing:0px}}@media screen and (max-width:320px){h2{font-size:19px;letter-spacing:0px}}</style>
+    <style> .msg_content{ margin-top: 15px; margin-bottom: -16px; padding: 15px; background-color: #f7f7f7; font-size: 14px; color: #4d4d4d; line-height: 22px; text-align: center; } .nav a{ display: block; /* width: 120px; */ /* height: 40px; */ text-decoration: none; color: #1f1193; background-color: #b1272787; overflow: hidden; /*自动隐藏文字*/ text-overflow: ellipsis;/*文字隐藏后添加省略号*/ } .nav a:hover{ background-color: orangered; } </style>
     <link rel="icon" href="https://bkimg.cdn.bcebos.com/pic/6f061d950a7b0208cc3d57e46cd9f2d3572cc83b?x-bce-process=image/resize,m_lfit,w_536,limit_1/format,f_jpg">
     <script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/moment.js/2.29.1/locale/zh-cn.min.js"></script>
     <script src="https://cdn.bootcss.com/sweetalert/2.1.0/sweetalert.min.js"></script>
-    <!-- L2Dwidget.js L2D网页动画人物 -->
-    <script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script>
-    <script>
-    L2Dwidget.init({
-      "model": { "jsonPath":"https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json", "scale": 1, "hHeadPos":0.5, "vHeadPos":0.618 },
-      "display": { "position": "right","width": 100, "height": 250, "hOffset": 0, "vOffset": 0 },//玩偶位置
-      "mobile": { "show": true, "scale": 0.5 },
-      "react": { "opacityDefault": 1, "opacityOnHover": 0.2 }//玩偶透明度
-    });
-  </script>
-  </script>
     <script type="text/javascript">
     //强国js
         function to_arr(text_or_array) {
@@ -277,7 +265,7 @@
             }, 15000);
         });
     </script>
-    <style type="text/css">
+    <!-- <style type="text/css">
         .main {
             /*边框*/
             border: solid 1px #ffffff;
@@ -338,8 +326,10 @@
         tr, td { transition: .2s ease-in; } 
         }*/
         /*鼠标停留表格放大*/
+        /*
         tr:hover:not(#firstrow), tr:hover td:empty {background: rgb(52, 202, 64); pointer-events: visible;}
         tr:hover:not(#firstrow) { transform: scale(1.2); font-weight: 700; box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.5);}
+        */
 
         td a {
             color: #fff;
@@ -609,30 +599,120 @@
             letter-spacing: 0px
         }
     }
+    </style> -->
+    <style type="text/css">
+        .main {
+            background-color: rgba(102, 146, 191, 0.44);
+            /*边框*/
+            border: solid 1px rgba(102, 146, 191, 0.68);
+            边角弧度 border-radius: 10px;
+            /*阴影*/
+            /* -moz-box-shadow:2px 2px 5px #333333; 
+                -webkit-box-shadow:2px 2px 5px #333333; 
+                box-shadow: 7px 15px 30px #285a63; */
+        }
+    
+    
+        .main:hover {
+            /*边框*/
+            border: solid 1px rgba(102, 146, 191, 0.68);
+            /*边角弧度*/
+            border-radius: 10px;
+            box-shadow: 7px 15px 30px #285a63;
+        }
+    
+        body {
+            min-width: 780px;
+        }
+    
+        /*表格样式*/
+        table {
+            width: 90%;
+            background: #ccc;
+            margin: 10px auto;
+            border-collapse: collapse;
+            /*border-collapse:collapse合并内外边距(去除表格单元格默认的2个像素内外边距*/
+        }
+    
+        th,
+        td {
+            height: 25px;
+            line-height: 25px;
+            text-align: center;
+            border: 1px solid #ccc;
+        }
+    
+        th {
+            background: #eee;
+            font-weight: normal;
+        }
+    
+        tr {
+            background: #fff;
+        }
+    
+        tr:hover {
+            background: #cc0;
+        }
+    
+        td a {
+            color: #06f;
+            text-decoration: none;
+            text-align: left;
+            display: block;
+            /* width: 120px; */
+            /* height: 40px; */
+            color: #1f1193;
+            background-color: #b1272787;
+            overflow: hidden;
+            /*自动隐藏文字*/
+            text-overflow: ellipsis;
+            /*文字隐藏后添加省略号*/
+        }
+    
+        td a:hover {
+            color: #06f;
+            text-decoration: underline;
+            background-color: orangered;
+        }
+    
+        button {
+            /* 按钮美化 */
+            width: 120px;
+            /* 宽度 */
+            height: 40px;
+            /* 高度 */
+            border-width: 0px;
+            /* 边框宽度 */
+            border-radius: 3px;
+            /* 边框半径 */
+            background: #1e90ff;
+            /* 背景颜色 */
+            cursor: pointer;
+            /* 鼠标移入按钮范围时出现手势 */
+            outline: none;
+            /* 不显示轮廓线 */
+            font-family: Microsoft YaHei;
+            /* 设置字体 */
+            color: white;
+            /* 字体颜色 */
+            font-size: 17px;
+            /* 字体大小 */
+        }
+    
+        .login-button:hover {
+            /* 鼠标移入按钮范围时改变颜色 */
+            background: #5599ff;
+        }
+
     </style>
 </head>
 <body>
-    <!--弹窗js-->
-    <script>
-        swal('提醒:只运行视频,文章,每日,每周,专项', '注意事项\n\n服务器配置有限,账号请一个一个运行\n由于是个人出资租的服务器\n所以随时会跑路,请珍惜使用\n有问题请反馈邮箱:1902180066@qq.com\n\n使用步骤\n\n第一步点击添加用户\n之后手机访问的兄弟点击弹出的登陆按钮\n电脑访问的兄弟打开手机扫描二维码\n最后等待用户名称UID出现\n最后点击UID即可自动学习', 'success'); function AddFavorite(title, url) {
-            try {
-                window.external.addFavorite(url, title);
-            }
-            catch (e) {
-                try {
-                    window.sidebar.addPanel(title, url,);
-                }
-                catch (e) {
-                    alert("抱歉，您所使用的浏览器无法完成此操作。");
-                }
-            }
-        }
-    </script>
     <!--主体内容-->
     <div class="error_main">
+        <h1>科技强国</h1>
         <div class="error_content">
-            <h2>科技强国控制台</h2>
-            <h3><button><a href="https://www.52xz.cloud">点我打开官网</a></button></h3>
+            <h2 style="text-align: center;">科技强国控制台</h2>
             <div id="console" class='main'>
                 <div>
                     <table>
