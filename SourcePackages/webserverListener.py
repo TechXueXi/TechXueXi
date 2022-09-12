@@ -98,10 +98,6 @@ def hello_world():
 def login():
     username = request.form.get("username")
     password = request.form.get("password")
-    print("*" * 10)
-    print(gl.web_login_open, gl.web_login_passowrd, gl.web_login_username)
-    print(username, password)
-    print("*" * 10)
     if gl.web_login_username == username and gl.web_login_passowrd == password:
         session['username'] = username
         return redirect('/static/index.html', code=302)
