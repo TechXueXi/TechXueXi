@@ -290,6 +290,5 @@ def list_messages():
 if __name__ == "__main__":
     if gl.is_init != True:
         gl.init_global()
-    gl.init_global()
     CORS(app, supports_credentials=True)
     app.run(host='0.0.0.0', port='80', debug=True)
