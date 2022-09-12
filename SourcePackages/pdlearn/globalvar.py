@@ -57,6 +57,8 @@ def init_global():
     print('web_login_open is', os.getenv('web_login_open'))
     if os.getenv('web_login_open') == "True":
         web_login_open = True
+    else:
+        web_login_open = False
 
     print('web_login_username is', os.getenv('web_login_username'))
     if os.getenv('web_login_username'):
