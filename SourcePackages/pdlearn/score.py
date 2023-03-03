@@ -63,7 +63,7 @@ def get_score(cookies):
     jar = RequestsCookieJar()
     for cookie in cookies:
         jar.set(cookie['name'], cookie['value'])
-    total_json = requests.get("https://pc-api.xuexi.cn/open/api/score/get", cookies=jar,
+    total_json = requests.get("https://pc-proxy-api.xuexi.cn/delegate/score/get", cookies=jar,
                               headers={'Cache-Control': 'no-cache'}).content.decode("utf8")
     if not json.loads(total_json)["data"]:
         globalvar.pushprint("cookie过期，请重新登录", chat_id)
