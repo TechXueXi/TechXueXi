@@ -25,7 +25,7 @@ def get_article_links():
 
 def get_video_links():
     try:
-        video_json = requests.get("https://www.xuexi.cn/lgdata/4426aa87b0b64ac671c96379a3a8bd26/db086044562a57b441c24f2af1c8e101.json").content.decode("utf8")
+        video_json = requests.get("https://www.xuexi.cn/lgdata/0809b8b6ab8a81a4f55ce9cbefa16eff/ae60b027cb83715fd0eeb7bb2527e88b.json").content.decode("utf8")
         video=json.loads(video_json)["DataSet"]
         json_urls = []
         link = []
