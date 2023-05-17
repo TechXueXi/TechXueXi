@@ -6,4 +6,4 @@ class const:
     login_all        = 1  # 每日登陆
     daily_all        = 5  # 每日答题
     weekly_all       = 5  # 每周答题
-    zhuanxiang_all   = 10 # 专项答题
+    zhuanxiang_all   = 5  # 专项答题
