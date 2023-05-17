@@ -24,21 +24,16 @@ def generate_tiku_data(quiz_type=None, tip=None, option=None, answer=None, quest
 
 
 def find_available_quiz(quiz_type, driver_ans, uid):
-    # 这里有些问题，专项学习一开始会出现 1 2 3 4 5 10，一共6个button
-    # 第一次find_elements_by_css_selector以后只会学到前5页和最后一页，这6页学完以后就会找不到
-    # 这里改动先找最后一个button的页码，然后每次点击，更新pages，模拟手动点击的过程
-    prestr = ".ant-pagination-item"
-    pages = driver_ans.driver.find_elements_by_css_selector(prestr)
-    last = int(pages[len(pages)-1].text)
-    for p in range(0, last, 1):  # (从最后一页开始往前找做题)从前往后找题，专项答题等没有那么离谱
-        pages = driver_ans.driver.find_elements_by_css_selector(prestr)
-        for index in range(0, len(pages), 1):
-            if pages[index].text == str(p+1):
-                time.sleep(0.5)
-                print('进入答题第' + str(p+1) + '页')
-                pages[index].click()
-                time.sleep(0.5)
-                break
+    all_pages = driver_ans.driver.find_elements_by_css_selector(
+        ".ant-pagination-item")
+    pages=int(all_pages[-1].get_attribute('title'))
+    # page_next= driver_ans.driver.find_elements_by_css_selector('ant-pagination-item-link')
+    print('总页数'+str(pages))
+    for p in range(0, pages, 1):  # (从最后一页开始往前找做题)从前往后找题，专项答题等没有那么离谱
+        time.sleep(0.5)
+        print('进入答题第' + str(p+1) + '页')
+        # page_next[0].click()
+        time.sleep(0.5)
         dati = []
         if quiz_type == "weekly":  # 寻找可以做的题
             dati = driver_ans.driver.find_elements_by_css_selector(
@@ -55,6 +50,39 @@ def find_available_quiz(quiz_type, driver_ans, uid):
                 to_click = j
                 # auto.prompt("wait for Enter press...")
                 return to_click
+        page_next= driver_ans.driver.find_elements_by_css_selector('.ant-pagination-next')
+        page_next[0].click()
+#     # 这里有些问题，专项学习一开始会出现 1 2 3 4 5 10，一共6个button
+#     # 第一次find_elements_by_css_selector以后只会学到前5页和最后一页，这6页学完以后就会找不到
+#     # 这里改动先找最后一个button的页码，然后每次点击，更新pages，模拟手动点击的过程
+#     prestr = ".ant-pagination-item"
+#     pages = driver_ans.driver.find_elements_by_css_selector(prestr)
+#     last = int(pages[len(pages)-1].text)
+#     for p in range(0, last, 1):  # (从最后一页开始往前找做题)从前往后找题，专项答题等没有那么离谱
+#         pages = driver_ans.driver.find_elements_by_css_selector(prestr)
+#         for index in range(0, len(pages), 1):
+#             if pages[index].text == str(p+1):
+#                 time.sleep(0.5)
+#                 print('进入答题第' + str(p+1) + '页')
+#                 pages[index].click()
+#                 time.sleep(0.5)
+#                 break
+#         dati = []
+#         if quiz_type == "weekly":  # 寻找可以做的题
+#             dati = driver_ans.driver.find_elements_by_css_selector(
+#                 "#app .month .week button")
+#         elif quiz_type == "zhuanxiang":  # 寻找可以做的题
+#             # 可以使用 #app .items .item button:not(.ant-btn-background-ghost) 选择器，但会遗漏掉”继续答题“的部分
+#             dati = driver_ans.driver.find_elements_by_css_selector(
+#                 "#app .items .item button")
+#         for i in range(len(dati)-1, -1, -1):  # 从最后一个遍历到第一个
+#             j = dati[i]
+#             if ("重新" in j.text or "满分" in j.text):
+#                 continue
+#             else:
+#                 to_click = j
+#                 # auto.prompt("wait for Enter press...")
+#                 return to_click
 
 
 @exception_catcher()
@@ -528,7 +556,7 @@ def daily(cookies, scores, driver_default=None):
 def weekly(cookies, scores, driver_default=None):
     quiz_type = "weekly"
     score_all = const.weekly_all
-    quiz_xpath = '//*[@id="app"]/div/div[2]/div/div[3]/div[2]/div[7]/div[2]/div[2]/div'
+    quiz_xpath = '//*[@id="app"]/div/div[2]/div/div[3]/div[2]/div[6]/div[2]/div[2]/div'
     category_xpath = '//*[@id="app"]/div/div[2]/div/div[4]/div[1]/div[1]'
     answer_question(quiz_type, cookies, scores, score_all,
                     quiz_xpath, category_xpath, driver_default=driver_default)
@@ -537,7 +565,7 @@ def weekly(cookies, scores, driver_default=None):
 def zhuanxiang(cookies, scores, driver_default=None):
     quiz_type = "zhuanxiang"
     score_all = const.zhuanxiang_all
-    quiz_xpath = '//*[@id="app"]/div/div[2]/div/div[3]/div[2]/div[6]/div[2]/div[2]/div'
+    quiz_xpath = '//*[@id="app"]/div/div[2]/div/div[3]/div[2]/div[7]/div[2]/div[2]/div'
     category_xpath = '//*[@id="app"]/div/div[2]/div/div[6]/div[1]/div[1]'
     answer_question(quiz_type, cookies, scores, score_all,
                     quiz_xpath, category_xpath, driver_default=driver_default)
