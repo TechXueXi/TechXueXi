@@ -1,9 +1,12 @@
 {
-    "techxuexi_version": "v20220711",
+    "techxuexi_version": "v20230521",
     "notice": "欢迎使用 TechXueXi",
     "least_version": "v20211020",
     "old_version_warning": "您的版本太旧，请立即更新",
     "techxuexi_update_log": [{
+        "version": "v20230521",
+        "info": "修复若干问题"
+    },{
         "version": "v20220711",
         "info": "修复qrcode的问题"
     },{

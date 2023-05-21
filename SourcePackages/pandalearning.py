@@ -99,8 +99,8 @@ def start_learn(uid, name):
         article_thread.join()
         video_thread.join()
     if TechXueXi_mode in ["2", "3"]:
-        print('开始每日答题……')
-        daily(cookies, scores)
+#        print('开始每日答题……')
+#        daily(cookies, scores)
         print('开始每周答题……')
         weekly(cookies, scores)
         if nohead != True or gl.zhuanxiang == True:
