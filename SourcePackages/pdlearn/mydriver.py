@@ -186,6 +186,10 @@ class Mydriver:
             self.options.add_argument("--disable-blink-features")
             self.options.add_argument(
                 "--disable-blink-features=AutomationControlled")
+            # 设置为不走代理
+            self.options.add_argument('--proxy-server="direct://"')
+            self.options.add_argument('--proxy-bypass-list=*')
+
             self.webdriver = webdriver
 
             # ==================== 寻找 chrome ====================
